@@ -1,5 +1,4 @@
 import * as firebase from 'firebase';
-import * as firebaseui from 'firebaseui';
 
 const config = {
     apiKey: "AIzaSyBeO7P_e3VnIQdM4ZqPvqX_UxqoJQx_TTE",
@@ -13,14 +12,5 @@ const fb = firebase
   .initializeApp(config)
   .database()
   .ref();
-
-const uiConfig = {
-  signInOptions: [
-    firebase.auth.EmailAuthProvider.PROVIDER_ID
-  ]
-};
-// const ui = new firebaseui.auth.AuthUI(fb.auth());
-// The start method will wait until the DOM is loaded.
-//ui.start('#firebaseui-auth-container', uiConfig);
 
 export default fb;

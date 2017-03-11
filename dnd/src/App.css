@@ -28,6 +28,7 @@
   width: 300px;
   border-style: solid;
   border-color: black;
+  padding: 20px;
 }
 
 .App-note{
@@ -43,4 +44,33 @@
   background-color: #FFCA81;
   border-style: solid;
   border-color: black;
+}
+
+.App-auth{
+  width: 30%;
+  padding: 70px;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10%;
+}
+
+.App-auth-signup{
+  background-color: #FFCA81;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+.App-auth-signin{
+  background-color: #D17400;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+ul{
+  text-align: left;
+}
+li{
+  padding: 2px;
 }
