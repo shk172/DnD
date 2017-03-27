@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: grey;
 }
 .App-modules{
   display: -webkit-flex;
@@ -7,7 +8,7 @@
   justify-content: center;
   align-items: stretch;
   flex-wrap: wrap;
-  height: 500px;
+  height: 600px;
 }
 .App-logo {
   /*animation: App-logo-spin infinite 20s linear;*/
@@ -31,6 +32,25 @@
   padding: 20px;
 }
 
+.App-inventoryandmagic{
+  flex-direction: column;
+  align-items: stretch;
+}
+.App-magicandskill{
+  width: 300px;
+  height: 295px;
+  background-color: #FFCA81;
+  border-style: solid;
+  border-color: black;
+}
+.App-inventory{
+  width: 300px;
+  height: 295px;
+  background-color: #FFCA81;
+  border-style: solid;
+  border-color: black;
+}
+
 .App-note{
   width: 300px;
   background-color: #FFCA81;
@@ -39,34 +59,61 @@
   
 }
 
-.App-inventory{
-  width: 300px;
-  background-color: #FFCA81;
-  border-style: solid;
-  border-color: black;
-}
-
 .App-auth{
-  width: 30%;
-  padding: 70px;
+  background-size: 100%;
+  height: 100vh;
+  width: 100vw;
+  background-color: grey;
+  display: -webkit-flex;
+  display: flex;
+  flex-direction: column;
   text-align: center;
   justify-content: center;
   align-items: center;
-  margin-top: 10%;
+  font-family: "Times New Roman", Times, serif;
 }
 
+.App-auth-buttons{
+  flex-direction: row;
+}
 .App-auth-signup{
-  background-color: #FFCA81;
+  font-weight: bold;
+  color: white;
+  padding: 15px 20px;
+  background-color: #FFBB66;
   text-align: center;
   justify-content: center;
   align-items: center;
+  width: 50%;
+  border-radius: 10px;
+  font-family: "Times New Roman", Times, serif;
+}
+.App-auth-signupbutton{
+  background-color: #FFBB66;
+  padding: 10px 25px;
+  border-color: #FFCA81;
+  margin: 0;
 }
 .App-auth-signin{
+  font-weight: bold;
+  color: white;
+  width: 50%;
+  padding: 15px 20px;
   background-color: #D17400;
   text-align: center;
   justify-content: center;
   align-items: center;
+  width: 50%;
+  border-radius: 10px;
+  font-family: "Times New Roman", Times, serif;
 }
+.App-auth-signinbutton{
+  padding: 10px 25px;
+  background-color: #D17400;
+  border-color: #D17400;
+  margin: 0;
+}
+
 
 ul{
   text-align: left;
