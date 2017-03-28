@@ -237,14 +237,16 @@ class Authentication extends Component{
         errorCode: error.code,
         error: true});
     });
-    firebase.auth().onAuthStateChanged((userProfile) => {
-      if (userProfile) {
-        console.log("Successfully signed in");
-      }
-      userRef = firebase.database().ref("Players/" + firebase.auth().currentUser.uid);
-      this.props.onUpdate({loggedIn: true});
-      this.importInfo();
-    });
+    if(!this.state.error){
+	    firebase.auth().onAuthStateChanged((userProfile) => {
+	      if (userProfile) {
+	        console.log("Successfully signed in");
+	      }
+	      userRef = firebase.database().ref("Players/" + firebase.auth().currentUser.uid);
+	      this.props.onUpdate({loggedIn: true});
+	      this.importInfo();
+	    });
+    }
     event.preventDefault();
   }
 
@@ -521,10 +523,17 @@ class Authentication extends Component{
   render(){
     if(this.state.error){
       return(
-        <p>{this.state.errorMessage}</p>
+      	  <div className="App-auth">
+            <div className="App-auth-buttons">
+              <button onClick={this.setSignUp} className="App-auth-signupbutton">Sign Up</button>
+              <button onClick={this.setSignIn} className="App-auth-signinbutton">Sign In</button>
+            </div>
+            {this.showSignUp(this.state.selectSignUp)}
+            <p className="error">{this.state.errorMessage}</p>
+          </div>
         )
     }
-    if(this.state.signUp){
+        if(this.state.signUp){
       return(
         <div className="App">
           <form onSubmit={this.submitInfo}>
