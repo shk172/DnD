@@ -1,190 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import './App.css';
-import './services/firebaseConfig';
+import fb from './services/firebaseConfig';
 import firebase from 'firebase';
-import {Editor, EditorState, ContentState, RichUtils} from 'draft-js';
 import firebaseSignIn from './services/firebaseSignIn';
 import firebaseSignUp from './services/firebaseSignUp';
-
-/*
-import Authentication from './containers/Authentication';
-import Note from './containers/Note';
-import Stats from './containers/Stats';
-*/
-
-var userRef = null;
-var user = {
-  name: "",
-  race: "",
-  level: 1,
-  money: 0,
-  note: ""
-};
-
-class Stats extends Component{
-  constructor(props){
-    super(props);
-    this.state = {
-      showingStats: true
-    };
-    
-    this.incrementLevel = this.incrementLevel.bind(this);
-    this.decrementLevel = this.decrementLevel.bind(this);
-    this.showStats = this.showStats.bind(this);
-    this.showSkills = this.showSkills.bind(this);
-    this.showStatsOrSkills = this.showStatsOrSkills.bind(this);
-    this.player = this.props.player;
-
-    var player = this.player;
-  	Object.keys(player).forEach(function(key,index) {
-  		var obj = player[key];
-  	});
-  }
-
-  incrementLevel(event){
-    if(user.level < 99){
-      user.level += 1;
-      var tmp = {};
-      tmp.level = user.level;
-      userRef.update(tmp);
-    }
-  }
-
-  decrementLevel(event){
-    if(user.level > 1){
-      user.level -= 1;
-      var tmp = {};
-      tmp.level = user.level;
-      userRef.update(tmp);
-    }
-  }
-  showStats(){
-    this.setState({showingStats: true});
-  }
-  showSkills(){
-    this.setState({showingStats: false});
-  }
-  
-  showStatsOrSkills(boolean){
-    if(boolean){
-      return(
-        <div>
-          <ul>
-            <li>Name: {this.player.name}</li>
-            <li>Race: {this.player.race}</li>
-            <li>Level: {this.player.level} 
-              <button onClick={this.decrementLevel}> - </button>
-              <button onClick={this.incrementLevel}> + </button>
-            </li>
-            <li>Health: {this.player.health}</li>
-            <li>Money: {this.player.money}</li>
-          </ul>
-          <br/>
-          Stats:
-          <ul>
-            <li>Strength: {this.player.stats.strength}</li>
-            <li>Dexterity: {this.player.stats.dexterity}</li>
-            <li>Constitution: {this.player.stats.constitution}</li>
-            <li>Intelligence: {this.player.stats.intelligence}</li>
-            <li>Wisdom: {this.player.stats.wisdom}</li>
-            <li>Charisma: {this.player.stats.charisma}</li>
-          </ul>
-        </div>
-      )      
-    }
-    else{
-      return(
-        <div>
-          Skills:
-          <ul>
-            <li>Acrobatics: {this.player.skills.acrobatics}</li>
-            <li>Animal Handling: {this.player.skills.animalHandling}</li>
-            <li>Arcana: {this.player.skills.arcana}</li>
-            <li>Athletics: {this.player.skills.athletics}</li>
-            <li>Deception: {this.player.skills.deception}</li>
-            <li>History: {this.player.skills.history}</li>
-            <li>Insight: {this.player.skills.insight}</li>
-            <li>Intimidation: {this.player.skills.intimidation}</li>
-            <li>Investigation: {this.player.skills.investigation}</li>
-            <li>Medicine: {this.player.skills.medicine}</li>
-            <li>Nature: {this.player.skills.nature}</li>
-            <li>Perception: {this.player.skills.perception}</li>
-            <li>Performance: {this.player.skills.performance}</li>
-            <li>Persuasion: {this.player.skills.persuasion}</li>
-            <li>Religion: {this.player.skills.religion}</li>
-            <li>Sleight of Hand: {this.player.skills.sleightOfHand}</li>
-            <li>Stealth: {this.player.skills.stealth}</li>
-            <li>Survival: {this.player.skills.survival}</li>
-          </ul>
-        </div>
-      )
-    }
-
-  }
-  render(){
-    return (
-      <div>
-        <div>
-          <button onClick={this.showStats} className="App-auth-signupbutton">Stats</button>
-          <button onClick={this.showSkills} className="App-auth-signinbutton">Skills</button>
-        </div>
-        {this.showStatsOrSkills(this.state.showingStats)}
-      </div>
-    );
-  }
-
-}
-
-class Note extends Component{
-  constructor(props){
-    super(props);
-    this.onChange = (editorState) => {
-      this.setState({editorState});
-      var tmp ={}
-      tmp.note = this.state.editorState.getCurrentContent().getPlainText();
-      userRef.update(tmp);
-    };
-    this.handleKeyCommand = this.handleKeyCommand.bind(this);
-  }
-
-  handleKeyCommand(command) {
-    const newState = RichUtils.handleKeyCommand(this.state.editorState, command);
-    if (newState) {
-      this.onChange(newState);
-      return 'handled';
-    }
-    return 'not-handled';
-  }
-
-  componentWillMount(){
-    console.log(user.note);
-    if(user.note === ""){
-      this.setState({
-        editorState: EditorState.createWithContent(
-        ContentState.createFromText("Type your notes here"))
-      }); 
-    }
-
-    else{
-      this.setState({
-        editorState: EditorState.createWithContent(
-        ContentState.createFromText(user.note))
-      }); 
-    }
-
-  }
-  render(){
-    return(
-      <div>
-        <p>Note:</p>
-        <Editor 
-        editorState={this.state.editorState} 
-        onChange={this.onChange}
-        handleKeyCommand={this.handleKeyCommand}/>
-      </div>
-    );
-  }
-}
 
 class Authentication extends Component{
   constructor(props){
@@ -245,38 +64,15 @@ class Authentication extends Component{
   }
 
   firebaseSignIn(event){
-    firebaseSignIn(this.state.email, this.state.password).then(
-    	(player) => {
-    		console.log(player);
-			this.props.onUpdate({
-		    	loading: false,
-		    	loggedIn: true,
-		    	player: player,
-		    });
-    	},
-    	(error) => {
-    		this.setState({
-    			error: true,
-    			errorMessage: error.message
-    		})
-    	}
-    );
+    firebaseSignIn(this.state.email, this.state.password);
     event.preventDefault();
   }
 
   firebaseSignUp(event){
     firebaseSignUp(this.state.email, this.state.password)
-	.then(
-		(userRef) =>{
-			this.setState({signUp: true});
-		},
-		(error) => {
-			this.setState({
-				error: true,
-				errorMessage: error.message
-			})
-		}
-	);
+    	.then((userRef) =>{
+    		this.setState({signUp: true});
+    	});
     event.preventDefault();
   }
 
@@ -286,6 +82,64 @@ class Authentication extends Component{
 
   handlePassword(event){
     this.setState({password: event.target.value});
+  }
+
+  importInfo(ref){
+  	var player = {};
+  	var stats = {};
+  	var savingThrows = {};
+  	var skills = {};
+    ref.on("value", (dataSnapshot) => {
+      player.name = dataSnapshot.val().name;
+      player.race = dataSnapshot.val().race;
+      player.level = dataSnapshot.val().level;
+      player.note = dataSnapshot.val().note;
+      player.money = dataSnapshot.val().money;
+      player.health = dataSnapshot.val().health;
+      player.armorClass = dataSnapshot.val().armorClass;
+      player.speed = dataSnapshot.val().speed;
+
+      stats.strength = dataSnapshot.val().strength;
+      stats.dexterity = dataSnapshot.val().dexterity;
+      stats.constitution = dataSnapshot.val().constitution;
+      stats.intelligence = dataSnapshot.val().intelligence;
+      stats.wisdom = dataSnapshot.val().wisdom;
+      stats.charisma = dataSnapshot.val().charisma;
+
+      savingThrows.strengthST = dataSnapshot.val().strengthST;
+      savingThrows.dexterityST = dataSnapshot.val().dexterityST;
+      savingThrows.constitutionST = dataSnapshot.val().constitutionST;
+      savingThrows.intelligenceST = dataSnapshot.val().intelligenceST;
+      savingThrows.wisdomST = dataSnapshot.val().wisdomST;
+      savingThrows.charismaST = dataSnapshot.val().charismaST;
+
+      skills.acrobatics = dataSnapshot.val().acrobatics;
+      skills.animalHandling = dataSnapshot.val().animalHandling;
+      skills.arcana = dataSnapshot.val().arcana;
+      skills.athletics = dataSnapshot.val().athletics;
+      skills.deception = dataSnapshot.val().deception;
+      skills.history = dataSnapshot.val().history;
+      skills.insight = dataSnapshot.val().insight;
+      skills.intimidation = dataSnapshot.val().intimidation;
+      skills.investigation = dataSnapshot.val().investigation;
+      skills.medicine = dataSnapshot.val().medicine;
+      skills.nature = dataSnapshot.val().nature;
+      skills.perception = dataSnapshot.val().perception;
+      skills.performance = dataSnapshot.val().performance;
+      skills.persuasion = dataSnapshot.val().persuasion;
+      skills.religion = dataSnapshot.val().religion;
+      skills.sleightOfHand = dataSnapshot.val().sleightOfHand;
+      skills.stealth = dataSnapshot.val().stealth;
+      skills.survival = dataSnapshot.val().survival; 
+
+      player.skills = skills;
+      player.stats = stats;
+      player.savingThrows = savingThrows;     
+      this.props.onUpdate({
+      	loading: false,
+      	player: player,
+      });
+    });
   }
 
   raceChange(event){
@@ -445,13 +299,10 @@ class Authentication extends Component{
 	player.savingThrows = savingThrows;
 	userRef.update(player);
 
-	this.setState({
-		signUp: false,
-	});
+	this.setState({signUp: false});
 	this.props.onUpdate({
 		loggedIn: true,
 		player: player,
-		loading: false
 	});
     event.preventDefault();
   }
@@ -573,73 +424,3 @@ class Authentication extends Component{
     }
   }
 }
-
-class App extends Component {
-   constructor(props){
-    super(props);
-    this.state={
-      loading: true,
-      loggedIn: false,
-      email: "",
-      password: ""
-    };
-    this.onUpdate = this.onUpdate.bind(this);
-  } 
-
-  onUpdate(data){
-    this.setState(data);
-  }
-
-  render() {
-    if(!this.state.loggedIn){
-      return(
-        <div>
-          <Authentication onUpdate={this.onUpdate}/>
-        </div>
-      );
-    }
-    if(this.state.loading){
-      return(
-        <p>Loading...</p>
-        )
-      
-    }
-    if(this.state.error){
-    	return(
-    		<p>{this.state.errorMessage}</p>
-    	)
-    }
-    else{
-      return(
-        <div className="App">
-          <div className="App-header">
-            <img src="https://firebasestorage.googleapis.com/v0/b/dungeonsanddragons-f7213.appspot.com/o/Images%2Flogo.png?alt=media&token=cdbed6e2-0a19-4d37-8144-ba8c61e2d5ec" className="App-logo" alt="logo" />
-          </div>  
-
-          <div className="App-modules">
-            <div className="App-stats">
-              <Stats player={this.state.player} />
-            </div>
-
-            <div className="App-inventoryandmagic">
-              <div className="App-inventory">
-                <p>Inventory:</p>
-                <p>Not yet implemented</p>
-              </div>
-              <div className="App-magicandskill">
-                <p>Magics/Skill</p>
-                <p>Not yet implemented</p>
-              </div>
-            </div>
-
-            <div className="App-note">
-              <Note/>
-            </div> 
-          </div>
-        </div> 
-      );      
-    }
-  }
-}
-
-export default App;

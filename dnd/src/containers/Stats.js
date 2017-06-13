@@ -1,3 +1,10 @@
+import React, { Component, PropTypes } from 'react';
+import './App.css';
+import fb from './services/firebaseConfig';
+import firebase from 'firebase';
+import firebaseSignIn from './services/firebaseSignIn';
+import firebaseSignUp from './services/firebaseSignUp';
+
 class Stats extends Component{
   constructor(props){
     super(props);
@@ -95,13 +102,12 @@ class Stats extends Component{
     return (
       <div>
         <div>
-          <button onClick={this.showStats} className="App-auth-signupbutton">Sign Up</button>
-          <button onClick={this.showSkills} className="App-auth-signinbutton">Sign In</button>
+          <button onClick={this.showStats} className="App-auth-signupbutton">Stats</button>
+          <button onClick={this.showSkills} className="App-auth-signinbutton">Skills</button>
         </div>
         {this.showStatsOrSkills(this.state.showingStats)}
       </div>
     );
   }
-}
 
-export default Stats;
+}
