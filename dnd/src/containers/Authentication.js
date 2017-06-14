@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import './App.css';
-import fb from './services/firebaseConfig';
+import '../services/firebaseConfig';
 import firebase from 'firebase';
-import firebaseSignIn from './services/firebaseSignIn';
-import firebaseSignUp from './services/firebaseSignUp';
+import firebaseSignIn from '../services/firebaseSignIn';
+import firebaseSignUp from '../services/firebaseSignUp';
 
 class Authentication extends Component{
   constructor(props){
@@ -64,15 +63,37 @@ class Authentication extends Component{
   }
 
   firebaseSignIn(event){
-    firebaseSignIn(this.state.email, this.state.password);
+    firebaseSignIn(this.state.email, this.state.password).then(
+      (player) => {
+      this.props.onUpdate({
+          loading: false,
+          loggedIn: true,
+          player: player,
+        });
+      },
+      (error) => {
+        this.setState({
+          error: true,
+          errorMessage: error.message
+        })
+      }
+    );
     event.preventDefault();
   }
 
   firebaseSignUp(event){
     firebaseSignUp(this.state.email, this.state.password)
-    	.then((userRef) =>{
-    		this.setState({signUp: true});
-    	});
+    .then(
+      (userRef) =>{
+        this.setState({signUp: true});
+      },
+      (error) => {
+        this.setState({
+          error: true,
+          errorMessage: error.message
+        })
+      }
+    );
     event.preventDefault();
   }
 
@@ -82,64 +103,6 @@ class Authentication extends Component{
 
   handlePassword(event){
     this.setState({password: event.target.value});
-  }
-
-  importInfo(ref){
-  	var player = {};
-  	var stats = {};
-  	var savingThrows = {};
-  	var skills = {};
-    ref.on("value", (dataSnapshot) => {
-      player.name = dataSnapshot.val().name;
-      player.race = dataSnapshot.val().race;
-      player.level = dataSnapshot.val().level;
-      player.note = dataSnapshot.val().note;
-      player.money = dataSnapshot.val().money;
-      player.health = dataSnapshot.val().health;
-      player.armorClass = dataSnapshot.val().armorClass;
-      player.speed = dataSnapshot.val().speed;
-
-      stats.strength = dataSnapshot.val().strength;
-      stats.dexterity = dataSnapshot.val().dexterity;
-      stats.constitution = dataSnapshot.val().constitution;
-      stats.intelligence = dataSnapshot.val().intelligence;
-      stats.wisdom = dataSnapshot.val().wisdom;
-      stats.charisma = dataSnapshot.val().charisma;
-
-      savingThrows.strengthST = dataSnapshot.val().strengthST;
-      savingThrows.dexterityST = dataSnapshot.val().dexterityST;
-      savingThrows.constitutionST = dataSnapshot.val().constitutionST;
-      savingThrows.intelligenceST = dataSnapshot.val().intelligenceST;
-      savingThrows.wisdomST = dataSnapshot.val().wisdomST;
-      savingThrows.charismaST = dataSnapshot.val().charismaST;
-
-      skills.acrobatics = dataSnapshot.val().acrobatics;
-      skills.animalHandling = dataSnapshot.val().animalHandling;
-      skills.arcana = dataSnapshot.val().arcana;
-      skills.athletics = dataSnapshot.val().athletics;
-      skills.deception = dataSnapshot.val().deception;
-      skills.history = dataSnapshot.val().history;
-      skills.insight = dataSnapshot.val().insight;
-      skills.intimidation = dataSnapshot.val().intimidation;
-      skills.investigation = dataSnapshot.val().investigation;
-      skills.medicine = dataSnapshot.val().medicine;
-      skills.nature = dataSnapshot.val().nature;
-      skills.perception = dataSnapshot.val().perception;
-      skills.performance = dataSnapshot.val().performance;
-      skills.persuasion = dataSnapshot.val().persuasion;
-      skills.religion = dataSnapshot.val().religion;
-      skills.sleightOfHand = dataSnapshot.val().sleightOfHand;
-      skills.stealth = dataSnapshot.val().stealth;
-      skills.survival = dataSnapshot.val().survival; 
-
-      player.skills = skills;
-      player.stats = stats;
-      player.savingThrows = savingThrows;     
-      this.props.onUpdate({
-      	loading: false,
-      	player: player,
-      });
-    });
   }
 
   raceChange(event){
@@ -249,61 +212,64 @@ class Authentication extends Component{
     console.log(event.target.name);
   }
   submitInfo(event){
-	var userRef = firebase.database().ref("Players/" + firebase.auth().currentUser.uid);
-	var player = {};
-  	var stats = {};
-  	var savingThrows = {};
-  	var skills = {};
-	player.name = this.state.tempName;
-	player.race= this.state.tempRace;
-	player.level= 1;
-	player.health = 20;
-	player.note = '';
-	player.money = 0;
+  var userRef = firebase.database().ref("Players/" + firebase.auth().currentUser.uid);
+  var player = {};
+    var stats = {};
+    var savingThrows = {};
+    var skills = {};
+  player.name = this.state.tempName;
+  player.race= this.state.tempRace;
+  player.level= 1;
+  player.health = 20;
+  player.note = '';
+  player.money = 0;
 
-	stats.strength = this.state.tempStrength;
-	stats.dexterity = this.state.tempDexterity;
-	stats.constitution = this.state.tempConstitution;
-	stats.intelligence = this.state.tempIntelligence;
-	stats.wisdom = this.state.tempWisdom;
-	stats.charisma = this.state.tempCharisma;
+  stats.strength = this.state.tempStrength;
+  stats.dexterity = this.state.tempDexterity;
+  stats.constitution = this.state.tempConstitution;
+  stats.intelligence = this.state.tempIntelligence;
+  stats.wisdom = this.state.tempWisdom;
+  stats.charisma = this.state.tempCharisma;
 
-	savingThrows.strengthST = this.state.tempStrengthST;
-	savingThrows.dexterityST = this.state.tempDexterityST;
-	savingThrows.constitutionST = this.state.tempConstitutionST;
-	savingThrows.intelligenceST = this.state.tempIntelligenceST;
-	savingThrows.wisdomST = this.state.tempWisdomST;
-	savingThrows.charismaST = this.state.tempCharismaST;
+  savingThrows.strengthST = this.state.tempStrengthST;
+  savingThrows.dexterityST = this.state.tempDexterityST;
+  savingThrows.constitutionST = this.state.tempConstitutionST;
+  savingThrows.intelligenceST = this.state.tempIntelligenceST;
+  savingThrows.wisdomST = this.state.tempWisdomST;
+  savingThrows.charismaST = this.state.tempCharismaST;
 
-	skills.acrobatics = this.state.tempAcrobatics;
-	skills.animalHandling = this.state.tempAnimalHandling;
-	skills.arcana = this.state.tempArcana;
-	skills.athletics = this.state.tempAthletics;
-	skills.deception = this.state.tempDeception;
-	skills.history = this.state.tempHistory;
-	skills.insight = this.state.tempInsight;
-	skills.intimidation = this.state.tempIntimidation;
-	skills.investigation = this.state.tempInvestigation;
-	skills.medicine = this.state.tempMedicine;
-	skills.nature = this.state.tempNature;
-	skills.perception = this.state.tempPerception;
-	skills.performance = this.state.tempPerformance;
-	skills.persuasion = this.state.tempPersuasion;
-	skills.religion = this.state.tempReligion;
-	skills.sleightOfHand = this.state.tempSleightOfHand;
-	skills.stealth = this.state.tempStealth;
-	skills.survival = this.state.tempSurvival;
+  skills.acrobatics = this.state.tempAcrobatics;
+  skills.animalHandling = this.state.tempAnimalHandling;
+  skills.arcana = this.state.tempArcana;
+  skills.athletics = this.state.tempAthletics;
+  skills.deception = this.state.tempDeception;
+  skills.history = this.state.tempHistory;
+  skills.insight = this.state.tempInsight;
+  skills.intimidation = this.state.tempIntimidation;
+  skills.investigation = this.state.tempInvestigation;
+  skills.medicine = this.state.tempMedicine;
+  skills.nature = this.state.tempNature;
+  skills.perception = this.state.tempPerception;
+  skills.performance = this.state.tempPerformance;
+  skills.persuasion = this.state.tempPersuasion;
+  skills.religion = this.state.tempReligion;
+  skills.sleightOfHand = this.state.tempSleightOfHand;
+  skills.stealth = this.state.tempStealth;
+  skills.survival = this.state.tempSurvival;
 
-	player.skills = skills;
-	player.stats = stats;
-	player.savingThrows = savingThrows;
-	userRef.update(player);
+  player.skills = skills;
+  player.stats = stats;
+  player.savingThrows = savingThrows;
+  userRef.update(player);
 
-	this.setState({signUp: false});
-	this.props.onUpdate({
-		loggedIn: true,
-		player: player,
-	});
+  this.setState({
+    signUp: false,
+  });
+  this.props.onUpdate({
+    loggedIn: true,
+    player: player,
+    loading: false
+  });
     event.preventDefault();
   }
 
@@ -345,7 +311,7 @@ class Authentication extends Component{
   render(){
     if(this.state.error){
       return(
-      	  <div className="App-auth">
+          <div className="App-auth">
             <div className="App-auth-buttons">
               <button onClick={this.setSignUp} className="App-auth-signupbutton">Sign Up</button>
               <button onClick={this.setSignIn} className="App-auth-signinbutton">Sign In</button>
@@ -424,3 +390,5 @@ class Authentication extends Component{
     }
   }
 }
+
+export default Authentication;

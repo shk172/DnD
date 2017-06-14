@@ -5,12 +5,20 @@ export default function firebaseSignIn (email, password) {
   return new Promise(function(resolve, reject) {
     firebase.auth().createUserWithEmailAndPassword(email, password)
     .then(function(){
-        console.log("You have successfully signed up: " + firebase.auth().currentUser.uid);
-        var userRef = firebase.database().ref("Players/" + firebase.auth().currentUser.uid);
-        resolve(userRef);
-      })
-    .catch((error) => {
-          reject(error);
-        });
+      firebase.auth().onAuthStateChanged(function(user) {
+        if (user) {
+          console.log(user);
+          console.log("You have successfully signed up: " + firebase.auth().currentUser.uid);
+          var userRef = firebase.database().ref("Players/" + firebase.auth().currentUser.uid);
+          resolve(userRef);
+        }
+        else{
+
+        }
       });
+    })
+    .catch((error) => {
+      reject(error);
+    });
+  });
 }

@@ -1,10 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import './App.css';
-import fb from './services/firebaseConfig';
-import firebase from 'firebase';
 import {Editor, EditorState, ContentState, RichUtils} from 'draft-js';
-import firebaseSignIn from './services/firebaseSignIn';
-import firebaseSignUp from './services/firebaseSignUp';
 
 class Note extends Component{
   constructor(props){
@@ -56,3 +51,5 @@ class Note extends Component{
     );
   }
 }
+
+export default Note;

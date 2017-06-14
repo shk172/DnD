@@ -1,9 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import './App.css';
-import fb from './services/firebaseConfig';
-import firebase from 'firebase';
-import firebaseSignIn from './services/firebaseSignIn';
-import firebaseSignUp from './services/firebaseSignUp';
+import '../App.css';
 
 class Stats extends Component{
   constructor(props){
@@ -11,13 +7,20 @@ class Stats extends Component{
     this.state = {
       showingStats: true
     };
-    this.incrementLevel = this.incrementLevel.bind(this);
-    this.decrementLevel = this.decrementLevel.bind(this);
+    
+    //this.incrementLevel = this.incrementLevel.bind(this);
+    //this.decrementLevel = this.decrementLevel.bind(this);
     this.showStats = this.showStats.bind(this);
     this.showSkills = this.showSkills.bind(this);
     this.showStatsOrSkills = this.showStatsOrSkills.bind(this);
-  }
+    this.player = this.props.player;
 
+    var player = this.player;
+    Object.keys(player).forEach(function(key,index) {
+      var obj = player[key];
+    });
+  }
+/*
   incrementLevel(event){
     if(user.level < 99){
       user.level += 1;
@@ -35,6 +38,7 @@ class Stats extends Component{
       userRef.update(tmp);
     }
   }
+  */
   showStats(){
     this.setState({showingStats: true});
   }
@@ -47,24 +51,24 @@ class Stats extends Component{
       return(
         <div>
           <ul>
-            <li>Name: {user.name}</li>
-            <li>Race: {user.race}</li>
-            <li>Level: {user.level} 
+            <li>Name: {this.player.name}</li>
+            <li>Race: {this.player.race}</li>
+            <li>Level: {this.player.level} 
               <button onClick={this.decrementLevel}> - </button>
               <button onClick={this.incrementLevel}> + </button>
             </li>
-            <li>Health: {user.health}</li>
-            <li>Money: {user.money}</li>
+            <li>Health: {this.player.health}</li>
+            <li>Money: {this.player.money}</li>
           </ul>
           <br/>
           Stats:
           <ul>
-            <li>Strength: {user.strength}</li>
-            <li>Dexterity: {user.dexterity}</li>
-            <li>Constitution: {user.constitution}</li>
-            <li>Intelligence: {user.intelligence}</li>
-            <li>Wisdom: {user.wisdom}</li>
-            <li>Charisma: {user.charisma}</li>
+            <li>Strength: {this.player.stats.strength}</li>
+            <li>Dexterity: {this.player.stats.dexterity}</li>
+            <li>Constitution: {this.player.stats.constitution}</li>
+            <li>Intelligence: {this.player.stats.intelligence}</li>
+            <li>Wisdom: {this.player.stats.wisdom}</li>
+            <li>Charisma: {this.player.stats.charisma}</li>
           </ul>
         </div>
       )      
@@ -74,30 +78,30 @@ class Stats extends Component{
         <div>
           Skills:
           <ul>
-            <li>Acrobatics: {user.acrobatics}</li>
-            <li>Animal Handling: {user.animalHandling}</li>
-            <li>Arcana: {user.arcana}</li>
-            <li>Athletics: {user.athletics}</li>
-            <li>Deception: {user.deception}</li>
-            <li>History: {user.history}</li>
-            <li>Insight: {user.insight}</li>
-            <li>Intimidation: {user.intimidation}</li>
-            <li>Investigation: {user.investigation}</li>
-            <li>Medicine: {user.medicine}</li>
-            <li>Nature: {user.nature}</li>
-            <li>Perception: {user.perception}</li>
-            <li>Performance: {user.performance}</li>
-            <li>Persuasion: {user.persuasion}</li>
-            <li>Religion: {user.religion}</li>
-            <li>Sleight of Hand: {user.sleightOfHand}</li>
-            <li>Stealth: {user.stealth}</li>
-            <li>Survival: {user.survival}</li>
+            <li>Acrobatics: {this.player.skills.acrobatics}</li>
+            <li>Animal Handling: {this.player.skills.animalHandling}</li>
+            <li>Arcana: {this.player.skills.arcana}</li>
+            <li>Athletics: {this.player.skills.athletics}</li>
+            <li>Deception: {this.player.skills.deception}</li>
+            <li>History: {this.player.skills.history}</li>
+            <li>Insight: {this.player.skills.insight}</li>
+            <li>Intimidation: {this.player.skills.intimidation}</li>
+            <li>Investigation: {this.player.skills.investigation}</li>
+            <li>Medicine: {this.player.skills.medicine}</li>
+            <li>Nature: {this.player.skills.nature}</li>
+            <li>Perception: {this.player.skills.perception}</li>
+            <li>Performance: {this.player.skills.performance}</li>
+            <li>Persuasion: {this.player.skills.persuasion}</li>
+            <li>Religion: {this.player.skills.religion}</li>
+            <li>Sleight of Hand: {this.player.skills.sleightOfHand}</li>
+            <li>Stealth: {this.player.skills.stealth}</li>
+            <li>Survival: {this.player.skills.survival}</li>
           </ul>
         </div>
       )
     }
-
   }
+
   render(){
     return (
       <div>
@@ -109,5 +113,6 @@ class Stats extends Component{
       </div>
     );
   }
-
 }
+
+export default Stats;
