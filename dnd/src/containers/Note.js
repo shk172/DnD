@@ -1,16 +1,21 @@
 import React, { Component, PropTypes } from 'react';
+import firebase from 'firebase';
 import {Editor, EditorState, ContentState, RichUtils} from 'draft-js';
 
 class Note extends Component{
   constructor(props){
     super(props);
-    this.onChange = (editorState) => {
-      this.setState({editorState});
-      var tmp ={}
-      tmp.note = this.state.editorState.getCurrentContent().getPlainText();
-      userRef.update(tmp);
-    };
+    this.player = this.props.player;
+    this.playerRef = firebase.database().ref("Players/" + firebase.auth().currentUser.uid);
+    this.onChange = this.onChange.bind(this);
     this.handleKeyCommand = this.handleKeyCommand.bind(this);
+  }
+
+  onChange(editorState) {
+    this.setState({editorState});
+    var tmp ={}
+    tmp.note = this.state.editorState.getCurrentContent().getPlainText();
+    this.playerRef.update(tmp);
   }
 
   handleKeyCommand(command) {
@@ -23,8 +28,8 @@ class Note extends Component{
   }
 
   componentWillMount(){
-    console.log(user.note);
-    if(user.note === ""){
+    console.log(this.player.note);
+    if(this.player.note === ""){
       this.setState({
         editorState: EditorState.createWithContent(
         ContentState.createFromText("Type your notes here"))
@@ -34,7 +39,7 @@ class Note extends Component{
     else{
       this.setState({
         editorState: EditorState.createWithContent(
-        ContentState.createFromText(user.note))
+        ContentState.createFromText(this.player.note))
       }); 
     }
 

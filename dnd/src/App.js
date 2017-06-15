@@ -1,15 +1,26 @@
 import React, { Component, PropTypes } from 'react';
 import './App.css';
-import './services/firebaseConfig';
-import firebase from 'firebase';
-import {Editor, EditorState, ContentState, RichUtils} from 'draft-js';
-import firebaseSignIn from './services/firebaseSignIn';
-import firebaseSignUp from './services/firebaseSignUp';
-
-
 import Authentication from './containers/Authentication';
-//import Note from './containers/Note';
-import Stats from './containers/Stats';
+import MainHub from './containers/MainHub';
+
+/*
+	Layout of the app:
+		App:
+			-Authentication
+			-MainHub
+				=CreateCampaign
+				=CampaignList
+				=UserCampaignList
+					-CampaignHub
+						=Map
+						=CharacterHub
+							-Stats
+							-Note
+							-Inventory
+							-MagicAndAbilities
+						=CreateCharacter
+							-CharacterInfoForm
+*/
 
 class App extends Component {
    constructor(props){
@@ -18,11 +29,12 @@ class App extends Component {
       loading: true,
       loggedIn: false,
       email: "",
-      password: ""
+      password: "",
+      playerRef: {},
     };
     this.onUpdate = this.onUpdate.bind(this);
   } 
-
+  
   onUpdate(data){
     this.setState(data);
   }
@@ -39,7 +51,6 @@ class App extends Component {
       return(
         <p>Loading...</p>
         )
-      
     }
     if(this.state.error){
     	return(
@@ -48,31 +59,8 @@ class App extends Component {
     }
     else{
       return(
-        <div className="App">
-          <div className="App-header">
-            <img src="https://firebasestorage.googleapis.com/v0/b/dungeonsanddragons-f7213.appspot.com/o/Images%2Flogo.png?alt=media&token=cdbed6e2-0a19-4d37-8144-ba8c61e2d5ec" className="App-logo" alt="logo" />
-          </div>  
-
-          <div className="App-modules">
-            <div className="App-stats">
-              <Stats player={this.state.player} />
-            </div>
-
-            <div className="App-inventoryandmagic">
-              <div className="App-inventory">
-                <p>Inventory:</p>
-                <p>Not yet implemented</p>
-              </div>
-              <div className="App-magicandskill">
-                <p>Magics/Skill</p>
-                <p>Not yet implemented</p>
-              </div>
-            </div>
-
-            <div className="App-note">
-              {/*<Note player={this.state.player}/>*/}
-            </div> 
-          </div>
+        <div>
+        	<MainHub playerRef={this.state.playerRef}/>
         </div> 
       );      
     }

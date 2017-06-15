@@ -1,3 +1,7 @@
+/*
+** TODO: Ability to increment/decrement levels (should this be up to the DM or the player? -- DM gets to choose)
+*/
+
 import React, { Component, PropTypes } from 'react';
 import '../App.css';
 
@@ -14,11 +18,6 @@ class Stats extends Component{
     this.showSkills = this.showSkills.bind(this);
     this.showStatsOrSkills = this.showStatsOrSkills.bind(this);
     this.player = this.props.player;
-
-    var player = this.player;
-    Object.keys(player).forEach(function(key,index) {
-      var obj = player[key];
-    });
   }
 /*
   incrementLevel(event){
