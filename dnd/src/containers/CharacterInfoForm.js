@@ -4,7 +4,7 @@ class CharacterInfoForm extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			tempStrength: 0,
+		tempStrength: 0,
 	    tempDexterity: 0,
 	    tempConstitution: 0,
 	    tempIntelligence: 0,
@@ -215,7 +215,19 @@ class CharacterInfoForm extends Component{
 	        <label>
 	          <div>
 	            <p>Name: <input type="text" value={this.state.tempName} onChange={this.nameChange}/></p>
-	            <p>Race: <input type="text" value={this.state.tempRace} onChange={this.raceChange}/></p>
+	            <p>Race: 
+	            <select value={this.state.tempRace} onChange={this.raceChange}>
+	            	<option value="Dragonborn">Dragonborn</option>
+	            	<option value="Dwarf">Dwarf</option>
+	            	<option value="Elf">Elf</option>
+	            	<option value="Gnome">Gnome</option>
+	            	<option value="Half-Elf">Half-Elf</option>
+	            	<option value="Half-Orc">Half-Orc</option>
+	            	<option value="Halfling">Halfling</option>
+	            	<option value="Human">Human</option>
+	            	<option value="Tiefling">Tiefling</option>
+	            </select>
+	            </p>
 	            
 	            <p>Stats</p>
 	            <p>Strength: <input type="number" name="Strength" value={this.state.tempStrength} onChange={this.statChange}/></p>

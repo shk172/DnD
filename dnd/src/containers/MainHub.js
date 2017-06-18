@@ -11,32 +11,60 @@ import React, { Component } from 'react';
 import CreateCampaign from './CreateCampaign';
 import CampaignList from './CampaignList';
 import UserCampaignList from './UserCampaignList';
+import importCampaigns from '../services/importCampaigns';
+import importUserCampaigns from '../services/importUserCampaigns';
+import firebase from 'firebase';
 
 class MainHub extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			campaigns: [],
-			userCampagins: [],
-		}
+			loading: true,
+			userID: firebase.auth().currentUser.uid,
+		};
+		var hub = this;
+		importUserCampaigns(this.state.userID).then(
+			(campaigns) =>{
+				hub.setState({
+					userCampaigns: campaigns
+				})
+			}
+		);
+		
+		importCampaigns().then(
+			(campaigns) =>{
+				hub.setState({
+					campaigns: campaigns,
+					loading: false
+				})
+			},
+			(error) =>{
+				console.log(error);
+			}
+		);
+
+		
+		 
 	}
-/*
-	**function to import all campaigns in the database
-	**Each campaign will have its own campaign hubs
-	importCampaigns(){
+
+	componentWillMount(){
 
 	}
-*/
-
-
 	render(){
-		return(
-			<div>
-				<CreateCampaign/>
-				<CampaignList campaigns={this.state.campaigns}/>
-				<UserCampaignList campaigns={this.state.userCampaigns}/>
-			</div>
-		)
+		if(this.state.loading){
+			return(
+				<div>Loading...</div>
+			)
+		}
+		else{
+			return(
+				<div>
+					<CreateCampaign userID={this.state.userID}/>
+					<CampaignList campaigns={this.state.campaigns}/>
+					<UserCampaignList campaigns={this.state.userCampaigns}/>
+				</div>
+			)
+		}
 	}
 }
 export default MainHub;

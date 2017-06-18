@@ -6,12 +6,20 @@ class UserCampaignList extends Component{
 		this.state={
 			campaigns: this.props.campaigns,
 		}
+		console.log(this.state.campaigns);
 	}
 
 	render(){
+		const campaignList = this.state.campaigns.map((campaign) =>
+			<li>
+				<button>{campaign.campaignTitle}</button>
+			</li>);
+
 		return(
 			<div>
-				Hi there will be a list of user's campaigns here.
+				<ul>
+					{campaignList}
+				</ul>
 			</div>
 		)
 	}
