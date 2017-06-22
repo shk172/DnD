@@ -22,6 +22,9 @@ class MainHub extends Component{
 			loading: true,
 			userID: firebase.auth().currentUser.uid,
 		};
+	}
+
+	componentWillMount(){
 		var hub = this;
 		importUserCampaigns(this.state.userID).then(
 			(campaigns) =>{
@@ -42,13 +45,6 @@ class MainHub extends Component{
 				console.log(error);
 			}
 		);
-
-		
-		 
-	}
-
-	componentWillMount(){
-
 	}
 	render(){
 		if(this.state.loading){
@@ -61,7 +57,7 @@ class MainHub extends Component{
 				<div>
 					<CreateCampaign userID={this.state.userID}/>
 					<CampaignList campaigns={this.state.campaigns}/>
-					<UserCampaignList campaigns={this.state.userCampaigns}/>
+					<UserCampaignList campaigns={this.state.userCampaigns} userID={this.state.userID}/>
 				</div>
 			)
 		}

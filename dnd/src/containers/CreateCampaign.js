@@ -49,6 +49,9 @@ class CreateCampaign extends Component{
 							<input type="text" name="campaignName" value={this.state.campaignName} onChange={this.handleChange}/>
 						</label>
 						<input type="submit" value="Submit"/>
+						<button
+						onClick={()=>{this.setState({create: false})}}>
+						Cancel</button>
 					</form>
 				</div>
 			)

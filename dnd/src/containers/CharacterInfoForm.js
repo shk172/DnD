@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 
+/*
+Consult React docs' forms section again before working on this
+*/
+
 class CharacterInfoForm extends Component{
 	constructor(props){
 		super(props);

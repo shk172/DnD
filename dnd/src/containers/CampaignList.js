@@ -1,3 +1,5 @@
+//Look at the Lists and Keys docs
+
 import React, { Component } from 'react';
 
 class CampaignList extends Component{
@@ -17,6 +19,7 @@ class CampaignList extends Component{
 
 		return(
 			<div>
+				Campaigns
 				<ul>
 					{campaignList}
 				</ul>
