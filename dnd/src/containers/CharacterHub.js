@@ -7,6 +7,7 @@ class CharacterHub extends Component {
    constructor(props){
     super(props);
     this.state={
+      character: this.props.character,
     };
     this.onUpdate = this.onUpdate.bind(this);
   } 
@@ -35,7 +36,7 @@ class CharacterHub extends Component {
 
           <div className="App-modules">
             <div className="App-stats">
-              <Stats player={this.state.player} />
+              <Stats player={this.state.character} />
             </div>
 
             <div className="App-inventoryandmagic">
@@ -50,7 +51,7 @@ class CharacterHub extends Component {
             </div>
 
             <div className="App-note">
-              <Note player={this.state.player}/>
+              <Note player={this.state.character}/>
             </div> 
           </div>
         </div> 

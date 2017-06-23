@@ -1,4 +1,4 @@
-//Look at the Lists and Keys docs
+//Look at the Lists and Keys docs to fix the error
 
 import React, { Component } from 'react';
 
@@ -8,13 +8,16 @@ class CampaignList extends Component{
 		this.state={
 			campaigns: this.props.campaigns,
 		}
-		console.log(this.state.campaigns);
+	}
+
+	chooseCampaign(campaignID){
+		this.props.chooseCampaign(campaignID);
 	}
 
 	render(){
 		const campaignList = this.state.campaigns.map((campaign) =>
 			<li>
-				<button>{campaign.campaignTitle}</button>
+				<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>{campaign.campaignTitle}</button>
 			</li>);
 
 		return(

@@ -15,13 +15,18 @@ import importCampaigns from '../services/importCampaigns';
 import importUserCampaigns from '../services/importUserCampaigns';
 import firebase from 'firebase';
 
+import CampaignHub from './CampaignHub';
+
 class MainHub extends Component{
 	constructor(props){
 		super(props);
 		this.state={
 			loading: true,
+			inCampaign: false,
 			userID: firebase.auth().currentUser.uid,
+			campaignOpen: false,
 		};
+		this.chooseCampaign = this.chooseCampaign.bind(this);
 	}
 
 	componentWillMount(){
@@ -46,18 +51,31 @@ class MainHub extends Component{
 			}
 		);
 	}
+
+	chooseCampaign(campaignID){
+		this.setState({
+			campaignID: campaignID,
+			campaignOpen: true,
+		})
+	}
+
 	render(){
 		if(this.state.loading){
 			return(
 				<div>Loading...</div>
 			)
 		}
+		if(this.state.campaignOpen){
+			return(
+				<CampaignHub userID={this.state.userID} campaignID={this.state.campaignID}/>
+			)
+		}
 		else{
 			return(
 				<div>
 					<CreateCampaign userID={this.state.userID}/>
-					<CampaignList campaigns={this.state.campaigns}/>
-					<UserCampaignList campaigns={this.state.userCampaigns} userID={this.state.userID}/>
+					<CampaignList campaigns={this.state.campaigns} chooseCampaign={this.chooseCampaign}/>
+					<UserCampaignList campaigns={this.state.userCampaigns} userID={this.state.userID} chooseCampaign={this.chooseCampaign}/>
 				</div>
 			)
 		}

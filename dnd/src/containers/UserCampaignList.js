@@ -13,24 +13,25 @@ class UserCampaignList extends Component{
 
 	componentWillMount(){
 		dungeonMasterIn(this.state.userID).then((campaigns)=>{
-			console.log(campaigns);
 			var counter = 0;
 			for(var campaign in campaigns){
 				this.state.campaigns.push(campaigns[campaign]);
 				counter++;
-				console.log(counter + " " + campaigns.length);
 			}
 			if(counter >= campaigns.length){
-				console.log(this.state.campaigns);
 				this.setState({loading: false})
 			}
 		});
 	}
 
+	chooseCampaign(campaignID){
+		this.props.chooseCampaign(campaignID);
+	}
+
 	render(){
 		const campaignList = this.state.campaigns.map((campaign) =>
 			<li>
-				<button>{campaign.campaignTitle}</button>
+				<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>{campaign.campaignTitle} {campaign.campaignID}</button>
 			</li>);
 		if(!this.state.loading){
 			return(
