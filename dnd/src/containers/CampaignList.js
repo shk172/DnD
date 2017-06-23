@@ -11,13 +11,13 @@ class CampaignList extends Component{
 	}
 
 	chooseCampaign(campaignID){
-		this.props.chooseCampaign(campaignID);
+		this.props.enterNewCampaign(campaignID);
 	}
 
 	render(){
 		const campaignList = this.state.campaigns.map((campaign) =>
 			<li>
-				<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>{campaign.campaignTitle}</button>
+				<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>{campaign.campaignTitle} {campaign.campaignID}</button>
 			</li>);
 
 		return(

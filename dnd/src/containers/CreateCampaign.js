@@ -34,7 +34,6 @@ class CreateCampaign extends Component{
 					campaign.campaignID = campaignID;
 					campaign.dungeonMasters = [this.state.userID];
 					campaignRef.update(campaign);
-					console.log(campaign);
 				}
 		});
 		event.preventDefault();

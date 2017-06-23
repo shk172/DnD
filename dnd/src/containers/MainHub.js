@@ -8,14 +8,16 @@
 */
 
 import React, { Component } from 'react';
-import CreateCampaign from './CreateCampaign';
-import CampaignList from './CampaignList';
+
 import UserCampaignList from './UserCampaignList';
 import importCampaigns from '../services/importCampaigns';
 import importUserCampaigns from '../services/importUserCampaigns';
 import firebase from 'firebase';
 
+import CreateCampaign from './CreateCampaign';
+import CampaignList from './CampaignList';
 import CampaignHub from './CampaignHub';
+import CharacterInfoForm from './CharacterInfoForm';
 
 class MainHub extends Component{
 	constructor(props){
@@ -24,9 +26,12 @@ class MainHub extends Component{
 			loading: true,
 			inCampaign: false,
 			userID: firebase.auth().currentUser.uid,
+			characterCreate: false,
 			campaignOpen: false,
 		};
-		this.chooseCampaign = this.chooseCampaign.bind(this);
+		this.enterNewCampaign = this.enterNewCampaign.bind(this);
+		this.enterExistingCampaign = this.enterExistingCampaign.bind(this);
+		this.onUpdate = this.onUpdate.bind(this);
 	}
 
 	componentWillMount(){
@@ -52,12 +57,23 @@ class MainHub extends Component{
 		);
 	}
 
-	chooseCampaign(campaignID){
+	enterNewCampaign(campaignID){
+		this.setState({
+			campaignID: campaignID,
+			characterCreate: true,
+		});
+	}
+
+	enterExistingCampaign(campaignID){
 		this.setState({
 			campaignID: campaignID,
 			campaignOpen: true,
-		})
+		});
 	}
+
+	onUpdate(data){
+    this.setState(data);
+  }
 
 	render(){
 		if(this.state.loading){
@@ -65,17 +81,33 @@ class MainHub extends Component{
 				<div>Loading...</div>
 			)
 		}
+		if(this.state.characterCreate){
+			return(
+				<CharacterInfoForm 
+					userID={this.state.userID} 
+					campaignID={this.state.campaignID}
+					onUpdate={this.onUpdate}/>
+			)
+		}
+
 		if(this.state.campaignOpen){
 			return(
-				<CampaignHub userID={this.state.userID} campaignID={this.state.campaignID}/>
+				<CampaignHub 
+					userID={this.state.userID} 
+					campaignID={this.state.campaignID}/>
 			)
 		}
 		else{
 			return(
 				<div>
 					<CreateCampaign userID={this.state.userID}/>
-					<CampaignList campaigns={this.state.campaigns} chooseCampaign={this.chooseCampaign}/>
-					<UserCampaignList campaigns={this.state.userCampaigns} userID={this.state.userID} chooseCampaign={this.chooseCampaign}/>
+					<CampaignList 
+						campaigns={this.state.campaigns} 
+						enterNewCampaign={this.enterNewCampaign}/>
+					<UserCampaignList 
+						campaigns={this.state.userCampaigns} 
+						userID={this.state.userID} 
+						enterExistingCampaign={this.enterExistingCampaign}/>
 				</div>
 			)
 		}

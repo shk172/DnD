@@ -25,7 +25,7 @@ class UserCampaignList extends Component{
 	}
 
 	chooseCampaign(campaignID){
-		this.props.chooseCampaign(campaignID);
+		this.props.enterExistingCampaign(campaignID);
 	}
 
 	render(){

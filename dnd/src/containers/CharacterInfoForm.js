@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import firebase from 'firebase';
 /*
 Consult React docs' forms section again before working on this
 */
@@ -8,7 +8,10 @@ class CharacterInfoForm extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
-		tempStrength: 0,
+			tempName: "",
+	  	tempRace: "Dragonborn",
+
+			tempStrength: 0,
 	    tempDexterity: 0,
 	    tempConstitution: 0,
 	    tempIntelligence: 0,
@@ -39,7 +42,10 @@ class CharacterInfoForm extends Component{
 	    tempReligion: 0,
 	    tempSleightOfHand: 0,
 	    tempStealth: 0,
-	    tempSurvival: 0
+	    tempSurvival: 0,
+
+	    userID: this.props.userID,
+	    campaignID: this.props.campaignID,
 	  };
 	  
     this.nameChange = this.nameChange.bind(this);
@@ -49,16 +55,17 @@ class CharacterInfoForm extends Component{
 	}
 
 	submitInfo(event){
-	  var player = {};
+		console.log(this.state.tempRace);
+	  var character = {};
 	  var stats = {};
 	  var savingThrows = {};
 	  var skills = {};
-	  player.name = this.state.tempName;
-	  player.race= this.state.tempRace;
-	  player.level= 1;
-	  player.health = 20;
-	  player.note = '';
-	  player.money = 0;
+	  character.name = this.state.tempName;
+	  character.race = this.state.tempRace;
+	  character.level= 1;
+	  character.health = 20;
+	  character.note = '';
+	  character.money = 0;
 
 	  stats.strength = this.state.tempStrength;
 	  stats.dexterity = this.state.tempDexterity;
@@ -93,18 +100,28 @@ class CharacterInfoForm extends Component{
 	  skills.stealth = this.state.tempStealth;
 	  skills.survival = this.state.tempSurvival;
 
-	  player.skills = skills;
-	  player.stats = stats;
-	  player.savingThrows = savingThrows;
+	  character.skills = skills;
+	  character.stats = stats;
+	  character.savingThrows = savingThrows;
 
-	  this.props.onSubmit({
-	    player: player
-	  });
+	  firebase.database().ref("Players/" + this.state.userID + "/Campaigns/" + this.state.campaignID).set(character);
+
+	  var player = {};
+	  player[this.state.userID] = this.state.userID;
+	  firebase.database().ref("Campaigns/" + this.state.campaignID  + "/Players/").set(player);
+
+	  this.props.onUpdate({
+	  	characterCreate: false,
+	  	campaignOpen: true,
+	  })
+
     event.preventDefault();
   }
 
   raceChange(event){
-    this.setState({tempRace: event.target.value});
+    this.setState({
+    	tempRace: event.target.value
+    });
   }
 
   nameChange(event){
@@ -209,7 +226,6 @@ class CharacterInfoForm extends Component{
         this.setState({tempSurvival: event.target.value});
         break;
     }
-    console.log(event.target.name);
   }
 
 	render(){
