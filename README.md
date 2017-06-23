@@ -33,5 +33,5 @@ Make sure to have Node.js downloaded: (https://nodejs.org/en/download/). Afterwa
 ### Testing
 Run `npm start` to run the app for testing. It will reload each time a Javascript file is saved so you can see it almost real-time.
 
-#### Deployment
+### Deployment
 First, build the app with `npm run build`, and then run 'firebase deploy' to deploy it to Firebase hosting.
