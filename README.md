@@ -15,6 +15,8 @@ The purpose of this app is to consolidate all Dungeons and Dragons campaigns int
 - Ability to upload a map
 - Ability to upload a character portrait
 - Allowing Dungeon Masters to edit a character's stats and abilities
+- Real-time Update
+- Combat
 
 
 ### Installation
