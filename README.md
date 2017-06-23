@@ -24,7 +24,7 @@ It is developed with ReactJS, and will be adding Redux once the scope of the pro
 
 ### Current Todo List (ordered by priority)
 1. Character creation for each campaign
-2. Bug fixes (Look at issues)
+2. Address Issues/Fix any bugs
 3. Improve UI
 
 ### Installation
