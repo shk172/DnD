@@ -29,11 +29,12 @@ class UserCampaignList extends Component{
 	}
 
 	render(){
-		const campaignList = this.state.campaigns.map((campaign) =>
+		if(!this.state.loading){
+			const campaignList = this.state.campaigns.map((campaign) =>
 			<li>
 				<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>{campaign.campaignTitle} {campaign.campaignID}</button>
 			</li>);
-		if(!this.state.loading){
+			
 			return(
 				<div>
 					Your Campaigns

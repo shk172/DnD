@@ -103,7 +103,7 @@ class CharacterInfoForm extends Component{
 	  character.skills = skills;
 	  character.stats = stats;
 	  character.savingThrows = savingThrows;
-
+	  character.campaignID = this.state.campaignID;
 	  firebase.database().ref("Players/" + this.state.userID + "/Campaigns/" + this.state.campaignID).set(character);
 
 	  var player = {};

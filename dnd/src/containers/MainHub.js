@@ -23,7 +23,8 @@ class MainHub extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			loading: true,
+			campaignsLoading: true,
+			userCampaignsLoading: true,
 			inCampaign: false,
 			userID: firebase.auth().currentUser.uid,
 			characterCreate: false,
@@ -38,8 +39,10 @@ class MainHub extends Component{
 		var hub = this;
 		importUserCampaigns(this.state.userID).then(
 			(campaigns) =>{
+				console.log(campaigns);
 				hub.setState({
-					userCampaigns: campaigns
+					userCampaigns: campaigns,
+					userCampaignsLoading: false,
 				})
 			}
 		);
@@ -48,7 +51,7 @@ class MainHub extends Component{
 			(campaigns) =>{
 				hub.setState({
 					campaigns: campaigns,
-					loading: false
+					campaignsLoading: false,
 				})
 			},
 			(error) =>{
@@ -76,7 +79,12 @@ class MainHub extends Component{
   }
 
 	render(){
-		if(this.state.loading){
+		if(this.state.campaignsLoading){
+			return(
+				<div>Loading...</div>
+			)
+		}
+		if(this.state.userCampaignsLoading){
 			return(
 				<div>Loading...</div>
 			)
@@ -98,6 +106,7 @@ class MainHub extends Component{
 			)
 		}
 		else{
+
 			return(
 				<div>
 					<CreateCampaign userID={this.state.userID}/>
