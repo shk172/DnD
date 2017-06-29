@@ -1,11 +1,12 @@
 import * as firebase from 'firebase';
 
 const config = {
-    apiKey: "AIzaSyBeO7P_e3VnIQdM4ZqPvqX_UxqoJQx_TTE",
-    authDomain: "dungeonsanddragons-f7213.firebaseapp.com",
-    databaseURL: "https://dungeonsanddragons-f7213.firebaseio.com",
-    storageBucket: "dungeonsanddragons-f7213.appspot.com",
-    messagingSenderId: "982520002784"
+    apiKey: "AIzaSyBOZa_hzFknyaCeZ9WQapUv3sQJ1mDi75U",
+    authDomain: "dungeonsanddragons-113a3.firebaseapp.com",
+    databaseURL: "https://dungeonsanddragons-113a3.firebaseio.com",
+    projectId: "dungeonsanddragons-113a3",
+    storageBucket: "dungeonsanddragons-113a3.appspot.com",
+    messagingSenderId: "583177564096"
   };
 
 const fb = firebase  

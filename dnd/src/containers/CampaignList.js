@@ -15,10 +15,19 @@ class CampaignList extends Component{
 	}
 
 	render(){
-		const campaignList = this.state.campaigns.map((campaign) =>
-			<li>
-				<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>{campaign.campaignTitle} {campaign.campaignID}</button>
-			</li>);
+		var campaignList = {};
+		if(this.state.campaigns.length === 0){
+			campaignList = (<p>There's currently no campaign</p>);
+		}
+		else{
+			campaignList = this.state.campaigns.map((campaign) => {
+				console.log(campaign);
+				return(
+				<li>
+					<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>{campaign.campaignTitle} {campaign.campaignID}</button>
+				</li>);
+			});
+		}
 
 		return(
 			<div>

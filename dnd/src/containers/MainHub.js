@@ -38,21 +38,44 @@ class MainHub extends Component{
 	componentWillMount(){
 		var hub = this;
 		importUserCampaigns(this.state.userID).then(
-			(campaigns) =>{
-				console.log(campaigns);
+			(userCampaigns) =>{
 				hub.setState({
-					userCampaigns: campaigns,
+					userCampaigns: userCampaigns,
 					userCampaignsLoading: false,
 				})
-			}
-		);
-		
-		importCampaigns().then(
-			(campaigns) =>{
-				hub.setState({
-					campaigns: campaigns,
-					campaignsLoading: false,
-				})
+				importCampaigns().then(
+					(campaigns) =>{
+						var redundancyTable = {};
+
+						var tempCampaigns = [];
+						var campaignCounter = 0;
+						var userCampaignCounter = 0;
+
+						for(var userCampaign in userCampaigns){
+							redundancyTable[userCampaign.campaignID] = userCampaign;
+							userCampaignCounter++;
+						}
+						
+						if(userCampaignCounter === userCampaigns.length){
+							for(var campaign in campaigns){
+								if(redundancyTable[campaign.campaignID] == null){
+									tempCampaigns.push(campaign);
+								}
+								campaignCounter++;
+							}
+						}
+						
+						if(campaignCounter === campaigns.length){
+							hub.setState({
+								campaigns: tempCampaigns,
+								campaignsLoading: false,
+							});
+						}
+					},
+					(error) =>{
+						console.log(error);
+					}
+				);
 			},
 			(error) =>{
 				console.log(error);

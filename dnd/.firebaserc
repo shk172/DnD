@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "dungeonsanddragons-f7213"
+    "default": "dungeonsanddragons-113a3",
+    "dungeonsanddragons": "dungeonsanddragons-113a3"
   }
 }

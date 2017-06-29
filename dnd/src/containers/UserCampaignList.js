@@ -6,22 +6,8 @@ class UserCampaignList extends Component{
 		super(props);
 		this.state={
 			campaigns: this.props.campaigns,
-			userID: this.props.userID,
-			loading: true,
+			userID: this.props.userID
 		}
-	}
-
-	componentWillMount(){
-		dungeonMasterIn(this.state.userID).then((campaigns)=>{
-			var counter = 0;
-			for(var campaign in campaigns){
-				this.state.campaigns.push(campaigns[campaign]);
-				counter++;
-			}
-			if(counter >= campaigns.length){
-				this.setState({loading: false})
-			}
-		});
 	}
 
 	chooseCampaign(campaignID){
@@ -29,26 +15,35 @@ class UserCampaignList extends Component{
 	}
 
 	render(){
-		if(!this.state.loading){
-			const campaignList = this.state.campaigns.map((campaign) =>
-			<li>
-				<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>{campaign.campaignTitle} {campaign.campaignID}</button>
-			</li>);
-			
-			return(
-				<div>
-					Your Campaigns
-					<ul>
-						{campaignList}
-					</ul>
-				</div>
-			)			
+		var campaignList = {};
+		if(this.state.campaigns.length === 0){
+			campaignList = (<p>There's currently no campaign</p>);
 		}
 		else{
-			return(
-				<div>Loading...</div>
-			)
+			campaignList = this.state.campaigns.map((campaign) => {
+				if(dungeonMasterIn(this.state.userID, campaign.campaignID)){
+					return(
+					<li>
+						<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>{campaign.campaignTitle} {campaign.campaignID} DM</button>
+					</li>);
+				}
+				else{
+					return(
+					<li>
+						<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>{campaign.campaignTitle} {campaign.campaignID}</button>
+					</li>);
+				}
+			});
 		}
+
+		return(
+			<div>
+				Your Campaigns
+				<ul>
+					{campaignList}
+				</ul>
+			</div>
+		)
 	}
 }
 export default UserCampaignList;

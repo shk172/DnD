@@ -83,7 +83,6 @@ class App extends Component {
     }
 
     else{
-      console.log(this.state);
       return(
         <p>Loading...</p>
         )

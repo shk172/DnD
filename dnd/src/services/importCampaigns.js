@@ -9,8 +9,12 @@ export default function importCampaigns () {
 				Object.keys(data.val()).forEach(function(key, index){
 	      			campaigns.push(data.val()[key]);
 	    		});
+	    		resolve(campaigns);
 			}
-			resolve(campaigns);
+			else{
+				resolve(campaigns);
+			}
+			
 		})
 	});
 }

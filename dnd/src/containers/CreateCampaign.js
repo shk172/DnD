@@ -23,6 +23,7 @@ class CreateCampaign extends Component{
 	submitCampaign(event){
 		var campaignID = hashCode(this.state.userID + this.state.campaignName)
 		var campaignRef = firebase.database().ref("Campaigns/" + campaignID);
+		var playerCampaignRef = firebase.database().ref("Players/" + this.state.userID + "/Campaigns/" + campaignID);
 		getCampaign(campaignID).then((result) => {
 				var exists = (result !== null);
 				if(exists){
@@ -34,6 +35,10 @@ class CreateCampaign extends Component{
 					campaign.campaignID = campaignID;
 					campaign.dungeonMasters = [this.state.userID];
 					campaignRef.update(campaign);
+					playerCampaignRef.update({
+						dungeonMasterIn: true,
+					})
+					this.setState({create: false});
 				}
 		});
 		event.preventDefault();
