@@ -8,7 +8,8 @@ class CreateCampaign extends Component{
 		super(props);
 		this.state={
 			campaignName: "",
-			userID: this.props.userID
+			userID: this.props.userID,
+			creatingCampaign: this.props.creatingCampaign,
 		};
 		this.handleChange = this.handleChange.bind(this);
 		this.submitCampaign = this.submitCampaign.bind(this);
@@ -37,6 +38,9 @@ class CreateCampaign extends Component{
 					campaignRef.update(campaign);
 					playerCampaignRef.update({
 						dungeonMasterIn: true,
+					})
+					this.props.onUpdate({
+						createdCampaign: true,
 					})
 					this.setState({create: false});
 				}

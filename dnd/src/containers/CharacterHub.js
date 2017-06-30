@@ -36,7 +36,7 @@ class CharacterHub extends Component {
 
           <div className="App-modules">
             <div className="App-stats">
-              <Stats player={this.state.character} />
+              <Stats character={this.state.character} />
             </div>
 
             <div className="App-inventoryandmagic">

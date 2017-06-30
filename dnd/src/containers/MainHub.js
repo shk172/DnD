@@ -9,29 +9,30 @@
 
 import React, { Component } from 'react';
 
-import UserCampaignList from './UserCampaignList';
 import importCampaigns from '../services/importCampaigns';
 import importUserCampaigns from '../services/importUserCampaigns';
 import firebase from 'firebase';
 
-import CreateCampaign from './CreateCampaign';
-import CampaignList from './CampaignList';
 import CampaignHub from './CampaignHub';
-import CharacterInfoForm from './CharacterInfoForm';
+import CampaignList from './CampaignList';
+import CreateCampaign from './CreateCampaign';
+import DungeonMasterHub from './DungeonMasterHub';
+import UserCampaignList from './UserCampaignList';
 
 class MainHub extends Component{
 	constructor(props){
 		super(props);
 		this.state={
+			createdCampaign: false,
 			campaignsLoading: true,
 			userCampaignsLoading: true,
 			inCampaign: false,
 			userID: firebase.auth().currentUser.uid,
-			characterCreate: false,
 			campaignOpen: false,
 		};
-		this.enterNewCampaign = this.enterNewCampaign.bind(this);
+
 		this.enterExistingCampaign = this.enterExistingCampaign.bind(this);
+		this.enterExistingCampaignAsDM = this.enterExistingCampaignAsDM.bind(this);
 		this.onUpdate = this.onUpdate.bind(this);
 	}
 
@@ -83,17 +84,17 @@ class MainHub extends Component{
 		);
 	}
 
-	enterNewCampaign(campaignID){
-		this.setState({
-			campaignID: campaignID,
-			characterCreate: true,
-		});
-	}
-
 	enterExistingCampaign(campaignID){
 		this.setState({
 			campaignID: campaignID,
 			campaignOpen: true,
+		});
+	}
+
+	enterExistingCampaignAsDM(campaignID){
+		this.setState({
+			campaignID: campaignID,
+			campaignDMOpen: true,
 		});
 	}
 
@@ -112,14 +113,6 @@ class MainHub extends Component{
 				<div>Loading...</div>
 			)
 		}
-		if(this.state.characterCreate){
-			return(
-				<CharacterInfoForm 
-					userID={this.state.userID} 
-					campaignID={this.state.campaignID}
-					onUpdate={this.onUpdate}/>
-			)
-		}
 
 		if(this.state.campaignOpen){
 			return(
@@ -128,18 +121,28 @@ class MainHub extends Component{
 					campaignID={this.state.campaignID}/>
 			)
 		}
-		else{
 
+		if(this.state.campaignDMOpen){
+			return(
+				<DungeonMasterHub/>
+				)
+		}
+
+		else{
 			return(
 				<div>
-					<CreateCampaign userID={this.state.userID}/>
+					<CreateCampaign 
+						userID={this.state.userID}
+						creatingCampaign={this.state.createdCampaign}
+						onUpdate={this.onUpdate}/>
 					<CampaignList 
 						campaigns={this.state.campaigns} 
 						enterNewCampaign={this.enterNewCampaign}/>
 					<UserCampaignList 
 						campaigns={this.state.userCampaigns} 
 						userID={this.state.userID} 
-						enterExistingCampaign={this.enterExistingCampaign}/>
+						enterExistingCampaign={this.enterExistingCampaign}
+						enterExistingCampaignAsDM={this.enterExistingCampaignAsDM}/>
 				</div>
 			)
 		}

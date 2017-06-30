@@ -55,7 +55,6 @@ class CharacterInfoForm extends Component{
 	}
 
 	submitInfo(event){
-		console.log(this.state.tempRace);
 	  var character = {};
 	  var stats = {};
 	  var savingThrows = {};
@@ -112,7 +111,7 @@ class CharacterInfoForm extends Component{
 
 	  this.props.onUpdate({
 	  	characterCreate: false,
-	  	campaignOpen: true,
+	  	character: character,
 	  })
 
     event.preventDefault();

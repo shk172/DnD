@@ -1,15 +1,18 @@
 import firebase from 'firebase';
 
-export default function importPlayerCharacter (campaignID) {
+export default function importPlayerCharacter (userID, campaignID) {
 	return new Promise(function(resolve, reject) {
-		var campaignRef = firebase.database().ref("Players/" + firebase.auth().currentUser.uid + "/Campaigns/" + campaignID);
+		var campaignRef = firebase.database().ref("Players/" + userID + "/Campaigns/" + campaignID);
   	var player = {};
   	var stats = {};
   	var savingThrows = {};
   	var skills = {};
 
     campaignRef.on("value", (data) => {
-			if(data.val() !== null){
+			if(Object.keys(data.val()).length <= 1 || data.val() === null){
+				resolve(player);
+			}
+			else{
 	      player.name = data.val().name;
 	      player.race = data.val().race;
 	      player.level = data.val().level;

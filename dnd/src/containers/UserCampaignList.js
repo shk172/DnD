@@ -14,23 +14,30 @@ class UserCampaignList extends Component{
 		this.props.enterExistingCampaign(campaignID);
 	}
 
+	chooseCampaignAsDM(campaignID){
+		this.props.enterExistingCampaignAsDM(campaignID);
+	}
 	render(){
 		var campaignList = {};
 		if(this.state.campaigns.length === 0){
 			campaignList = (<p>There's currently no campaign</p>);
 		}
+
 		else{
 			campaignList = this.state.campaigns.map((campaign) => {
 				if(dungeonMasterIn(this.state.userID, campaign.campaignID)){
 					return(
 					<li>
-						<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>{campaign.campaignTitle} {campaign.campaignID} DM</button>
+						<p>{campaign.campaignTitle} DM</p>
+						<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>Enter</button>
+						<button onClick={this.chooseCampaignAsDM.bind(this, campaign.campaignID)}>Enter as DM</button>
 					</li>);
 				}
 				else{
 					return(
 					<li>
-						<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>{campaign.campaignTitle} {campaign.campaignID}</button>
+						<p>{campaign.campaignTitle}</p>
+						<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>Enter</button>
 					</li>);
 				}
 			});

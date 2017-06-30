@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import CharacterHub from './CharacterHub';
+import CharacterInfoForm from './CharacterInfoForm';
 import importPlayerCharacter from '../services/importPlayerCharacter';
 
 class CampaignHub extends Component{
@@ -9,16 +10,27 @@ class CampaignHub extends Component{
 			loading: true,
 			userID: this.props.userID,
 			campaignID: this.props.campaignID,
+			characterCreate: false,
 		};
+		this.onUpdate = this.onUpdate.bind(this);
 	}
 
 	componentWillMount(){
-		importPlayerCharacter(this.state.campaignID).then(
+		importPlayerCharacter(this.state.userID, this.state.campaignID).then(
 			(character)=>{
-				this.setState({
-					character: character,
-					loading: false,
-				})
+				if(Object.keys(character).length > 1){
+					this.setState({
+						character: character,
+						loading: false,
+					})
+				}
+				
+				else{
+					this.setState({
+						characterCreate: true,
+						loading: false,
+					})
+				}
 			});
 	}
 
@@ -32,9 +44,21 @@ class CampaignHub extends Component{
 				<div>Loading...</div>
 				)
 		}
+
+		if(this.state.characterCreate){
+			return(
+				<CharacterInfoForm 
+					userID={this.state.userID} 
+					campaignID={this.state.campaignID}
+					onUpdate={this.onUpdate}/>
+			)
+		}
+
 		else{
 			return(
-				<div><CharacterHub character={this.state.character}/></div>
+				<div>
+					<CharacterHub character={this.state.character}/>
+				</div>
 			)
 		}
 		
