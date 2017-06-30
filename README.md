@@ -23,7 +23,7 @@ It is developed with ReactJS, and will be adding Redux once the scope of the pro
 - Combat
 
 ### Current Todo List (ordered by priority)
-1. Character creation for each campaign
+1. Implementing Dungeon Master Control Panel for campaigns
 2. Address Issues/Fix any bugs
 3. Improve UI
 
