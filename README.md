@@ -1,7 +1,7 @@
 ## Dungeons and Dragons ##
 aye forsooth here be dragons for sure
 
-Link: (https://dungeonsanddragons-f7213.firebaseapp.com/)
+Link: (https://dungeonsanddragons-113a3.firebaseapp.com/)
 
 ### App
 The purpose of this app is to consolidate all Dungeons and Dragons campaigns into one place so that a player can keep track of all the campaigns they might be part of. The player has a separate character for each of the campaigns. A dungeon master is able to create their own campaign, and in the future, upload their own maps and NPCs. Currently, it is very barebones with no stylized UIs for most of the components.
@@ -23,7 +23,7 @@ It is developed with ReactJS, and will be adding Redux once the scope of the pro
 - Combat
 
 ### Current Todo List (ordered by priority)
-1. Character creation for each campaign
+1. Implementing Dungeon Master Control Panel for campaigns
 2. Address Issues/Fix any bugs
 3. Improve UI
 
