@@ -1,9 +1,7 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import '../services/firebaseConfig';
-import firebase from 'firebase';
 import firebaseSignIn from '../services/firebaseSignIn';
 import firebaseSignUp from '../services/firebaseSignUp';
-import CharacterInfoForm from './CharacterInfoForm';
 
 class Authentication extends Component{
   constructor(props){

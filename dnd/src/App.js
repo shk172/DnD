@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import firebase from 'firebase';
 import Authentication from './containers/Authentication';
@@ -27,9 +27,10 @@ class App extends Component {
    constructor(props){
     super(props);
     this.state={
-      loading: true
+      loading: true,
     }
     this.onUpdate = this.onUpdate.bind(this);
+    this.signOut = this.signOut.bind(this);
   } 
 
   componentWillMount(){
@@ -37,6 +38,7 @@ class App extends Component {
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
         app.setState({
+          user: firebase.auth().currentUser,
           loggedIn: true,
           email: "",
           password: "",
@@ -49,8 +51,9 @@ class App extends Component {
           loggedIn: false,
           email: "",
           password: "",
-          loading: false,
+          loading: true,
         });
+        console.log("You are logged out.");
       }
     });
   }
@@ -58,6 +61,16 @@ class App extends Component {
   onUpdate(data){
     this.setState(data);
   }
+
+  signOut(){
+    this.setState({
+      loading: true,
+      loggedIn: false,
+    });
+
+    firebase.auth().signOut();
+  }
+
 
   render() {
     if(!this.state.loggedIn && this.state.loggedIn !== undefined){
@@ -77,7 +90,9 @@ class App extends Component {
     else if(!this.state.loading){
       return(
         <div>
-        	<MainHub/>
+          {this.state.user.email}
+          <button onClick={this.signOut}>Sign Out</button>
+        	<MainHub onUpdate={this.onUpdate}/>
         </div> 
       );      
     }

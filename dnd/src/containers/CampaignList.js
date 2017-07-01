@@ -11,7 +11,7 @@ class CampaignList extends Component{
 	}
 
 	chooseCampaign(campaignID){
-		this.props.enterNewCampaign(campaignID);
+		this.props.enterExistingCampaign(campaignID);
 	}
 
 	render(){
@@ -21,7 +21,6 @@ class CampaignList extends Component{
 		}
 		else{
 			campaignList = this.state.campaigns.map((campaign) => {
-				console.log(campaign);
 				return(
 				<li>
 					<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>{campaign.campaignTitle} {campaign.campaignID}</button>

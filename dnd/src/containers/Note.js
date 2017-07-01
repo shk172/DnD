@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import firebase from 'firebase';
 import {Editor, EditorState, ContentState, RichUtils} from 'draft-js';
 

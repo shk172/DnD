@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import '../App.css';
 import Note from './Note';
 import Stats from './Stats';

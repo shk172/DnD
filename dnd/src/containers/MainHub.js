@@ -60,7 +60,7 @@ class MainHub extends Component{
 						if(userCampaignCounter === userCampaigns.length){
 							for(var campaign in campaigns){
 								if(redundancyTable[campaign.campaignID] == null){
-									tempCampaigns.push(campaign);
+									tempCampaigns.push(campaigns[campaign]);
 								}
 								campaignCounter++;
 							}
@@ -99,8 +99,8 @@ class MainHub extends Component{
 	}
 
 	onUpdate(data){
-    this.setState(data);
-  }
+	  this.setState(data);
+	}
 
 	render(){
 		if(this.state.campaignsLoading){
@@ -124,7 +124,9 @@ class MainHub extends Component{
 
 		if(this.state.campaignDMOpen){
 			return(
-				<DungeonMasterHub/>
+				<DungeonMasterHub
+					campaignID={this.state.campaignID}
+					userID={this.state.userID}/>
 				)
 		}
 
@@ -137,7 +139,7 @@ class MainHub extends Component{
 						onUpdate={this.onUpdate}/>
 					<CampaignList 
 						campaigns={this.state.campaigns} 
-						enterNewCampaign={this.enterNewCampaign}/>
+						enterExistingCampaign={this.enterExistingCampaign}/>
 					<UserCampaignList 
 						campaigns={this.state.userCampaigns} 
 						userID={this.state.userID} 
