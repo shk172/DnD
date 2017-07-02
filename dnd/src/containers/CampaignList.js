@@ -15,7 +15,7 @@ class CampaignList extends Component{
 	}
 
 	render(){
-		var campaignList = {};
+		var campaignList = [];
 		if(this.state.campaigns.length === 0){
 			campaignList = (<p>There's currently no campaign</p>);
 		}

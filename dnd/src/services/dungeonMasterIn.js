@@ -9,6 +9,7 @@ export default function dungeonMasterIn (userID, campaignID) {
 				playerCampaignRef.on("value", function(campaign) {
 					var exists = (campaign.val() !== null);
 					if(exists) {
+						console.log(campaign.val());
 						if(campaign.val().dungeonMasterIn){
 							isDungeonMaster = true;
 							resolve(isDungeonMaster);

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import createCampaignList from '../services/createCampaignList';
+
+import dungeonMasterIn from '../services/dungeonMasterIn';
 
 class UserCampaignList extends Component{
 	constructor(props){
@@ -7,21 +8,13 @@ class UserCampaignList extends Component{
 		this.state={
 			campaigns: this.props.campaigns,
 			userID: this.props.userID,
-			loading: true,
-			campaignList: {},
+			loading: false,
+			campaignList: [],
 		}
 	}
 
 	componentWillMount(){
-		var campaignList = {};
-		if(this.state.campaigns.length === 0){
-			campaignList = (<p>There's currently no campaign</p>);
-			this.setState({campaignList: campaignList});
-		}
 
-		else{
-			createCampaignList(this.state.userID, this.state.campaigns).then(()=>{this.setState({loading: false})});
-		}
 	}
 
 	chooseCampaign(campaignID){
@@ -32,12 +25,43 @@ class UserCampaignList extends Component{
 		this.props.enterExistingCampaignAsDM(campaignID);
 	}
 	render(){
+		var campaignList = [];
+		if(this.state.campaigns.length === 0){
+			campaignList = (<p>There's currently no campaign</p>);
+		}
+
+		else{
+			var app = this;
+			var campaignCounter = 0;
+			campaignList = this.state.campaigns.map((campaign) => {
+				if(campaign.Players[this.state.userID] == true){
+					return(
+						<li>
+							<p>{campaign.campaignTitle} DM</p>
+							<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>Enter</button>
+							<button onClick={this.chooseCampaignAsDM.bind(this, campaign.campaignID)}>Enter as DM</button>
+						</li>
+					);
+				}
+
+				else{
+					return(
+						<li>
+							<p>{campaign.campaignTitle}</p>
+							<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>Enter</button>
+						</li>
+					);
+				}
+			});
+		}
+
 		if(!this.state.loading){
+			console.log(campaignList);
 			return(
 				<div>
 					Your Campaigns
 					<ul>
-						{this.state.campaignList}
+						{campaignList}
 					</ul>
 				</div>
 		)}
