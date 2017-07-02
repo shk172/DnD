@@ -1,24 +1,37 @@
 import firebase from 'firebase';
-import getCampaign from './getCampaign';
 
 export default function dungeonMasterIn (userID, campaignID) {
 	return new Promise(function(resolve, reject) {
-		var playerCampaignRef = firebase.database().ref("Players/" + userID + "/Campaigns/" + campaignID);
-		var isDungeonMaster = false;
-		playerCampaignRef.on("value", function(campaign) {
-			var exists = (campaign.val() !== null);
+		firebase.auth().onAuthStateChanged(function(user) {
+			if(user){
+				var playerCampaignRef = firebase.database().ref("Players/" + userID + "/Campaigns/" + campaignID);
+				var isDungeonMaster = false;
+				playerCampaignRef.on("value", function(campaign) {
+					var exists = (campaign.val() !== null);
+					if(exists) {
+						console.log(campaign.val());
+						if(campaign.val().dungeonMasterIn){
+							isDungeonMaster = true;
+							resolve(isDungeonMaster);
+						}
+						else{
+							resolve(isDungeonMaster);
+						}
+					}
 
-			if(exists) {
-				if(campaign.val().dungeonMasterIn){
-					isDungeonMaster = true;
-					resolve(isDungeonMaster);
-				}
+					else{
+						console.log(isDungeonMaster);
+						resolve(isDungeonMaster);
+					}
+				}, function(error){
+					console.log(error);
+					reject(error);
+				});
 			}
-
-			else{resolve(isDungeonMaster);}
-		}, function(error){
-			console.log(error);
-			reject(error);
+			else{
+				console.log("You are currently signed out.");
+				console.log(user);
+			}
 		});
 	});
 }

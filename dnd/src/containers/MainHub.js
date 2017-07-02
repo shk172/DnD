@@ -40,27 +40,29 @@ class MainHub extends Component{
 		var hub = this;
 		importUserCampaigns(this.state.userID).then(
 			(userCampaigns) =>{
+				console.log(userCa)
 				hub.setState({
 					userCampaigns: userCampaigns,
 					userCampaignsLoading: false,
 				})
 				importCampaigns().then(
 					(campaigns) =>{
+
 						var redundancyTable = {};
 
 						var tempCampaigns = [];
 						var campaignCounter = 0;
 						var userCampaignCounter = 0;
 
-						for(var userCampaign in userCampaigns){
-							redundancyTable[userCampaign.campaignID] = userCampaign;
+						for(var userCampaignIndex in userCampaigns){
+							redundancyTable[userCampaigns[userCampaignIndex].campaignID] = userCampaigns[userCampaignIndex];
 							userCampaignCounter++;
 						}
 						
 						if(userCampaignCounter === userCampaigns.length){
-							for(var campaign in campaigns){
-								if(redundancyTable[campaign.campaignID] == null){
-									tempCampaigns.push(campaign);
+							for(var campaignIndex in campaigns){
+								if(redundancyTable[campaigns[campaignIndex].campaignID] == null){
+									tempCampaigns.push(campaigns[campaignIndex]);
 								}
 								campaignCounter++;
 							}
@@ -99,8 +101,8 @@ class MainHub extends Component{
 	}
 
 	onUpdate(data){
-    this.setState(data);
-  }
+	  this.setState(data);
+	}
 
 	render(){
 		if(this.state.campaignsLoading){
@@ -124,7 +126,9 @@ class MainHub extends Component{
 
 		if(this.state.campaignDMOpen){
 			return(
-				<DungeonMasterHub/>
+				<DungeonMasterHub
+					campaignID={this.state.campaignID}
+					userID={this.state.userID}/>
 				)
 		}
 
@@ -137,7 +141,7 @@ class MainHub extends Component{
 						onUpdate={this.onUpdate}/>
 					<CampaignList 
 						campaigns={this.state.campaigns} 
-						enterNewCampaign={this.enterNewCampaign}/>
+						enterExistingCampaign={this.enterExistingCampaign}/>
 					<UserCampaignList 
 						campaigns={this.state.userCampaigns} 
 						userID={this.state.userID} 

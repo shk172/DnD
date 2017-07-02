@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import CharacterHub from './CharacterHub';
 import CharacterInfoForm from './CharacterInfoForm';
 import importPlayerCharacter from '../services/importPlayerCharacter';

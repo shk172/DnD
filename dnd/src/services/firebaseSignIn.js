@@ -1,4 +1,3 @@
-import './firebaseConfig';
 import firebase from 'firebase';
 
 export default function firebaseSignIn (email, password) {

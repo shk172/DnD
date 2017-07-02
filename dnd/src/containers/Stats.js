@@ -2,7 +2,7 @@
 ** TODO: Ability to increment/decrement levels (should this be up to the DM or the character? -- DM gets to choose)
 */
 
-import React, { Component, PropTypes } from 'react';
+import React, { Component } from 'react';
 import '../App.css';
 
 class Stats extends Component{

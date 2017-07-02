@@ -32,9 +32,10 @@ class CreateCampaign extends Component{
 				}
 				else{
 					var campaign={};
+					campaign.Players = {};
 					campaign.campaignTitle = this.state.campaignName;
 					campaign.campaignID = campaignID;
-					campaign.dungeonMasters = [this.state.userID];
+					campaign.Players[this.state.userID] = true;
 					campaignRef.update(campaign);
 					playerCampaignRef.update({
 						dungeonMasterIn: true,

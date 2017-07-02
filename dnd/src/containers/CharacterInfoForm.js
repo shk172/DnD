@@ -9,44 +9,44 @@ class CharacterInfoForm extends Component{
 		super(props);
 		this.state = {
 			tempName: "",
-	  	tempRace: "Dragonborn",
+	  		tempRace: "Dragonborn",
 
 			tempStrength: 0,
-	    tempDexterity: 0,
-	    tempConstitution: 0,
-	    tempIntelligence: 0,
-	    tempWisdom: 0,
-	    tempCharisma: 0,
+		    tempDexterity: 0,
+		    tempConstitution: 0,
+		    tempIntelligence: 0,
+		    tempWisdom: 0,
+		    tempCharisma: 0,
 
-	    tempStrengthST: 0,
-	    tempDexterityST: 0,
-	    tempConstitutionST: 0,
-	    tempIntelligenceST: 0,
-	    tempWisdomST: 0,
-	    tempCharismaST: 0,
+		    tempStrengthST: 0,
+		    tempDexterityST: 0,
+		    tempConstitutionST: 0,
+		    tempIntelligenceST: 0,
+		    tempWisdomST: 0,
+		    tempCharismaST: 0,
 
-	    tempAcrobatics: 0,
-	    tempAnimalHandling: 0,
-	    tempArcana: 0,
-	    tempAthletics: 0,
-	    tempDeception: 0,
-	    tempHistory: 0,
-	    tempInsight: 0,
-	    tempIntimidation: 0,
-	    tempInvestigation: 0,
-	    tempMedicine: 0,
-	    tempNature: 0,
-	    tempPerception: 0,
-	    tempPerformance: 0,
-	    tempPersuasion: 0,
-	    tempReligion: 0,
-	    tempSleightOfHand: 0,
-	    tempStealth: 0,
-	    tempSurvival: 0,
+		    tempAcrobatics: 0,
+		    tempAnimalHandling: 0,
+		    tempArcana: 0,
+		    tempAthletics: 0,
+		    tempDeception: 0,
+		    tempHistory: 0,
+		    tempInsight: 0,
+		    tempIntimidation: 0,
+		    tempInvestigation: 0,
+		    tempMedicine: 0,
+		    tempNature: 0,
+		    tempPerception: 0,
+		    tempPerformance: 0,
+		    tempPersuasion: 0,
+		    tempReligion: 0,
+		    tempSleightOfHand: 0,
+		    tempStealth: 0,
+		    tempSurvival: 0,
 
-	    userID: this.props.userID,
-	    campaignID: this.props.campaignID,
-	  };
+		    userID: this.props.userID,
+		    campaignID: this.props.campaignID,
+	  	};
 	  
     this.nameChange = this.nameChange.bind(this);
     this.raceChange = this.raceChange.bind(this);
@@ -103,12 +103,20 @@ class CharacterInfoForm extends Component{
 	  character.stats = stats;
 	  character.savingThrows = savingThrows;
 	  character.campaignID = this.state.campaignID;
-	  firebase.database().ref("Players/" + this.state.userID + "/Campaigns/" + this.state.campaignID).set(character);
+	  var playerCampaignRef = firebase.database().ref("Players/" + this.state.userID + "/Campaigns/" + this.state.campaignID);
+	  playerCampaignRef.update(character);
 
-	  var player = {};
-	  player[this.state.userID] = this.state.userID;
-	  firebase.database().ref("Campaigns/" + this.state.campaignID  + "/Players/").set(player);
-
+	  //if the player doesn't already have a DM tag, add one as a non-DM - creating a new character will not change the DM status.
+	  var campaignPlayerRef = firebase.database().ref("Campaigns/" + this.state.campaignID  + "/Players/");
+	  campaignPlayerRef.on("value", (data)=>{
+	  	console.log(data.val()[this.state.userID]);
+	  	if(data.val()[this.state.userID] === null || data.val()[this.state.userID] === undefined){
+	  		var player = {};
+	  		player[this.state.userID] = false;
+	  		campaignPlayerRef.update(player);
+	  	}
+	  });
+	  
 	  this.props.onUpdate({
 	  	characterCreate: false,
 	  	character: character,
