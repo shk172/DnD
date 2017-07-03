@@ -22,14 +22,14 @@ class CampaignList extends Component{
 		else{
 			campaignList = this.state.campaigns.map((campaign) => {
 				return(
-				<li>
+				<div className="App-List-Elements">
 					<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>{campaign.campaignTitle} {campaign.campaignID}</button>
-				</li>);
+				</div>);
 			});
 		}
 
 		return(
-			<div>
+			<div className="App-Campaign-List">
 				Campaigns
 				<ul>
 					{campaignList}

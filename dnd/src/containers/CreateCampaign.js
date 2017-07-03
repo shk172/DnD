@@ -70,6 +70,7 @@ class CreateCampaign extends Component{
 			return(
 				<div>
 					<button 
+						className="App-Main-Hub-Create-Button"
 						onClick={()=>{this.setState({create: true})}}>
 						Create a new campaign</button>
 				</div>

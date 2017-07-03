@@ -90,8 +90,11 @@ class App extends Component {
     else if(!this.state.loading){
       return(
         <div>
-          {this.state.user.email}
-          <button onClick={this.signOut}>Sign Out</button>
+          <div className="App-header">
+            <img src="https://firebasestorage.googleapis.com/v0/b/dungeonsanddragons-113a3.appspot.com/o/Images%2Flogo.png?alt=media&token=34df0685-ad92-44c5-a423-40357408a830" className="App-logo" alt="logo" />
+            {this.state.user.email}
+            <button onClick={this.signOut}>Sign Out</button>
+          </div>
         	<MainHub onUpdate={this.onUpdate}/>
         </div> 
       );      

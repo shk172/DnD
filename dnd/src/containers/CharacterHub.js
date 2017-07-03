@@ -30,10 +30,6 @@ class CharacterHub extends Component {
     else{
       return(
         <div className="App">
-          <div className="App-header">
-            <img src="https://firebasestorage.googleapis.com/v0/b/dungeonsanddragons-f7213.appspot.com/o/Images%2Flogo.png?alt=media&token=cdbed6e2-0a19-4d37-8144-ba8c61e2d5ec" className="App-logo" alt="logo" />
-          </div>  
-
           <div className="App-modules">
             <div className="App-stats">
               <Stats character={this.state.character} />

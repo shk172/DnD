@@ -17,15 +17,23 @@ class DungeonMasterHub extends Component{
 			this.setState({
 				campaignPlayers: campaignPlayers,
 			})
+			console.log(campaignPlayers);
 		})
 	}
 
 	render(){
-		const playerList = this.state.campaignPlayers.map((player) => {
-			return(
-				<li>{player.name} <PlayerSummary player={player}/></li>
-				)
-		})
+		var playerList = [];
+		if(this.state.campaignPlayers.length === 0){
+			playerList = (<p>There is no player in this campaign</p>);
+		}
+		else{
+			playerList = this.state.campaignPlayers.map((player) => {
+				return(
+					<li><h3>{player.name}</h3> <PlayerSummary player={player}/></li>
+					)
+			});
+		}
+		
 		return(
 			<div>
 				<ul>

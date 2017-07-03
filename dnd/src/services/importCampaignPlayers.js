@@ -7,12 +7,17 @@ export default function importCampaignPlayers(campaignID){
 		var campaignPlayers = [];
 		campaignRef.on("value", (data) => {
 			if(data.val() !== null){
+				var playerCounter = 0;
 				Object.keys(data.val()).forEach(function(key, index){
 					importPlayerCharacter(key, campaignID).then((player)=>{
 						campaignPlayers.push(player);
+						playerCounter++;
+						if(playerCounter === Object.keys(data.val()).length){
+							resolve(campaignPlayers);
+						}
 					})
 	    	});
-	    	resolve(campaignPlayers);
+	    	
 			}
 			else{
 				resolve(campaignPlayers);

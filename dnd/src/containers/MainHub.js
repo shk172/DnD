@@ -8,6 +8,7 @@
 */
 
 import React, { Component } from 'react';
+import '../App.css';
 
 import importCampaigns from '../services/importCampaigns';
 import importUserCampaigns from '../services/importUserCampaigns';
@@ -15,9 +16,10 @@ import firebase from 'firebase';
 
 import CampaignHub from './CampaignHub';
 import CampaignList from './CampaignList';
-import CreateCampaign from './CreateCampaign';
 import DungeonMasterHub from './DungeonMasterHub';
 import UserCampaignList from './UserCampaignList';
+
+import './styles/MainHub.css';
 
 class MainHub extends Component{
 	constructor(props){
@@ -40,7 +42,6 @@ class MainHub extends Component{
 		var hub = this;
 		importUserCampaigns(this.state.userID).then(
 			(userCampaigns) =>{
-				console.log(userCa)
 				hub.setState({
 					userCampaigns: userCampaigns,
 					userCampaignsLoading: false,
@@ -134,19 +135,17 @@ class MainHub extends Component{
 
 		else{
 			return(
-				<div>
-					<CreateCampaign 
-						userID={this.state.userID}
-						creatingCampaign={this.state.createdCampaign}
-						onUpdate={this.onUpdate}/>
-					<CampaignList 
-						campaigns={this.state.campaigns} 
-						enterExistingCampaign={this.enterExistingCampaign}/>
-					<UserCampaignList 
-						campaigns={this.state.userCampaigns} 
-						userID={this.state.userID} 
-						enterExistingCampaign={this.enterExistingCampaign}
-						enterExistingCampaignAsDM={this.enterExistingCampaignAsDM}/>
+				<div className="App-Main-Hub">					
+					<div className="App-Lists">
+						<CampaignList 
+							campaigns={this.state.campaigns} 
+							enterExistingCampaign={this.enterExistingCampaign}/>
+						<UserCampaignList 
+							campaigns={this.state.userCampaigns} 
+							userID={this.state.userID} 
+							enterExistingCampaign={this.enterExistingCampaign}
+							enterExistingCampaignAsDM={this.enterExistingCampaignAsDM}/>
+					</div>
 				</div>
 			)
 		}

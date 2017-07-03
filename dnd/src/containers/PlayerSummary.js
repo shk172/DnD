@@ -9,11 +9,20 @@ class PlayerSummary extends Component{
 	}
 
 	render(){
-		console.log(this.state.player);
+		console.log(Object.keys(this.state.player));
+		var players = Object.keys(this.state.player);
+		var playerSummary = players.map((key)=>{
+			if(typeof(this.state.player[key]) !== 'object' && 
+				typeof(this.state.player[key]) !== 'null' && 
+				typeof(this.state.player[key]) !== 'undefined' &&
+				key !== "note"){
+				return(
+					<div>{key}: {this.state.player[key]}</div>);
+			}
+		});
 		return(
 			<div>
-				<p>Level: {this.state.player.level}</p>
-				<p>Health: {this.state.player.health}</p>
+				{playerSummary}
 			</div>
 			);
 	}
