@@ -9,7 +9,6 @@ class PlayerSummary extends Component{
 	}
 
 	render(){
-		console.log(Object.keys(this.state.player));
 		var players = Object.keys(this.state.player);
 		var playerSummary = players.map((key)=>{
 			if(typeof(this.state.player[key]) !== 'object' && 
