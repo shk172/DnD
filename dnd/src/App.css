@@ -209,6 +209,40 @@
 }
 
 
+/*DM-Hub*/
+
+.App-DM-Hub{
+  display: -webkit-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.App-DM-List{
+  display: -webkit-flex;
+  flex-direction: row;
+  align-items: center;
+
+  width: 80%;
+
+  background-color: #FFBB66;
+}
+.App-DM-PlayerListElement{
+  padding: 10px;
+  border-color: #D17400;
+  border-style: solid;
+}
+
+.App-DM-DiceRolls{
+  display: -webkit-flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 10px;
+}
+
+
+
+
 /*Misc*/
 
 .error{

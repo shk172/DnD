@@ -62,7 +62,8 @@ class CampaignHub extends Component{
 				<CharacterInfoForm 
 					userID={this.state.userID} 
 					campaignID={this.state.campaignID}
-					onUpdate={this.onUpdate}/>
+					onUpdate={this.onUpdate}
+					characterType="Players"/>
 			)
 		}
 

@@ -46,6 +46,7 @@ class CharacterInfoForm extends Component{
 
 		    userID: this.props.userID,
 		    campaignID: this.props.campaignID,
+		    characterType: this.props.characterType,
 	  	};
 	  
     this.nameChange = this.nameChange.bind(this);
@@ -103,21 +104,33 @@ class CharacterInfoForm extends Component{
 	  character.stats = stats;
 	  character.savingThrows = savingThrows;
 	  character.campaignID = this.state.campaignID;
-	  var playerCampaignRef = firebase.database().ref("Players/" + this.state.userID + "/Campaigns/" + this.state.campaignID);
-	  playerCampaignRef.update(character);
+	  if(this.state.characterType === "Players"){
+	  	var playerCampaignRef = firebase.database().ref("Players/" + this.state.userID + "/Campaigns/" + this.state.campaignID);
+	  	playerCampaignRef.update(character);
 
-	  //if the player doesn't already have a DM tag, add one as a non-DM - creating a new character will not change the DM status.
-	  var campaignPlayerRef = firebase.database().ref("Campaigns/" + this.state.campaignID  + "/Players/");
-	  campaignPlayerRef.on("value", (data)=>{
-	  	console.log(data.val()[this.state.userID]);
-	  	if(data.val()[this.state.userID] === null || data.val()[this.state.userID] === undefined){
-	  		var player = {};
-	  		player[this.state.userID] = false;
-	  		campaignPlayerRef.update(player);
-	  	}
-	  });
+			//if the player doesn't already have a DM tag, add one as a non-DM - creating a new character will not change the DM status.
+	  	var campaignPlayerRef = firebase.database().ref("Campaigns/" + this.state.campaignID  + "/Players/");
+		  campaignPlayerRef.on("value", (data)=>{
+		  	if(data.val()[this.state.userID] === null || data.val()[this.state.userID] === undefined){
+		  		var player = {};
+		  		player[this.state.userID] = false;
+		  		campaignPlayerRef.update(player);
+		  	}
+		  });
+	  }
+
+	  else{
+	  	var campaignNPCRef = firebase.database().ref("Campaigns/" + this.state.campaignID  + "/NPCs/");
+	  	var player = {};
+	  	player[character.name] = character;
+	  	campaignNPCRef.update(player)
+	  }
+	  
+	  
+	 
 	  
 	  this.props.onUpdate({
+	  	npcCreate: false,
 	  	characterCreate: false,
 	  	character: character,
 	  })
