@@ -39,7 +39,7 @@ class UserCampaignList extends Component{
 				if(campaign.Players[this.state.userID] == true){
 					return(
 						<div className="App-List-Elements">
-							<p>{campaign.campaignTitle} DM</p>
+							{campaign.campaignTitle} DM<br/>
 							<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>Enter</button>
 							<button onClick={this.chooseCampaignAsDM.bind(this, campaign.campaignID)}>Enter as DM</button>
 						</div>
@@ -49,7 +49,7 @@ class UserCampaignList extends Component{
 				else{
 					return(
 						<div className="App-List-Elements">
-							<p>{campaign.campaignTitle}</p>
+							{campaign.campaignTitle}<br/>
 							<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>Enter</button>
 						</div>
 					);
@@ -62,9 +62,7 @@ class UserCampaignList extends Component{
 			return(
 				<div className="App-User-Campaign-List">
 					Your Campaigns
-					<ul>
-						{campaignList}
-					</ul>
+					{campaignList}
 					<CreateCampaign 
 							userID={this.state.userID}
 							creatingCampaign={this.state.createdCampaign}

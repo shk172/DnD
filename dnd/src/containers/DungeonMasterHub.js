@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import importCampaignPlayers from '../services/importCampaignPlayers';
+
+import Dies from './Dies';
 import PlayerSummary from './PlayerSummary';
 
+import firebase from 'firebase';
+import importCampaignPlayers from '../services/importCampaignPlayers';
 class DungeonMasterHub extends Component{
 	constructor(props){
 		super(props);
@@ -18,16 +21,18 @@ class DungeonMasterHub extends Component{
 				20: 1,
 				100: 1,
 			},
+			diceRolls: [],
 		}
+		this.listenForUpdates = this.listenForUpdates.bind(this);
+		this.rollDice = this.rollDice.bind(this);
 	}
 
 	componentWillMount(){
 		importCampaignPlayers(this.state.campaignID).then((campaignPlayers)=>{
 			this.setState({
 				campaignPlayers: campaignPlayers,
-			})
-			console.log(campaignPlayers);
-		})
+			});
+		});
 	}
 
 	rollDice(value){
@@ -41,6 +46,7 @@ class DungeonMasterHub extends Component{
 		if(this.state.campaignPlayers.length === 0){
 			playerList = (<p>There is no player in this campaign</p>);
 		}
+
 		else{
 			playerList = this.state.campaignPlayers.map((player) => {
 				return(
@@ -48,25 +54,49 @@ class DungeonMasterHub extends Component{
 					)
 			});
 		}
+		
+		var diceRolls = [];
+		if(this.state.diceRolls.length !== 0){
+			diceRolls = this.state.diceRolls.map((result)=>{
+				console.log(this.state.diceRolls);
+				return(
+					<p>{result.name} {result.roll}</p>
+					)
+			})
+		}
 
 		return(
 			<div>
 				<ul>
 					{playerList}
+					{diceRolls}
 				</ul>
-				<div className="App-Dice">
-					Dies <br/>
-					{this.state.diceResult[4]} <button onClick={this.rollDice.bind(this, 4)}>d4</button> <br/>
-					{this.state.diceResult[6]} <button onClick={this.rollDice.bind(this, 6)}>d6</button> <br/>
-					{this.state.diceResult[8]} <button onClick={this.rollDice.bind(this, 8)}>d8</button> <br/>
-					{this.state.diceResult[10]} <button onClick={this.rollDice.bind(this, 10)}>d10</button> <br/>
-					{this.state.diceResult[12]} <button onClick={this.rollDice.bind(this, 12)}>d12</button> <br/>
-					{this.state.diceResult[20]} <button onClick={this.rollDice.bind(this, 20)}>d20</button> <br/>
-					{this.state.diceResult[100]} <button onClick={this.rollDice.bind(this, 100)}>d100</button> <br/>
-				</div>
+				<Dies userID={this.state.userID} campaignID={this.state.campaignID} characterName="DM"/>
 			</div>
 			);
 	}
+
+	componentDidMount(){
+		this.listenForUpdates();
+	}
+
+	listenForUpdates() {
+		var app = this;
+	  const diceResultRef = firebase.database().ref("Campaigns/" + this.state.campaignID + "/DiceResults");
+	  diceResultRef.on("value", (results)=>{
+	  	var diceRolls = [];
+	  	results.forEach((player)=>{		
+	  		var diceResult = {
+	  			name: player.key,
+	  			roll: player.val(),
+	  		}
+	  		diceRolls.push(diceResult);
+	  		app.setState({
+	  			diceRolls: diceRolls
+	  		})
+			});
+	  });
+	}		
 }
 
 export default DungeonMasterHub;

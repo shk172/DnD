@@ -8,6 +8,15 @@ class CharacterHub extends Component {
     super(props);
     this.state={
       character: this.props.character,
+      diceResult: {
+        4: 1,
+        6: 1,
+        8: 1,
+        10: 1,
+        12: 1,
+        20: 1,
+        100: 1,
+      },
     };
     this.onUpdate = this.onUpdate.bind(this);
   } 

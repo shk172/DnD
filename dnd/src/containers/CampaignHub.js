@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import firebase from 'firebase';
+
 import CharacterHub from './CharacterHub';
 import CharacterInfoForm from './CharacterInfoForm';
+import Dies from './Dies';
+
 import importPlayerCharacter from '../services/importPlayerCharacter';
 
 class CampaignHub extends Component{
@@ -13,6 +17,7 @@ class CampaignHub extends Component{
 			characterCreate: false,
 		};
 		this.onUpdate = this.onUpdate.bind(this);
+		this.updateDiceResult = this.updateDiceResult.bind(this);
 	}
 
 	componentWillMount(){
@@ -38,6 +43,13 @@ class CampaignHub extends Component{
    	this.setState(data);
   }
 
+  updateDiceResult(){
+  	var playerCampaignRef = firebase.database().ref("Players/" + this.state.userID + "/Campaigns/" + this.state.campaignID);
+  	playerCampaignRef.on("value", (data)=>{
+
+  	});
+  }
+
 	render(){
 		if(this.state.loading){
 			return(
@@ -58,6 +70,7 @@ class CampaignHub extends Component{
 			return(
 				<div>
 					<CharacterHub character={this.state.character}/>
+					<Dies userID={this.state.userID} campaignID={this.state.campaignID} characterName={this.state.character.name}/>
 				</div>
 			)
 		}
