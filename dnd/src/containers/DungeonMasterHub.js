@@ -44,7 +44,6 @@ class DungeonMasterHub extends Component{
 		.then(()=>{
 			importCampaignNPCs(this.state.campaignID).then((npcs)=>{
 				this.setState({npcs: npcs});
-				console.log(npcs);
 			});
 		});
 	}

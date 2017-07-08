@@ -1,14 +1,12 @@
-//Things to include here:
-/*
-**1) Creating a new campaign
-**2) Joining another campaign
-**3) Searching existing campaigns
-**4) The campaigns the player is currently in right now
-**5) List of campaigns user has created
-*/
-
 import React, { Component } from 'react';
 import '../App.css';
+import {List, ListItem} from 'material-ui/List';
+import ContentInbox from 'material-ui/svg-icons/content/inbox';
+import ActionGrade from 'material-ui/svg-icons/action/grade';
+import ContentSend from 'material-ui/svg-icons/content/send';
+import ContentDrafts from 'material-ui/svg-icons/content/drafts';
+import Divider from 'material-ui/Divider';
+import ActionInfo from 'material-ui/svg-icons/action/info';
 
 import importCampaigns from '../services/importCampaigns';
 import importUserCampaigns from '../services/importUserCampaigns';
