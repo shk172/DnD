@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import {List, ListItem} from 'material-ui/List';
+import Divider from 'material-ui/Divider';
+import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
 
 import dungeonMasterIn from '../services/dungeonMasterIn';
-
-import CreateCampaign from './CreateCampaign';
 
 class UserCampaignList extends Component{
 	constructor(props){
@@ -38,35 +40,45 @@ class UserCampaignList extends Component{
 			campaignList = this.state.campaigns.map((campaign) => {
 				if(campaign.Players[this.state.userID] == true){
 					return(
-						<div className="App-List-Elements">
-							{campaign.campaignTitle} DM<br/>
-							<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>Enter</button>
-							<button onClick={this.chooseCampaignAsDM.bind(this, campaign.campaignID)}>Enter as DM</button>
-						</div>
+						<ListItem 
+							fullWidth={true}
+							primaryText={campaign.campaignTitle}
+							primaryTogglesNestedList={true}
+							nestedItems={[
+								<FlatButton label="Enter Campaign" 
+									fullWidth={true}
+									onTouchTap={this.chooseCampaign.bind(this, campaign.campaignID)}/>,
+								<FlatButton label="Enter as Dungeon Master" 
+									fullWidth={true}
+									onTouchTap={this.chooseCampaignAsDM.bind(this, campaign.campaignID)}/>]}>
+						</ListItem>
 					);
 				}
 
 				else{
 					return(
-						<div className="App-List-Elements">
-							{campaign.campaignTitle}<br/>
-							<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>Enter</button>
-						</div>
+						<ListItem 
+							fullWidth={true}
+							primaryText={campaign.campaignTitle}
+							primaryTogglesNestedList={true}
+							nestedItems={[
+								<FlatButton 
+									label="Enter Campaign"
+									fullWidth={true} 
+									onTouchTap={this.chooseCampaign.bind(this, campaign.campaignID)}/>]}>
+						</ListItem>
 					);
 				}
 			});
-			console.log(campaignList);
 		}
 
 		if(!this.state.loading){
 			return(
-				<div className="App-User-Campaign-List">
+				<div className="App-Campaign-List">
 					Your Campaigns
-					{campaignList}
-					<CreateCampaign 
-							userID={this.state.userID}
-							creatingCampaign={this.state.createdCampaign}
-							onUpdate={this.onUpdate}/>
+					<List>
+						{campaignList}
+					</List>
 				</div>
 		)}
 		else{

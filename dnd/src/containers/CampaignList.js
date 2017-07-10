@@ -1,6 +1,10 @@
 //Look at the Lists and Keys docs to fix the error
 
 import React, { Component } from 'react';
+import {List, ListItem} from 'material-ui/List';
+import Divider from 'material-ui/Divider';
+import FlatButton from 'material-ui/FlatButton';
+import IconButton from 'material-ui/IconButton';
 
 class CampaignList extends Component{
 	constructor(props){
@@ -22,18 +26,19 @@ class CampaignList extends Component{
 		else{
 			campaignList = this.state.campaigns.map((campaign) => {
 				return(
-				<div className="App-List-Elements">
-					<button onClick={this.chooseCampaign.bind(this, campaign.campaignID)}>{campaign.campaignTitle} {campaign.campaignID}</button>
-				</div>);
+					<ListItem
+						onTouchTap={this.chooseCampaign.bind(this, campaign.campaignID)}
+						primaryText={campaign.campaignTitle}
+					/>);
 			});
 		}
 
 		return(
 			<div className="App-Campaign-List">
 				Campaigns
-				<ul>
+				<List>
 					{campaignList}
-				</ul>
+				</List>
 			</div>
 		)
 	}

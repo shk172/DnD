@@ -1,5 +1,4 @@
 import firebase from 'firebase';
-import importPlayerCharacter from './importPlayerCharacter';
 
 export default function importCampaignNPCs(campaignID){
 	return new Promise(function(resolve, reject) {
@@ -9,11 +8,12 @@ export default function importCampaignNPCs(campaignID){
 			if(data.val() !== null){
 				var npcCounter = 0;
 				Object.keys(data.val()).forEach(function(key, index){
+					console.log(key);
 					campaignNPCs.push(data.val()[key]);
 					npcCounter++;
-						if(npcCounter === Object.keys(data.val()).length){
-							resolve(campaignNPCs);
-						}
+					if(npcCounter === Object.keys(data.val()).length){
+						resolve(campaignNPCs);
+					}
 	    		});
 			}
 			else{

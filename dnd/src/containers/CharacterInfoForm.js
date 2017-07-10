@@ -117,23 +117,22 @@ class CharacterInfoForm extends Component{
 		  		campaignPlayerRef.update(player);
 		  	}
 		  });
+		this.props.onUpdate({
+		  	characterCreate: false,
+		  	character: character,
+		  })
 	  }
 
 	  else{
 	  	var campaignNPCRef = firebase.database().ref("Campaigns/" + this.state.campaignID  + "/NPCs/");
 	  	var player = {};
 	  	player[character.name] = character;
-	  	campaignNPCRef.update(player)
+	  	campaignNPCRef.update(player);
+	  	this.props.onUpdate({
+		  	npcCreate: false,
+		  	character: character,
+		  })
 	  }
-	  
-	  
-	 
-	  
-	  this.props.onUpdate({
-	  	npcCreate: false,
-	  	characterCreate: false,
-	  	character: character,
-	  })
 
     event.preventDefault();
   }

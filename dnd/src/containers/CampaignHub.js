@@ -3,7 +3,6 @@ import firebase from 'firebase';
 
 import CharacterHub from './CharacterHub';
 import CharacterInfoForm from './CharacterInfoForm';
-import Dies from './Dies';
 
 import importPlayerCharacter from '../services/importPlayerCharacter';
 
@@ -71,7 +70,6 @@ class CampaignHub extends Component{
 			return(
 				<div>
 					<CharacterHub character={this.state.character}/>
-					<Dies userID={this.state.userID} campaignID={this.state.campaignID} characterName={this.state.character.name}/>
 				</div>
 			)
 		}

@@ -10,6 +10,7 @@ export default function importCampaignPlayers(campaignID){
 				var playerCounter = 0;
 				Object.keys(data.val()).forEach(function(key, index){
 					importPlayerCharacter(key, campaignID).then((player)=>{
+						console.log(key);
 						campaignPlayers.push(player);
 						playerCounter++;
 						if(playerCounter === Object.keys(data.val()).length){

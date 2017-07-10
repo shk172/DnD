@@ -4,11 +4,16 @@ import firebase from 'firebase';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import AppBar from 'material-ui/AppBar';
-import Authentication from './containers/Authentication';
 import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
-import MainHub from './containers/MainHub';
+import IconMenu from 'material-ui/IconMenu';
+import MenuItem from 'material-ui/MenuItem';
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
+
+import Authentication from './containers/Authentication';
+import CreateCampaign from './containers/CreateCampaign';
+import MainHub from './containers/MainHub';
 
 /*
 	Layout of the app:
@@ -34,6 +39,7 @@ class App extends Component {
     super(props);
     this.state={
       loading: true,
+      createdCampaign: false,
     }
     injectTapEventPlugin();
     this.onUpdate = this.onUpdate.bind(this);
@@ -80,6 +86,24 @@ class App extends Component {
 
 
   render() {
+    const Title = (<FlatButton onTouchTap={console.log("touched?")}>There Will Be Dragons</FlatButton>)
+    const Logged = (props) => (
+      <IconMenu
+        {...props}
+        iconButtonElement={
+          <IconButton><MoreVertIcon /></IconButton>
+        }
+        targetOrigin={{horizontal: 'left', vertical: 'top'}}
+        anchorOrigin={{vertical: 'bottom'}}
+      >
+        <MenuItem
+          primaryText={this.state.user.email}/>
+        <MenuItem 
+          primaryText="Sign out" 
+          onTouchTap={this.signOut}/>
+      </IconMenu>
+    );
+
     if(!this.state.loggedIn && this.state.loggedIn !== undefined){
       return(
         <div>
@@ -99,12 +123,14 @@ class App extends Component {
         <div>
            <AppBar
               style={styles.bar}
-              title="There Will Be Dragons"
+              title={Title}
+              iconElementLeft={<Logged/>}
               iconElementRight={
-                <FlatButton label="Sign Out" onTouchTap={this.signOut}/>}
+                <CreateCampaign 
+                  userID={this.state.user.uid}
+                  creatingCampaign={this.state.createdCampaign}
+                  onUpdate={this.onUpdate}/>}
             />
-            <img src="https://firebasestorage.googleapis.com/v0/b/dungeonsanddragons-113a3.appspot.com/o/Images%2Flogo.png?alt=media&token=34df0685-ad92-44c5-a423-40357408a830" className="App-logo" alt="logo" />
-            {this.state.user.email}
         	<MainHub onUpdate={this.onUpdate}/>
         </div> 
       );      
