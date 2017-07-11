@@ -6,6 +6,7 @@ import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
 import FontIcon from 'material-ui/FontIcon';
 import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
+import RaisedButton from 'material-ui/RaisedButton';
 import Subheader from 'material-ui/Subheader';
 import {Tabs, Tab} from 'material-ui/Tabs';
 
@@ -23,6 +24,7 @@ const styles = {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
+    flexDirection: 'column',
   },
   tab:{
   	backgroundColor: '#D17400',
@@ -33,13 +35,23 @@ const styles = {
   	backgroundColor: '#D17400',
   	flex: 1,
   	margin: 20,
-    height: 450,
+    height: 240,
     overflowY: 'auto',
   },
 
   dies: {
   	display: 'flex',
+  	flexWrap: 'wrap',
+    justifyContent: 'space-around',
+  },
+
+  createNPC: {
+  	display: 'flex',
   	flex: 1,
+  },
+
+  characterDetailButton: {
+  	color: 'white',
   }
 };
 
@@ -118,27 +130,36 @@ class DungeonMasterHub extends Component{
 		if(tab === "Characters"){
 			return(
 				<div style={styles.root}>
-					<GridList
-						cellHeight={220}
-						style={styles.gridList}>
-						<Subheader>Players</Subheader>
-						{playerList}
-					</GridList>
-					<GridList
-						cellHeight={220}
-						style={styles.gridList}>
-						<Subheader>NPCs</Subheader>
-						{npcList}
-					</GridList>
-					<button onClick={this.createNewNPC}>Create a new NPC</button>
+					<div>
+						<GridList
+							cellHeight={155}
+							style={styles.gridList}>
+							<Subheader>Players</Subheader>
+							{playerList}
+						</GridList>
+						<GridList
+							cellHeight={155}
+							style={styles.gridList}>
+							<Subheader>NPCs</Subheader>
+							{npcList}
+						</GridList>
+					</div>
+					<RaisedButton 
+						style={styles.createNPC}
+						onTouchTap={this.createNewNPC}>
+						Create a new NPC
+					</RaisedButton>
 				</div>
 			)
 		}
 		else if(tab === "Dies"){
 			return(
 				<div style={styles.dies}>
-					{diceRolls}
 					<Dies userID={this.state.userID} campaignID={this.state.campaignID} characterName="DM"/>
+					<div className="App-Dice">
+						<p>Dice Results</p>
+						{diceRolls}
+					</div>
 				</div>
 			)
 		}
@@ -170,9 +191,12 @@ class DungeonMasterHub extends Component{
 				playerList = this.state.campaignPlayers.map((player) => {
 					return(
 						<GridTile
+							cols={0.5}
 							title={player.name}
 							actionIcon={<FlatButton 
 														label="Details" 
+														labelStyle={{fontSize: '10px'}}
+														style={styles.characterDetailButton}
 														onTouchTap={this.handleCardOpen.bind(this, player.name)}>
 														<Popover
 															anchorEl={this.state.popover["target"]}
@@ -206,9 +230,12 @@ class DungeonMasterHub extends Component{
 				npcList = this.state.npcs.map((npc) => {
 					return(
 						<GridTile
+							cols={0.5}
 							title={npc.name}
 							actionIcon={<FlatButton 
 														label="Details" 
+														labelStyle={{fontSize: '10px'}}
+														style={styles.characterDetailButton}
 														onTouchTap={this.handleCardOpen.bind(this, npc.name)}>
 														<Popover
 															anchorEl={this.state.popover["target"]}
@@ -237,7 +264,9 @@ class DungeonMasterHub extends Component{
 			if(this.state.diceRolls.length !== 0){
 				diceRolls = this.state.diceRolls.map((result)=>{
 					return(
-						<div>{result.name} {result.roll}</div>
+						<div className="App-Dice-Section">
+							{result.name} {result.roll}
+						</div>
 						)
 				})
 			}

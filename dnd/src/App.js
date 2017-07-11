@@ -15,25 +15,6 @@ import Authentication from './containers/Authentication';
 import CreateCampaign from './containers/CreateCampaign';
 import MainHub from './containers/MainHub';
 
-/*
-	Layout of the app:
-		App:
-			-Authentication
-			-MainHub
-				=CreateCampaign
-				=CampaignList
-				=UserCampaignList
-					-CampaignHub
-						=Map
-						=CharacterHub
-							-Stats
-							-Note
-							-Inventory
-							-MagicAndAbilities
-						=CreateCharacter
-							-CharacterInfoForm
-*/
-
 class App extends Component {
    constructor(props){
     super(props);
