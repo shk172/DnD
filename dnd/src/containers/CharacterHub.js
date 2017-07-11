@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
+import Dies from './Dies';
 import Note from './Note';
 import Stats from './Stats';
 
@@ -58,7 +59,9 @@ class CharacterHub extends Component {
             <div className="App-note">
               <Note player={this.state.character}/>
             </div> 
+            <Dies userID={this.state.userID} campaignID={this.state.campaignID} characterName={this.state.character.name}/>
           </div>
+
         </div> 
       );      
     }
