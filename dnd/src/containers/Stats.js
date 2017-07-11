@@ -1,7 +1,3 @@
-/*
-** TODO: Ability to increment/decrement levels (should this be up to the DM or the character? -- DM gets to choose)
-*/
-
 import React, { Component } from 'react';
 import '../App.css';
 
@@ -13,31 +9,11 @@ class Stats extends Component{
       character: this.props.character,
     };
     
-    //this.incrementLevel = this.incrementLevel.bind(this);
-    //this.decrementLevel = this.decrementLevel.bind(this);
     this.showStats = this.showStats.bind(this);
     this.showSkills = this.showSkills.bind(this);
     this.showStatsOrSkills = this.showStatsOrSkills.bind(this);
   }
-/*
-  incrementLevel(event){
-    if(user.level < 99){
-      user.level += 1;
-      var tmp = {};
-      tmp.level = user.level;
-      userRef.update(tmp);
-    }
-  }
 
-  decrementLevel(event){
-    if(user.level > 1){
-      user.level -= 1;
-      var tmp = {};
-      tmp.level = user.level;
-      userRef.update(tmp);
-    }
-  }
-  */
   showStats(){
     this.setState({showingStats: true});
   }
@@ -52,10 +28,7 @@ class Stats extends Component{
           <ul>
             <li>Name: {this.state.character.name}</li>
             <li>Race: {this.state.character.race}</li>
-            <li>Level: {this.state.character.level} 
-              <button onClick={this.decrementLevel}> - </button>
-              <button onClick={this.incrementLevel}> + </button>
-            </li>
+            <li>Level: {this.state.character.level}</li>
             <li>Health: {this.state.character.health}</li>
             <li>Money: {this.state.character.money}</li>
           </ul>

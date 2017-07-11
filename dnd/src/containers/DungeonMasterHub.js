@@ -265,7 +265,7 @@ class DungeonMasterHub extends Component{
 				diceRolls = this.state.diceRolls.map((result)=>{
 					return(
 						<div className="App-Dice-Section">
-							{result.name} {result.roll}
+							{result.name}<br/> {result.roll}
 						</div>
 						)
 				})

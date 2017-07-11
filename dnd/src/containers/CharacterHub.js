@@ -9,6 +9,7 @@ class CharacterHub extends Component {
     super(props);
     this.state={
       character: this.props.character,
+      campaignID: this.props.campaignID,
       diceResult: {
         4: 1,
         6: 1,

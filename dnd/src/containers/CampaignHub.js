@@ -69,7 +69,9 @@ class CampaignHub extends Component{
 		else{
 			return(
 				<div>
-					<CharacterHub character={this.state.character}/>
+					<CharacterHub 
+						character={this.state.character} 
+						campaignID={this.state.campaignID}/>
 				</div>
 			)
 		}
