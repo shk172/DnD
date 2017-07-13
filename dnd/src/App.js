@@ -9,18 +9,21 @@ import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
 
 import Authentication from './containers/Authentication';
-import CreateCampaign from './containers/CreateCampaign';
 import MainHub from './containers/MainHub';
+
+const styles = {
+  bar: {
+    backgroundColor: '#D17400',
+  },
+};
 
 class App extends Component {
    constructor(props){
     super(props);
     this.state={
       loading: true,
-      createdCampaign: false,
     }
     injectTapEventPlugin();
     this.onUpdate = this.onUpdate.bind(this);
@@ -106,11 +109,6 @@ class App extends Component {
               style={styles.bar}
               title={Title}
               iconElementLeft={<Logged/>}
-              iconElementRight={
-                <CreateCampaign 
-                  userID={this.state.user.uid}
-                  creatingCampaign={this.state.createdCampaign}
-                  onUpdate={this.onUpdate}/>}
             />
         	<MainHub onUpdate={this.onUpdate}/>
         </div> 
@@ -124,9 +122,5 @@ class App extends Component {
     }
   }
 }
-const styles = {
-  bar: {
-    backgroundColor: '#D17400',
-  },
-};
+
 export default App;

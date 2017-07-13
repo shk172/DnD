@@ -4,7 +4,7 @@ export default function importCampaignNPCs(campaignID){
 	return new Promise(function(resolve, reject) {
 		var campaignRef = firebase.database().ref("Campaigns/" + campaignID + "/NPCs");
 		var campaignNPCs = [];
-		campaignRef.on("value", (data) => {
+		campaignRef.once("value", (data) => {
 			if(data.val() !== null){
 				var npcCounter = 0;
 				Object.keys(data.val()).forEach(function(key, index){

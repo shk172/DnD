@@ -2,9 +2,27 @@
 
 import React, { Component } from 'react';
 import {List, ListItem} from 'material-ui/List';
-import Divider from 'material-ui/Divider';
-import FlatButton from 'material-ui/FlatButton';
-import IconButton from 'material-ui/IconButton';
+import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+
+const styles = {
+  toolbar: {
+  	display: "flex",
+  	height: 45,
+  	backgroundColor: '#D17400',
+  	alignItems: "center",
+  },
+  toolbarTitle: {
+  	height: 40,
+  	fontSize: '18px',
+  	textAlign: "center",
+  	lineHeight: "42px",
+  },
+  list:{
+  	maxHeight: 360,
+  	overflow: 'auto',
+  }
+};
+
 
 class CampaignList extends Component{
 	constructor(props){
@@ -35,8 +53,10 @@ class CampaignList extends Component{
 
 		return(
 			<div className="App-Campaign-List">
-				Campaigns
-				<List>
+				<Toolbar style={styles.toolbar}>
+					<ToolbarTitle style={styles.toolbarTitle} text="Campaigns"/>
+				</Toolbar>
+				<List style={styles.list}>
 					{campaignList}
 				</List>
 			</div>

@@ -80,25 +80,17 @@ class DungeonMasterHub extends Component{
 		}
 
 		this.createNewNPC = this.createNewNPC.bind(this);
-		this.listenForUpdates = this.listenForUpdates.bind(this);
+		this.importCharacters = this.importCharacters.bind(this);
+		this.listenForNPCUpdates = this.listenForNPCUpdates.bind(this);
+		this.listenForPlayerUpdates = this.listenForPlayerUpdates.bind(this);
+		this.listenForDiceUpdates = this.listenForDiceUpdates.bind(this);
 		this.onUpdate = this.onUpdate.bind(this);
 		this.pageRender = this.pageRender.bind(this);
 		this.rollDice = this.rollDice.bind(this);
 	}
 
 	componentWillMount(){
-		var cPlayers = [];
-		importCampaignPlayers(this.state.campaignID).then((campaignPlayers)=>{
-			cPlayers = campaignPlayers;
-		}).then(()=>{
-			importCampaignNPCs(this.state.campaignID).then((npcs)=>{
-				this.setState({
-					npcs: npcs,
-					campaignPlayers: cPlayers,
-					loading: false,
-				})
-			});
-		});
+		this.importCharacters();
 	}
 
 	createNewNPC(){
@@ -120,6 +112,21 @@ class DungeonMasterHub extends Component{
 
 	handleTabChange(tab){
 		this.setState({tab: tab});
+	}
+
+	importCharacters(){
+		var cPlayers = [];
+		importCampaignPlayers(this.state.campaignID).then((campaignPlayers)=>{
+			cPlayers = campaignPlayers;
+		}).then(()=>{
+			importCampaignNPCs(this.state.campaignID).then((npcs)=>{
+				this.setState({
+					npcs: npcs,
+					campaignPlayers: cPlayers,
+					loading: false,
+				})
+			});
+		});
 	}
 
 	onUpdate(data){
@@ -192,18 +199,18 @@ class DungeonMasterHub extends Component{
 					return(
 						<GridTile
 							cols={0.5}
-							title={player.name}
+							title={player.Name}
 							actionIcon={<FlatButton 
 														label="Details" 
 														labelStyle={{fontSize: '10px'}}
 														style={styles.characterDetailButton}
-														onTouchTap={this.handleCardOpen.bind(this, player.name)}>
+														onTouchTap={this.handleCardOpen.bind(this, player.Name)}>
 														<Popover
 															anchorEl={this.state.popover["target"]}
-										          open={this.state.popover[player.name]}
+										          open={this.state.popover[player.Name]}
 										          anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
 										          targetOrigin={{horizontal: 'right', vertical: 'top'}}
-										          onRequestClose={this.handleCardOpen.bind(this, player.name)}>
+										          onRequestClose={this.handleCardOpen.bind(this, player.Name)}>
 										        	<Card>
 																<CardHeader
 																	subtitle={<PlayerSummary player={player}/>}
@@ -231,18 +238,18 @@ class DungeonMasterHub extends Component{
 					return(
 						<GridTile
 							cols={0.5}
-							title={npc.name}
+							title={npc.Name}
 							actionIcon={<FlatButton 
 														label="Details" 
 														labelStyle={{fontSize: '10px'}}
 														style={styles.characterDetailButton}
-														onTouchTap={this.handleCardOpen.bind(this, npc.name)}>
+														onTouchTap={this.handleCardOpen.bind(this, npc.Name)}>
 														<Popover
 															anchorEl={this.state.popover["target"]}
-										          open={this.state.popover[npc.name]}
+										          open={this.state.popover[npc.Name]}
 										          anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
 										          targetOrigin={{horizontal: 'right', vertical: 'top'}}
-										          onRequestClose={this.handleCardOpen.bind(this, npc.name)}>
+										          onRequestClose={this.handleCardOpen.bind(this, npc.Name)}>
 										        	<Card>
 																<CardHeader
 																	subtitle={<PlayerSummary player={npc}/>}
@@ -294,10 +301,27 @@ class DungeonMasterHub extends Component{
 	}
 
 	componentDidMount(){
-		this.listenForUpdates();
+		this.listenForDiceUpdates();
+		this.listenForNPCUpdates();
 	}
 
-	listenForUpdates() {
+	listenForPlayerUpdates(){
+		var app = this;
+		const npcRef = firebase.database().ref("Campaigns/" + this.state.campaignID + "/NPCs");
+		npcRef.on("value", (npcs)=>{
+			this.importCharacters();
+		})
+	}
+
+	listenForNPCUpdates(){
+		var app = this;
+		const npcRef = firebase.database().ref("Campaigns/" + this.state.campaignID + "/NPCs");
+		npcRef.on("value", (npcs)=>{
+			this.importCharacters();
+		})
+	}
+
+	listenForDiceUpdates() {
 		var app = this;
 	  const diceResultRef = firebase.database().ref("Campaigns/" + this.state.campaignID + "/DiceResults");
 	  diceResultRef.on("value", (results)=>{
@@ -317,9 +341,3 @@ class DungeonMasterHub extends Component{
 }
 
 export default DungeonMasterHub;
-
-
-
-/*<Popover>
-									
-								</Popover>*/

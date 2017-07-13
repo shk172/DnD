@@ -14,7 +14,7 @@ class Note extends Component{
   onChange(editorState) {
     this.setState({editorState});
     var tmp ={}
-    tmp.note = this.state.editorState.getCurrentContent().getPlainText();
+    tmp.Note = this.state.editorState.getCurrentContent().getPlainText();
     this.playerRef.update(tmp);
   }
 
@@ -28,8 +28,8 @@ class Note extends Component{
   }
 
   componentWillMount(){
-    console.log(this.player.note);
-    if(this.player.note === ""){
+    console.log(this.player.Note);
+    if(this.player.Note === ""){
       this.setState({
         editorState: EditorState.createWithContent(
         ContentState.createFromText("Type your notes here"))

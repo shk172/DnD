@@ -11,7 +11,6 @@ class Stats extends Component{
     
     this.showStats = this.showStats.bind(this);
     this.showSkills = this.showSkills.bind(this);
-    this.showStatsOrSkills = this.showStatsOrSkills.bind(this);
   }
 
   showStats(){
@@ -20,69 +19,54 @@ class Stats extends Component{
   showSkills(){
     this.setState({showingStats: false});
   }
-  
-  showStatsOrSkills(boolean){
-    if(boolean){
-      return(
-        <div>
+
+
+  render(){
+    return (
+      <div className="App-modules">
+        <div className="App-stats">
           <ul>
-            <li>Name: {this.state.character.name}</li>
-            <li>Race: {this.state.character.race}</li>
-            <li>Level: {this.state.character.level}</li>
-            <li>Health: {this.state.character.health}</li>
-            <li>Money: {this.state.character.money}</li>
+            <li>Name: {this.state.character.Name}</li>
+            <li>Race: {this.state.character.Race}</li>
+            <li>Level: {this.state.character.Level}</li>
+            <li>Health: {this.state.character.Health}</li>
+            <li>Money: {this.state.character.Money}</li>
           </ul>
           <br/>
           Stats:
           <ul>
-            <li>Strength: {this.state.character.stats.strength}</li>
-            <li>Dexterity: {this.state.character.stats.dexterity}</li>
-            <li>Constitution: {this.state.character.stats.constitution}</li>
-            <li>Intelligence: {this.state.character.stats.intelligence}</li>
-            <li>Wisdom: {this.state.character.stats.wisdom}</li>
-            <li>Charisma: {this.state.character.stats.charisma}</li>
+            <li>Strength: {this.state.character.Stats.Strength}</li>
+            <li>Dexterity: {this.state.character.Stats.Dexterity}</li>
+            <li>Constitution: {this.state.character.Stats.Constitution}</li>
+            <li>Intelligence: {this.state.character.Stats.Intelligence}</li>
+            <li>Wisdom: {this.state.character.Stats.Wisdom}</li>
+            <li>Charisma: {this.state.character.Stats.Charisma}</li>
           </ul>
         </div>
-      )      
-    }
-    else{
-      return(
-        <div>
-          Skills:
-          <ul>
-            <li>Acrobatics: {this.state.character.skills.acrobatics}</li>
-            <li>Animal Handling: {this.state.character.skills.animalHandling}</li>
-            <li>Arcana: {this.state.character.skills.arcana}</li>
-            <li>Athletics: {this.state.character.skills.athletics}</li>
-            <li>Deception: {this.state.character.skills.deception}</li>
-            <li>History: {this.state.character.skills.history}</li>
-            <li>Insight: {this.state.character.skills.insight}</li>
-            <li>Intimidation: {this.state.character.skills.intimidation}</li>
-            <li>Investigation: {this.state.character.skills.investigation}</li>
-            <li>Medicine: {this.state.character.skills.medicine}</li>
-            <li>Nature: {this.state.character.skills.nature}</li>
-            <li>Perception: {this.state.character.skills.perception}</li>
-            <li>Performance: {this.state.character.skills.performance}</li>
-            <li>Persuasion: {this.state.character.skills.persuasion}</li>
-            <li>Religion: {this.state.character.skills.religion}</li>
-            <li>Sleight of Hand: {this.state.character.skills.sleightOfHand}</li>
-            <li>Stealth: {this.state.character.skills.stealth}</li>
-            <li>Survival: {this.state.character.skills.survival}</li>
-          </ul>
-        </div>
-      )
-    }
-  }
-
-  render(){
-    return (
-      <div>
-        <div>
-          <button onClick={this.showStats} className="App-auth-signupbutton">Stats</button>
-          <button onClick={this.showSkills} className="App-auth-signinbutton">Skills</button>
-        </div>
-        {this.showStatsOrSkills(this.state.showingStats)}
+      <div className="App-stats">
+        Skills:
+        <ul>
+          <li>Acrobatics: {this.state.character.Skills.Acrobatics}</li>
+          <li>Animal Handling: {this.state.character.Skills.AnimalHandling}</li>
+          <li>Arcana: {this.state.character.Skills.Arcana}</li>
+          <li>Athletics: {this.state.character.Skills.Athletics}</li>
+          <li>Deception: {this.state.character.Skills.Deception}</li>
+          <li>History: {this.state.character.Skills.History}</li>
+          <li>Insight: {this.state.character.Skills.Insight}</li>
+          <li>Intimidation: {this.state.character.Skills.Intimidation}</li>
+          <li>Investigation: {this.state.character.Skills.Investigation}</li>
+          <li>Medicine: {this.state.character.Skills.Medicine}</li>
+          <li>Nature: {this.state.character.Skills.Nature}</li>
+          <li>Perception: {this.state.character.Skills.Perception}</li>
+          <li>Performance: {this.state.character.Skills.Performance}</li>
+          <li>Persuasion: {this.state.character.Skills.Persuasion}</li>
+          <li>Religion: {this.state.character.Skills.Religion}</li>
+          <li>Sleight of Hand: {this.state.character.Skills.SleightOfHand}</li>
+          <li>Stealth: {this.state.character.Skills.Stealth}</li>
+          <li>Survival: {this.state.character.Skills.Survival}</li>
+        </ul>
       </div>
+    </div>
     );
   }
 }
