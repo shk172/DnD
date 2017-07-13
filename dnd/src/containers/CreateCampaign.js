@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import firebase from 'firebase';
 import getCampaign from '../services/getCampaign';
 import hashCode from '../services/hashCode';
-import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+
+const styles = {
+  button: {
+  	height: 30,
+  	backgroundColor: "#FFCA81"
+  }
+};
 
 class CreateCampaign extends Component{
 	constructor(props){
@@ -68,8 +75,9 @@ class CreateCampaign extends Component{
 
 		else{
 			return(
-				<FlatButton 
-					label="Create a New Campaign"
+				<RaisedButton 
+					style={styles.button}
+					label="New Campaign"
 					onTouchTap={()=>{this.setState({create: true})}}/>
 			)
 		}

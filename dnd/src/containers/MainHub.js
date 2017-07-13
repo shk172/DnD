@@ -16,20 +16,38 @@ class MainHub extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			
 			campaignsLoading: true,
 			userCampaignsLoading: true,
 			inCampaign: false,
 			userID: firebase.auth().currentUser.uid,
-			campaignOpen: false,
+			campaignOpen: false
 		};
 
 		this.enterExistingCampaign = this.enterExistingCampaign.bind(this);
 		this.enterExistingCampaignAsDM = this.enterExistingCampaignAsDM.bind(this);
+		this.initializeLists = this.initializeLists.bind(this);
 		this.onUpdate = this.onUpdate.bind(this);
 	}
 
 	componentWillMount(){
+		this.initializeLists();
+	}
+
+	enterExistingCampaign(campaignID){
+		this.setState({
+			campaignID: campaignID,
+			campaignOpen: true,
+		});
+	}
+
+	enterExistingCampaignAsDM(campaignID){
+		this.setState({
+			campaignID: campaignID,
+			campaignDMOpen: true,
+		});
+	}
+
+	initializeLists(){
 		var hub = this;
 		importUserCampaigns(this.state.userID).then(
 			(userCampaigns) =>{
@@ -39,7 +57,6 @@ class MainHub extends Component{
 				})
 				importCampaigns().then(
 					(campaigns) =>{
-
 						var redundancyTable = {};
 
 						var tempCampaigns = [];
@@ -64,6 +81,7 @@ class MainHub extends Component{
 							hub.setState({
 								campaigns: tempCampaigns,
 								campaignsLoading: false,
+								userCampaignCreated: false,
 							});
 						}
 					},
@@ -76,20 +94,6 @@ class MainHub extends Component{
 				console.log(error);
 			}
 		);
-	}
-
-	enterExistingCampaign(campaignID){
-		this.setState({
-			campaignID: campaignID,
-			campaignOpen: true,
-		});
-	}
-
-	enterExistingCampaignAsDM(campaignID){
-		this.setState({
-			campaignID: campaignID,
-			campaignDMOpen: true,
-		});
 	}
 
 	onUpdate(data){
@@ -130,16 +134,29 @@ class MainHub extends Component{
 					<div className="App-Lists">
 						<CampaignList 
 							campaigns={this.state.campaigns} 
-							enterExistingCampaign={this.enterExistingCampaign}/>
+							enterExistingCampaign={this.enterExistingCampaign}
+							onUpdate={this.onUpdate}/>
 						<UserCampaignList 
 							campaigns={this.state.userCampaigns} 
 							userID={this.state.userID} 
 							enterExistingCampaign={this.enterExistingCampaign}
-							enterExistingCampaignAsDM={this.enterExistingCampaignAsDM}/>
+							enterExistingCampaignAsDM={this.enterExistingCampaignAsDM}
+							onUpdate={this.onUpdate}/>
 					</div>
 				</div>
 			)
 		}
 	}
+
+	componentDidMount(){
+		this.listenForUpdates();
+	}
+
+	listenForUpdates() {
+	  const campaignRef = firebase.database().ref("Campaigns/");
+	  campaignRef.on("value", (campaigns)=>{
+	  	this.initializeLists();
+	  });
+	}		
 }
 export default MainHub;

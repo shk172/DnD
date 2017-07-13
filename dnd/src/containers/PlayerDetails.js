@@ -9,30 +9,30 @@ class PlayerDetails extends Component{
 	}
 
 	render(){
-		var playerStats = Object.keys(this.state.player.stats);
-		var playerSTs = Object.keys(this.state.player.savingThrows);
-		var playerSkills = Object.keys(this.state.player.skills);
+		var playerStats = Object.keys(this.state.player.Stats);
+		var playerSTs = Object.keys(this.state.player.SavingThrows);
+		var playerSkills = Object.keys(this.state.player.Skills);
 
 		var playerStatsMap = playerStats.map((key)=>{
 			return(
-				<div>{key}: {this.state.player.stats[key]}</div>);
+				<div>{key}: {this.state.player.Stats[key]}</div>);
 		});
 
 		var playerSTsMap = playerSTs.map((key) =>{
 			return(
-				<div>{key}: {this.state.player.savingThrows[key]} </div>);
+				<div>{key}: {this.state.player.SavingThrows[key]} </div>);
 		});
 
-		var playerSkills = playerSkills.map((key) =>{
+		var playerSkillsMap = playerSkills.map((key) =>{
 			return(
-				<div>{key}: {this.state.player.skills[key]} </div>);
+				<div>{key}: {this.state.player.Skills[key]} </div>);
 		});
 
 		return(
 			<div>
 				{playerStatsMap}
 				{playerSTsMap}
-				{playerSkills}
+				{playerSkillsMap}
 			</div>
 			);
 	}

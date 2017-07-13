@@ -6,39 +6,39 @@ export default function importPlayerCharacter (userID, campaignID) {
 			if(user){
 				var campaignRef = firebase.database().ref("Players/" + userID + "/Campaigns/" + campaignID);
 			  	var player = {};
-			  	var stats = {};
-			  	var savingThrows = {};
-			  	var skills = {};
+			  	var Stats = {};
+			  	var SavingThrows = {};
+			  	var Skills = {};
 
-			    campaignRef.on("value", (data) => {
+			    campaignRef.once("value", (data) => {
 					if(data.val() === null || Object.keys(data.val()).length <= 1){
 						resolve(player);
 					}
 					else{
-			      player.name = data.val().name;
-			      player.race = data.val().race;
-			      player.level = data.val().level;
-			      player.note = data.val().note;
-			      player.money = data.val().money;
-			      player.health = data.val().health;
+			      player.Name = data.val().Name;
+			      player.Race = data.val().Race;
+			      player.Level = data.val().Level;
+			      player.Note = data.val().Note;
+			      player.Money = data.val().Money;
+			      player.Health = data.val().Health;
 			      player.armorClass = data.val().armorClass;
 			      player.speed = data.val().speed;
 
-			      Object.keys(data.val().stats).forEach(function(key, index){
-			      	stats[key]= data.val().stats[key];
+			      Object.keys(data.val().Stats).forEach(function(key, index){
+			      	Stats[key]= data.val().Stats[key];
 			      });
 
-			      Object.keys(data.val().skills).forEach(function(key, index){
-			      	skills[key]= data.val().skills[key];
+			      Object.keys(data.val().Skills).forEach(function(key, index){
+			      	Skills[key]= data.val().Skills[key];
 			      });
 
-			      Object.keys(data.val().savingThrows).forEach(function(key, index){
-			      	savingThrows[key]= data.val().savingThrows[key];
+			      Object.keys(data.val().SavingThrows).forEach(function(key, index){
+			      	SavingThrows[key]= data.val().SavingThrows[key];
 			      });
 
-			      player.skills = skills;
-			      player.stats = stats;
-			      player.savingThrows = savingThrows;
+			      player.Skills = Skills;
+			      player.Stats = Stats;
+			      player.SavingThrows = SavingThrows;
 			      resolve(player);
 			    }
 				}, function(error){

@@ -8,41 +8,46 @@ class CharacterInfoForm extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			tempName: "",
-	  		tempRace: "Dragonborn",
+			Name: "",
+	  		Race: "Dragonborn",
 
-			tempStrength: 0,
-		    tempDexterity: 0,
-		    tempConstitution: 0,
-		    tempIntelligence: 0,
-		    tempWisdom: 0,
-		    tempCharisma: 0,
+	  		Stats: ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"],
+			Strength: 0,
+		    Dexterity: 0,
+		    Constitution: 0,
+		    Intelligence: 0,
+		    Wisdom: 0,
+		    Charisma: 0,
 
-		    tempStrengthST: 0,
-		    tempDexterityST: 0,
-		    tempConstitutionST: 0,
-		    tempIntelligenceST: 0,
-		    tempWisdomST: 0,
-		    tempCharismaST: 0,
+		    SavingThrows: ["StrengthST", "DexterityST", "ConstitutionST", "IntelligenceST", "WisdomST", "CharismaST"],
+		    StrengthST: 0,
+		    DexterityST: 0,
+		    ConstitutionST: 0,
+		    IntelligenceST: 0,
+		    WisdomST: 0,
+		    CharismaST: 0,
 
-		    tempAcrobatics: 0,
-		    tempAnimalHandling: 0,
-		    tempArcana: 0,
-		    tempAthletics: 0,
-		    tempDeception: 0,
-		    tempHistory: 0,
-		    tempInsight: 0,
-		    tempIntimidation: 0,
-		    tempInvestigation: 0,
-		    tempMedicine: 0,
-		    tempNature: 0,
-		    tempPerception: 0,
-		    tempPerformance: 0,
-		    tempPersuasion: 0,
-		    tempReligion: 0,
-		    tempSleightOfHand: 0,
-		    tempStealth: 0,
-		    tempSurvival: 0,
+		    Skills: ["Acrobatics", "AnimalHandling", "Arcana", "Athletics", "Deception", "History", "Insight", 
+		    "Intimidation", "Investigation", "Medicine", "Nature", "Perception", "Performance", "Persuasion", "Religion",
+		    "SleightOfHand", "Stealth", "Survival"],
+		    Acrobatics: 0,
+		    AnimalHandling: 0,
+		    Arcana: 0,
+		    Athletics: 0,
+		    Deception: 0,
+		    History: 0,
+		    Insight: 0,
+		    Intimidation: 0,
+		    Investigation: 0,
+		    Medicine: 0,
+		    Nature: 0,
+		    Perception: 0,
+		    Performance: 0,
+		    Persuasion: 0,
+		    Religion: 0,
+		    SleightOfHand: 0,
+		    Stealth: 0,
+		    Survival: 0,
 
 		    userID: this.props.userID,
 		    campaignID: this.props.campaignID,
@@ -57,53 +62,34 @@ class CharacterInfoForm extends Component{
 
 	submitInfo(event){
 	  var character = {};
-	  var stats = {};
-	  var savingThrows = {};
-	  var skills = {};
-	  character.name = this.state.tempName;
-	  character.race = this.state.tempRace;
-	  character.level= 1;
-	  character.health = 20;
-	  character.note = '';
-	  character.money = 0;
 
-	  stats.strength = this.state.tempStrength;
-	  stats.dexterity = this.state.tempDexterity;
-	  stats.constitution = this.state.tempConstitution;
-	  stats.intelligence = this.state.tempIntelligence;
-	  stats.wisdom = this.state.tempWisdom;
-	  stats.charisma = this.state.tempCharisma;
+	  character.Name = this.state.Name;
+	  character.Race = this.state.Race;
+	  character.Level= 1;
+	  character.Health = 20;
+	  character.Note = '';
+	  character.Money = 0;
 
-	  savingThrows.strengthST = this.state.tempStrengthST;
-	  savingThrows.dexterityST = this.state.tempDexterityST;
-	  savingThrows.constitutionST = this.state.tempConstitutionST;
-	  savingThrows.intelligenceST = this.state.tempIntelligenceST;
-	  savingThrows.wisdomST = this.state.tempWisdomST;
-	  savingThrows.charismaST = this.state.tempCharismaST;
+	  character.Skills = {};
+	  character.Stats = {};
+	  character.SavingThrows = {};
 
-	  skills.acrobatics = this.state.tempAcrobatics;
-	  skills.animalHandling = this.state.tempAnimalHandling;
-	  skills.arcana = this.state.tempArcana;
-	  skills.athletics = this.state.tempAthletics;
-	  skills.deception = this.state.tempDeception;
-	  skills.history = this.state.tempHistory;
-	  skills.insight = this.state.tempInsight;
-	  skills.intimidation = this.state.tempIntimidation;
-	  skills.investigation = this.state.tempInvestigation;
-	  skills.medicine = this.state.tempMedicine;
-	  skills.nature = this.state.tempNature;
-	  skills.perception = this.state.tempPerception;
-	  skills.performance = this.state.tempPerformance;
-	  skills.persuasion = this.state.tempPersuasion;
-	  skills.religion = this.state.tempReligion;
-	  skills.sleightOfHand = this.state.tempSleightOfHand;
-	  skills.stealth = this.state.tempStealth;
-	  skills.survival = this.state.tempSurvival;
+	  this.state.Stats.forEach((stat)=>{
+	  	character.Stats[stat] = this.state[stat];
+	  })
 
-	  character.skills = skills;
-	  character.stats = stats;
-	  character.savingThrows = savingThrows;
+	  this.state.SavingThrows.forEach((savingThrows)=>{
+	  	character.SavingThrows[savingThrows] = this.state[savingThrows];
+	  })
+
+	  this.state.Skills.forEach((skill)=>{
+	  	character.Skills[skill] = this.state[skill];
+	  })
+	  
+	  console.log(character);
+
 	  character.campaignID = this.state.campaignID;
+
 	  if(this.state.characterType === "Players"){
 	  	var playerCampaignRef = firebase.database().ref("Players/" + this.state.userID + "/Campaigns/" + this.state.campaignID);
 	  	playerCampaignRef.update(character);
@@ -126,7 +112,7 @@ class CharacterInfoForm extends Component{
 	  else{
 	  	var campaignNPCRef = firebase.database().ref("Campaigns/" + this.state.campaignID  + "/NPCs/");
 	  	var player = {};
-	  	player[character.name] = character;
+	  	player[character.Name] = character;
 	  	campaignNPCRef.update(player);
 	  	this.props.onUpdate({
 		  	npcCreate: false,
@@ -139,112 +125,18 @@ class CharacterInfoForm extends Component{
 
   raceChange(event){
     this.setState({
-    	tempRace: event.target.value
+    	Race: event.target.value
     });
   }
 
   nameChange(event){
-    this.setState({tempName: event.target.value});
+    this.setState({Name: event.target.value});
   }
 
   statChange(event){
-    switch(event.target.name){
-      //Stats
-      case "Strength":
-        this.setState({tempStrength: event.target.value});
-        break;
-      case "Dexterity":
-        this.setState({tempDexterity: event.target.value});
-        break;
-      case "Constitution":
-        this.setState({tempConstitution: event.target.value});
-        break;
-      case "Intelligence":
-        this.setState({tempIntelligence: event.target.value});
-        break;
-      case "Wisdom":
-        this.setState({tempWisdom: event.target.value});
-        break;
-      case "Charisma":
-        this.setState({tempCharisma: event.target.value});
-        break;
-
-      //Saving Throws
-      case "StrengthST":
-        this.setState({tempStrengthST: event.target.value});
-        break;
-      case "DexterityST":
-        this.setState({tempDexterityST: event.target.value});
-        break;
-      case "ConstitutionST":
-        this.setState({tempConstitutionST: event.target.value});
-        break;
-      case "IntelligenceST":
-        this.setState({tempIntelligenceST: event.target.value});
-        break;
-      case "WisdomST":
-        this.setState({tempWisdomST: event.target.value});
-        break;
-      case "CharismaST":
-        this.setState({tempCharismaST: event.target.value});
-        break;
-
-      //Skills
-      case "Acrobatics":
-        this.setState({tempAcrobatics: event.target.value});
-        break;
-      case "AnimalHandling":
-        this.setState({tempAnimalHandling: event.target.value});
-        break;
-      case "Arcana":
-        this.setState({tempArcana: event.target.value});
-        break;
-      case "Athletics":
-        this.setState({tempAthletics: event.target.value});
-        break;
-      case "Deception":
-        this.setState({tempDeception: event.target.value});
-        break;
-      case "History":
-        this.setState({tempHistory: event.target.value});
-        break;
-      case "Insight":
-        this.setState({tempInsight: event.target.value});
-        break;
-      case "Intimidation":
-        this.setState({tempIntimidation: event.target.value});
-        break;
-      case "Investigation":
-        this.setState({tempInvestigation: event.target.value});
-        break;
-      case "Medicine":
-        this.setState({tempMedicine: event.target.value});
-        break;
-      case "Nature":
-        this.setState({tempNature: event.target.value});
-        break;
-      case "Perception":
-        this.setState({tempPerception: event.target.value});
-        break;
-      case "Performance":
-        this.setState({tempPerformance: event.target.value});
-        break;
-      case "Persuasion":
-        this.setState({tempPersuasion: event.target.value});
-        break;
-      case "Religion":
-        this.setState({tempReligion: event.target.value});
-        break;
-      case "SleightOfHand":
-        this.setState({tempSleightOfHand: event.target.value});
-        break;
-      case "Stealth":
-        this.setState({tempStealth: event.target.value});
-        break;
-      case "Survival":
-        this.setState({tempSurvival: event.target.value});
-        break;
-    }
+    var stat = {};
+    stat[event.target.name] = event.target.value;
+    this.setState(stat);
   }
 
 	render(){
@@ -253,9 +145,9 @@ class CharacterInfoForm extends Component{
 	      <form onSubmit={this.submitInfo}>
 	        <label>
 	          <div>
-	            <p>Name: <input type="text" value={this.state.tempName} onChange={this.nameChange}/></p>
+	            <p>Name: <input type="text" value={this.state.Name} onChange={this.nameChange}/></p>
 	            <p>Race: 
-	            <select value={this.state.tempRace} onChange={this.raceChange}>
+	            <select value={this.state.Race} onChange={this.raceChange}>
 	            	<option value="Dragonborn">Dragonborn</option>
 	            	<option value="Dwarf">Dwarf</option>
 	            	<option value="Elf">Elf</option>
@@ -269,47 +161,47 @@ class CharacterInfoForm extends Component{
 	            </p>
 	            
 	            <p>Stats</p>
-	            <p>Strength: <input type="number" name="Strength" value={this.state.tempStrength} onChange={this.statChange}/></p>
-	            <p>Dexterity: <input type="number" name="Dexterity" value={this.state.tempDexterity} onChange={this.statChange}/></p>
-	            <p>Constitution: <input type="number" name="Constitution" value={this.state.tempConstitution} onChange={this.statChange}/></p>
-	            <p>Intelligence: <input type="number" name="Intelligence" value={this.state.tempIntelligence} onChange={this.statChange}/></p>
-	            <p>Wisdom: <input type="number" name="Wisdom" value={this.state.tempWisdom} onChange={this.statChange}/></p>
-	            <p>Charisma: <input type="number" name="Charisma" value={this.state.tempCharisma} onChange={this.statChange}/></p>
+	            <p>Strength: <input type="number" name="Strength" value={this.state.Strength} onChange={this.statChange}/></p>
+	            <p>Dexterity: <input type="number" name="Dexterity" value={this.state.Dexterity} onChange={this.statChange}/></p>
+	            <p>Constitution: <input type="number" name="Constitution" value={this.state.Constitution} onChange={this.statChange}/></p>
+	            <p>Intelligence: <input type="number" name="Intelligence" value={this.state.Intelligence} onChange={this.statChange}/></p>
+	            <p>Wisdom: <input type="number" name="Wisdom" value={this.state.Wisdom} onChange={this.statChange}/></p>
+	            <p>Charisma: <input type="number" name="Charisma" value={this.state.Charisma} onChange={this.statChange}/></p>
 	            
 	            <p>Saving Throws</p>
-	            <p>Strength: <input type="number" name="StrengthST" value={this.state.tempStrengthST} onChange={this.statChange}/></p>
-	            <p>Dexterity: <input type="number" name="DexterityST" value={this.state.tempDexterityST} onChange={this.statChange}/></p>
-	            <p>Constitution: <input type="number" name="ConstitutionST" value={this.state.tempConstitutionST} onChange={this.statChange}/></p>
-	            <p>Intelligence: <input type="number" name="IntelligenceST" value={this.state.tempIntelligenceST} onChange={this.statChange}/></p>
-	            <p>Wisdom: <input type="number" name="WisdomST" value={this.state.tempWisdomST} onChange={this.statChange}/></p>
-	            <p>Charisma: <input type="number" name="CharismaST" value={this.state.tempCharismaST} onChange={this.statChange}/></p>
+	            <p>Strength: <input type="number" name="StrengthST" value={this.state.StrengthST} onChange={this.statChange}/></p>
+	            <p>Dexterity: <input type="number" name="DexterityST" value={this.state.DexterityST} onChange={this.statChange}/></p>
+	            <p>Constitution: <input type="number" name="ConstitutionST" value={this.state.ConstitutionST} onChange={this.statChange}/></p>
+	            <p>Intelligence: <input type="number" name="IntelligenceST" value={this.state.IntelligenceST} onChange={this.statChange}/></p>
+	            <p>Wisdom: <input type="number" name="WisdomST" value={this.state.WisdomST} onChange={this.statChange}/></p>
+	            <p>Charisma: <input type="number" name="CharismaST" value={this.state.CharismaST} onChange={this.statChange}/></p>
 	          </div>
 	            
 	          <div>
 	            <p>Modifiers</p>
-	            <p>Acrobatics: <input type="number" name="Acrobatics" value={this.state.tempAcrobatics} onChange={this.statChange}/></p>
-	            <p>Animal Handling: <input type="number" name="AnimalHandling" value={this.state.tempAnimalHandling} onChange={this.statChange}/></p>
-	            <p>Arcana: <input type="number" name="Arcana" value={this.state.tempArcana} onChange={this.statChange}/></p>
-	            <p>Athletics: <input type="number" name="Athletics" value={this.state.tempAthletics} onChange={this.statChange}/></p>
-	            <p>Deception: <input type="number" name="Deception" value={this.state.tempDeception} onChange={this.statChange}/></p>
-	            <p>History: <input type="number" name="History" value={this.state.tempHistory} onChange={this.statChange}/></p>
-	            <p>Insight: <input type="number" name="Insight" value={this.state.tempInsight} onChange={this.statChange}/></p>
-	            <p>Intimidation: <input type="number" name="Intimidation" value={this.state.tempIntimidation} onChange={this.statChange}/></p>
-	            <p>Investigation: <input type="number" name="Investigation" value={this.state.tempInvestigation} onChange={this.statChange}/></p>
-	            <p>Medicine: <input type="number" name="Medicine" value={this.state.tempMedicine} onChange={this.statChange}/></p>
-	            <p>Nature: <input type="number" name="Nature" value={this.state.tempNature} onChange={this.statChange}/></p>
-	            <p>Perception: <input type="number" name="Perception" value={this.state.tempPerception} onChange={this.statChange}/></p>
-	            <p>Performance: <input type="number" name="Performance" value={this.state.tempPerformance} onChange={this.statChange}/></p>
-	            <p>Persuasion: <input type="number" name="Persuasion" value={this.state.tempPersuasion} onChange={this.statChange}/></p>
-	            <p>Religion: <input type="number" name="Religion" value={this.state.tempReligion} onChange={this.statChange}/></p>
-	            <p>Sleight of Hand: <input type="number" name="SleightOfHand" value={this.state.tempSleightOfHand} onChange={this.statChange}/></p>
-	            <p>Stealth: <input type="number" name="Stealth" value={this.state.tempStealth} onChange={this.statChange}/></p>
-	            <p>Survival: <input type="number" name="Survival" value={this.state.tempSurvival} onChange={this.statChange}/></p>
+	            <p>Acrobatics: <input type="number" name="Acrobatics" value={this.state.Acrobatics} onChange={this.statChange}/></p>
+	            <p>Animal Handling: <input type="number" name="AnimalHandling" value={this.state.AnimalHandling} onChange={this.statChange}/></p>
+	            <p>Arcana: <input type="number" name="Arcana" value={this.state.Arcana} onChange={this.statChange}/></p>
+	            <p>Athletics: <input type="number" name="Athletics" value={this.state.Athletics} onChange={this.statChange}/></p>
+	            <p>Deception: <input type="number" name="Deception" value={this.state.Deception} onChange={this.statChange}/></p>
+	            <p>History: <input type="number" name="History" value={this.state.History} onChange={this.statChange}/></p>
+	            <p>Insight: <input type="number" name="Insight" value={this.state.Insight} onChange={this.statChange}/></p>
+	            <p>Intimidation: <input type="number" name="Intimidation" value={this.state.Intimidation} onChange={this.statChange}/></p>
+	            <p>Investigation: <input type="number" name="Investigation" value={this.state.Investigation} onChange={this.statChange}/></p>
+	            <p>Medicine: <input type="number" name="Medicine" value={this.state.Medicine} onChange={this.statChange}/></p>
+	            <p>Nature: <input type="number" name="Nature" value={this.state.Nature} onChange={this.statChange}/></p>
+	            <p>Perception: <input type="number" name="Perception" value={this.state.Perception} onChange={this.statChange}/></p>
+	            <p>Performance: <input type="number" name="Performance" value={this.state.Performance} onChange={this.statChange}/></p>
+	            <p>Persuasion: <input type="number" name="Persuasion" value={this.state.Persuasion} onChange={this.statChange}/></p>
+	            <p>Religion: <input type="number" name="Religion" value={this.state.Religion} onChange={this.statChange}/></p>
+	            <p>Sleight of Hand: <input type="number" name="SleightOfHand" value={this.state.SleightOfHand} onChange={this.statChange}/></p>
+	            <p>Stealth: <input type="number" name="Stealth" value={this.state.Stealth} onChange={this.statChange}/></p>
+	            <p>Survival: <input type="number" name="Survival" value={this.state.Survival} onChange={this.statChange}/></p>
 	          </div>  
 
 	          </label>
-	          <p> Name: {this.state.tempName}</p>
-	          <p> Race: {this.state.tempRace}</p> 
+	          <p> Name: {this.state.Name}</p>
+	          <p> Race: {this.state.Race}</p> 
 	          <input type="submit" value="Submit Info"/>
 	      </form>     
 	    </div>

@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 
-import FlatButton from 'material-ui/FlatButton';
 import {List, ListItem} from 'material-ui/List';
 
 import firebase from 'firebase';

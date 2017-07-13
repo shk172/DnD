@@ -5,7 +5,7 @@ export default function importUserCampaigns () {
 	return new Promise(function(resolve, reject) {
 		var playerCampaignRef = firebase.database().ref("Players/" + firebase.auth().currentUser.uid + "/Campaigns/");
 		var campaigns = [];
-		playerCampaignRef.on("value", (data) => {
+		playerCampaignRef.once("value", (data) => {
 			if(data.val() !== null){
 				var counter = 0;
 				Object.keys(data.val()).forEach(function(key, index){

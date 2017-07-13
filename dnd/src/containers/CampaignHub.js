@@ -1,10 +1,48 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
 
+import {Tabs, Tab} from 'material-ui/Tabs';
+
 import CharacterHub from './CharacterHub';
 import CharacterInfoForm from './CharacterInfoForm';
 
 import importPlayerCharacter from '../services/importPlayerCharacter';
+
+const styles = {
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    flexDirection: 'column',
+  },
+  tab:{
+  	backgroundColor: '#D17400',
+  },
+
+  gridList: {
+  	display: 'flex',
+  	backgroundColor: '#D17400',
+  	flex: 1,
+  	margin: 20,
+    height: 240,
+    overflowY: 'auto',
+  },
+
+  dies: {
+  	display: 'flex',
+  	flexWrap: 'wrap',
+    justifyContent: 'space-around',
+  },
+
+  createNPC: {
+  	display: 'flex',
+  	flex: 1,
+  },
+
+  characterDetailButton: {
+  	color: 'white',
+  }
+};
 
 class CampaignHub extends Component{
 	constructor(props){
@@ -14,9 +52,9 @@ class CampaignHub extends Component{
 			userID: this.props.userID,
 			campaignID: this.props.campaignID,
 			characterCreate: false,
+			tab: "Character",
 		};
 		this.onUpdate = this.onUpdate.bind(this);
-		this.updateDiceResult = this.updateDiceResult.bind(this);
 	}
 
 	componentWillMount(){
@@ -42,12 +80,9 @@ class CampaignHub extends Component{
    	this.setState(data);
   }
 
-  updateDiceResult(){
-  	var playerCampaignRef = firebase.database().ref("Players/" + this.state.userID + "/Campaigns/" + this.state.campaignID);
-  	playerCampaignRef.on("value", (data)=>{
-
-  	});
-  }
+  handleTabChange(tab){
+		this.setState({tab: tab});
+	}
 
 	render(){
 		if(this.state.loading){
@@ -69,7 +104,18 @@ class CampaignHub extends Component{
 		else{
 			return(
 				<div>
+					<Tabs>
+						<Tab 
+							style={styles.tab}
+							label="Characters"
+							onActive={this.handleTabChange.bind(this, "Characters")}/>
+						<Tab 
+							style={styles.tab}
+							label="Dies"
+							onActive={this.handleTabChange.bind(this, "Dice")}/>
+					</Tabs>
 					<CharacterHub 
+						tab={this.state.tab}
 						character={this.state.character} 
 						campaignID={this.state.campaignID}/>
 				</div>
