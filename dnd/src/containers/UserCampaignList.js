@@ -67,7 +67,7 @@ class UserCampaignList extends Component{
               nestedItems={[
                 <FlatButton 
                   key={campaign.campaignID + '1'}
-                  label={<Link to={'/campaign/'+campaign.campaignID} >Enter Campaign</Link>} 
+                  label={<Link to={'/campaign/'+campaign.campaignID}>Enter Campaign</Link>} 
                   fullWidth={true}/>,
                 <FlatButton
                   key={campaign.campaignID + '2'} 

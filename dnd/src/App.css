@@ -54,6 +54,7 @@
   border-style: solid;
   border-color: black;
   padding: 20px;
+  overflow: auto;
 }
 
 .App-inventoryandmagic{
