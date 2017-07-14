@@ -2,7 +2,8 @@
 
 import React, { Component } from 'react';
 import {List, ListItem} from 'material-ui/List';
-import {Toolbar, ToolbarGroup, ToolbarSeparator, ToolbarTitle} from 'material-ui/Toolbar';
+import { Link } from 'react-router-dom';
+import {Toolbar, ToolbarTitle} from 'material-ui/Toolbar';
 
 const styles = {
   toolbar: {
@@ -44,17 +45,21 @@ class CampaignList extends Component{
 		else{
 			campaignList = this.state.campaigns.map((campaign) => {
 				return(
-					<ListItem
-						onTouchTap={this.chooseCampaign.bind(this, campaign.campaignID)}
-						primaryText={campaign.campaignTitle}
-					/>);
+					<div key={campaign.campaignID}>
+						<ListItem
+							primaryText={
+								<Link to={'/campaign/'+campaign.campaignID}>
+								{campaign.campaignTitle}
+								</Link>}
+						/>
+					</div>);
 			});
 		}
 
 		return(
 			<div className="App-Campaign-List">
 				<Toolbar style={styles.toolbar}>
-					<ToolbarTitle style={styles.toolbarTitle} text="Campaigns"/>
+					<ToolbarTitle style={styles.toolbarTitle} text="Join a new campaign"/>
 				</Toolbar>
 				<List style={styles.list}>
 					{campaignList}

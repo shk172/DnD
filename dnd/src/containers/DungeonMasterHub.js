@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 
 
 import {GridList, GridTile} from 'material-ui/GridList';
-import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
-import FontIcon from 'material-ui/FontIcon';
+import {Card, CardHeader, CardText} from 'material-ui/Card';
 import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
 import RaisedButton from 'material-ui/RaisedButton';
@@ -11,7 +10,7 @@ import Subheader from 'material-ui/Subheader';
 import {Tabs, Tab} from 'material-ui/Tabs';
 
 import CharacterInfoForm from './CharacterInfoForm';
-import Dies from './Dies';
+import DungeonMasterDice from './DungeonMasterDice';
 import PlayerSummary from './PlayerSummary';
 import PlayerDetails from './PlayerDetails';
 
@@ -77,8 +76,10 @@ class DungeonMasterHub extends Component{
 			diceRolls: [],
 			npcCreate: false,
 			tab: "Characters",
+			dungeonMaster: {
+				Name: "Dungeon Master"
+			}
 		}
-
 		this.createNewNPC = this.createNewNPC.bind(this);
 		this.importCharacters = this.importCharacters.bind(this);
 		this.listenForNPCUpdates = this.listenForNPCUpdates.bind(this);
@@ -162,7 +163,9 @@ class DungeonMasterHub extends Component{
 		else if(tab === "Dies"){
 			return(
 				<div style={styles.dies}>
-					<Dies userID={this.state.userID} campaignID={this.state.campaignID} characterName="DM"/>
+					<DungeonMasterDice userID={this.state.userID} 
+							campaignID={this.state.campaignID} 
+							character={this.state.dungeonMaster}/>
 					<div className="App-Dice">
 						<p>Dice Results</p>
 						{diceRolls}
@@ -222,7 +225,7 @@ class DungeonMasterHub extends Component{
 															</Card>
 										        </Popover>
 													</FlatButton>}> 
-							<img src="https://firebasestorage.googleapis.com/v0/b/dungeonsanddragons-113a3.appspot.com/o/Images%2Fno_avatar.png?alt=media&token=c9e2956c-1f73-4f2c-9135-e13b2f108a9f"/>
+							<img role="presentation" src="https://firebasestorage.googleapis.com/v0/b/dungeonsanddragons-113a3.appspot.com/o/Images%2Fno_avatar.png?alt=media&token=c9e2956c-1f73-4f2c-9135-e13b2f108a9f"/>
 						</GridTile>
 						)
 					});
@@ -261,7 +264,7 @@ class DungeonMasterHub extends Component{
 															</Card>
 										        </Popover>
 													</FlatButton>}> 
-							<img src="https://firebasestorage.googleapis.com/v0/b/dungeonsanddragons-113a3.appspot.com/o/Images%2Fno_avatar.png?alt=media&token=c9e2956c-1f73-4f2c-9135-e13b2f108a9f"/>
+							<img role="presentation" src="https://firebasestorage.googleapis.com/v0/b/dungeonsanddragons-113a3.appspot.com/o/Images%2Fno_avatar.png?alt=media&token=c9e2956c-1f73-4f2c-9135-e13b2f108a9f"/>
 						</GridTile>
 						)
 				});
@@ -287,7 +290,7 @@ class DungeonMasterHub extends Component{
 							onActive={this.handleTabChange.bind(this, "Characters")}/>
 						<Tab 
 							style={styles.tab}
-							label="Dies"
+							label="Dice"
 							onActive={this.handleTabChange.bind(this, "Dies")}/>
 					</Tabs>
 					{this.pageRender(this.state.tab, playerList, npcList, diceRolls)}
@@ -306,7 +309,6 @@ class DungeonMasterHub extends Component{
 	}
 
 	listenForPlayerUpdates(){
-		var app = this;
 		const npcRef = firebase.database().ref("Campaigns/" + this.state.campaignID + "/NPCs");
 		npcRef.on("value", (npcs)=>{
 			this.importCharacters();
@@ -314,7 +316,6 @@ class DungeonMasterHub extends Component{
 	}
 
 	listenForNPCUpdates(){
-		var app = this;
 		const npcRef = firebase.database().ref("Campaigns/" + this.state.campaignID + "/NPCs");
 		npcRef.on("value", (npcs)=>{
 			this.importCharacters();

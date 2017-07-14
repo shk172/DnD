@@ -53,7 +53,7 @@ class CharacterInfoForm extends Component{
 		    campaignID: this.props.campaignID,
 		    characterType: this.props.characterType,
 	  	};
-	  
+	  console.log(this.state)
     this.nameChange = this.nameChange.bind(this);
     this.raceChange = this.raceChange.bind(this);
     this.statChange = this.statChange.bind(this);
