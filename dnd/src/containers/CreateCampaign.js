@@ -21,7 +21,6 @@ class CreateCampaign extends Component{
 		};
 		this.handleChange = this.handleChange.bind(this);
 		this.submitCampaign = this.submitCampaign.bind(this);
-		console.log(this.state.userID);
 	}
 
 	handleChange(event){

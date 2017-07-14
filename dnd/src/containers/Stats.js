@@ -8,7 +8,7 @@ class Stats extends Component{
       showingStats: true,
       character: this.props.character,
     };
-    
+    console.log(this.state);
     this.showStats = this.showStats.bind(this);
     this.showSkills = this.showSkills.bind(this);
   }

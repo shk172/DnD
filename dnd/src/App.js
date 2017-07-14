@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import './App.css';
 import firebase from 'firebase';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import { Link } from 'react-router-dom'
 
 import AppBar from 'material-ui/AppBar';
-import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -16,6 +16,10 @@ import MainHub from './containers/MainHub';
 const styles = {
   bar: {
     backgroundColor: '#D17400',
+  },
+  title: {
+    cursor: 'pointer',
+    color: 'white',
   },
 };
 
@@ -70,7 +74,6 @@ class App extends Component {
 
 
   render() {
-    const Title = (<FlatButton onTouchTap={console.log("touched?")}>There Will Be Dragons</FlatButton>)
     const Logged = (props) => (
       <IconMenu
         {...props}
@@ -107,7 +110,7 @@ class App extends Component {
         <div>
            <AppBar
               style={styles.bar}
-              title={Title}
+              title={<Link to='/' ><span style={styles.title}>There Will Be Dragons</span></Link>}
               iconElementLeft={<Logged/>}
             />
         	<MainHub onUpdate={this.onUpdate}/>

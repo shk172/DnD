@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
+import { Route, Switch } from 'react-router-dom'
 
 import importCampaigns from '../services/importCampaigns';
 import importUserCampaigns from '../services/importUserCampaigns';
@@ -13,150 +14,150 @@ import UserCampaignList from './UserCampaignList';
 import './styles/MainHub.css';
 
 class MainHub extends Component{
-	constructor(props){
-		super(props);
-		this.state={
-			campaignsLoading: true,
-			userCampaignsLoading: true,
-			inCampaign: false,
-			userID: firebase.auth().currentUser.uid,
-			campaignOpen: false
-		};
+    constructor(props){
+        super(props);
+        this.state={
+            campaignsLoading: true,
+            userCampaignsLoading: true,
+            inCampaign: false,
+            userID: firebase.auth().currentUser.uid,
+            campaignOpen: false
+        };
 
-		this.enterExistingCampaign = this.enterExistingCampaign.bind(this);
-		this.enterExistingCampaignAsDM = this.enterExistingCampaignAsDM.bind(this);
-		this.initializeLists = this.initializeLists.bind(this);
-		this.onUpdate = this.onUpdate.bind(this);
-	}
+        this.enterExistingCampaign = this.enterExistingCampaign.bind(this);
+        this.enterExistingCampaignAsDM = this.enterExistingCampaignAsDM.bind(this);
+        this.initializeLists = this.initializeLists.bind(this);
+        this.onUpdate = this.onUpdate.bind(this);
+    }
 
-	componentWillMount(){
-		this.initializeLists();
-	}
+    componentWillMount(){
+        this.initializeLists();
+    }
 
-	enterExistingCampaign(campaignID){
-		this.setState({
-			campaignID: campaignID,
-			campaignOpen: true,
-		});
-	}
+    enterExistingCampaign(campaignID){
+        this.setState({
+            campaignID: campaignID,
+            campaignOpen: true,
+        });
+    }
 
-	enterExistingCampaignAsDM(campaignID){
-		this.setState({
-			campaignID: campaignID,
-			campaignDMOpen: true,
-		});
-	}
+    enterExistingCampaignAsDM(campaignID){
+      this.setState({
+        campaignID: campaignID,
+        campaignDMOpen: true,
+      });
+    }
 
-	initializeLists(){
-		var hub = this;
-		importUserCampaigns(this.state.userID).then(
-			(userCampaigns) =>{
-				hub.setState({
-					userCampaigns: userCampaigns,
-					userCampaignsLoading: false,
-				})
-				importCampaigns().then(
-					(campaigns) =>{
-						var redundancyTable = {};
+    initializeLists(){
+        var hub = this;
+        importUserCampaigns(this.state.userID).then(
+            (userCampaigns) =>{
+                hub.setState({
+                    userCampaigns: userCampaigns,
+                    userCampaignsLoading: false,
+                })
+                importCampaigns().then(
+                    (campaigns) =>{
+                        var redundancyTable = {};
 
-						var tempCampaigns = [];
-						var campaignCounter = 0;
-						var userCampaignCounter = 0;
+                        var tempCampaigns = [];
+                        var campaignCounter = 0;
+                        var userCampaignCounter = 0;
 
-						for(var userCampaignIndex in userCampaigns){
-							redundancyTable[userCampaigns[userCampaignIndex].campaignID] = userCampaigns[userCampaignIndex];
-							userCampaignCounter++;
-						}
-						
-						if(userCampaignCounter === userCampaigns.length){
-							for(var campaignIndex in campaigns){
-								if(redundancyTable[campaigns[campaignIndex].campaignID] == null){
-									tempCampaigns.push(campaigns[campaignIndex]);
-								}
-								campaignCounter++;
-							}
-						}
-						
-						if(campaignCounter === campaigns.length){
-							hub.setState({
-								campaigns: tempCampaigns,
-								campaignsLoading: false,
-								userCampaignCreated: false,
-							});
-						}
-					},
-					(error) =>{
-						console.log(error);
-					}
-				);
-			},
-			(error) =>{
-				console.log(error);
-			}
-		);
-	}
+                        for(var userCampaignIndex in userCampaigns){
+                            if(userCampaignIndex){
+                                redundancyTable[userCampaigns[userCampaignIndex].campaignID] = userCampaigns[userCampaignIndex];
+                                userCampaignCounter++;
+                            }
+                        }
+                        
+                        if(userCampaignCounter === userCampaigns.length){
+                            for(var campaignIndex in campaigns){
+                                if(redundancyTable[campaigns[campaignIndex].campaignID] == null){
+                                    tempCampaigns.push(campaigns[campaignIndex]);
+                                }
+                                campaignCounter++;
+                            }
+                        }
+                        
+                        if(campaignCounter === campaigns.length){
+                            hub.setState({
+                                campaigns: tempCampaigns,
+                                campaignsLoading: false,
+                                userCampaignCreated: false,
+                            });
+                        }
+                    },
+                    (error) =>{
+                        console.log(error);
+                    }
+                );
+            },
+            (error) =>{
+                console.log(error);
+            }
+        );
+    }
 
-	onUpdate(data){
-	  this.setState(data);
-	}
+    onUpdate(data){
+      this.setState(data);
+    }
 
-	render(){
-		if(this.state.campaignsLoading){
-			return(
-				<div>Loading...</div>
-			)
-		}
-		if(this.state.userCampaignsLoading){
-			return(
-				<div>Loading...</div>
-			)
-		}
+    render(){
+        var Home = () => (
+            <div className="App-Main-Hub">                  
+                <div className="App-Lists">
+                    <CampaignList 
+                        campaigns={this.state.campaigns} 
+                        enterExistingCampaign={this.enterExistingCampaign}
+                        onUpdate={this.onUpdate}/>
+                    <UserCampaignList 
+                        campaigns={this.state.userCampaigns} 
+                        userID={this.state.userID} 
+                        enterExistingCampaign={this.enterExistingCampaign}
+                        enterExistingCampaignAsDM={this.enterExistingCampaignAsDM}
+                        onUpdate={this.onUpdate}/>
+                </div>
+            </div>
+        )
 
-		if(this.state.campaignOpen){
-			return(
-				<CampaignHub 
-					userID={this.state.userID} 
-					campaignID={this.state.campaignID}/>
-			)
-		}
+        if(this.state.campaignsLoading){
+            return(
+                <div>Loading...</div>
+            )
+        }
+        if(this.state.userCampaignsLoading){
+            return(
+                <div>Loading...</div>
+            )
+        }
 
-		if(this.state.campaignDMOpen){
-			return(
-				<DungeonMasterHub
-					campaignID={this.state.campaignID}
-					userID={this.state.userID}/>
-				)
-		}
+        else{
+            return(
+                <Switch>
+                    <Route exact path='/' component={Home}/>
+                    <Route path='/dungeonmaster/:campaignID' render={({match})=>
+                        <DungeonMasterHub
+                            campaignID={match.params.campaignID}
+                            userID={this.state.userID}/>}/>
+                    <Route path='/campaign/:campaignID' render={({match})=>
+                        <CampaignHub 
+                            userID={this.state.userID} 
+                            campaignID={match.params.campaignID}/>}/>
+                </Switch>
+            )
+        }
+    }
 
-		else{
-			return(
-				<div className="App-Main-Hub">					
-					<div className="App-Lists">
-						<CampaignList 
-							campaigns={this.state.campaigns} 
-							enterExistingCampaign={this.enterExistingCampaign}
-							onUpdate={this.onUpdate}/>
-						<UserCampaignList 
-							campaigns={this.state.userCampaigns} 
-							userID={this.state.userID} 
-							enterExistingCampaign={this.enterExistingCampaign}
-							enterExistingCampaignAsDM={this.enterExistingCampaignAsDM}
-							onUpdate={this.onUpdate}/>
-					</div>
-				</div>
-			)
-		}
-	}
+    componentDidMount(){
+        this.listenForUpdates();
+    }
 
-	componentDidMount(){
-		this.listenForUpdates();
-	}
-
-	listenForUpdates() {
-	  const campaignRef = firebase.database().ref("Campaigns/");
-	  campaignRef.on("value", (campaigns)=>{
-	  	this.initializeLists();
-	  });
-	}		
+    listenForUpdates() {
+      const campaignRef = firebase.database().ref("Campaigns/");
+      campaignRef.on("value", (campaigns)=>{
+        this.initializeLists();
+      });
+    }       
 }
 export default MainHub;

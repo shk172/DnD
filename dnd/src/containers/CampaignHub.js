@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
 
 import {Tabs, Tab} from 'material-ui/Tabs';
 
@@ -61,6 +60,7 @@ class CampaignHub extends Component{
 		importPlayerCharacter(this.state.userID, this.state.campaignID).then(
 			(character)=>{
 				if(Object.keys(character).length > 1){
+					console.log("character exists");
 					this.setState({
 						character: character,
 						loading: false,
@@ -68,6 +68,7 @@ class CampaignHub extends Component{
 				}
 				
 				else{
+					console.log("character does not exist");
 					this.setState({
 						characterCreate: true,
 						loading: false,
@@ -75,13 +76,13 @@ class CampaignHub extends Component{
 				}
 			});
 	}
-
+	
+	handleTabChange(tab){
+	  this.setState({tab: tab});
+	}
+	
 	onUpdate(data){
-   	this.setState(data);
-  }
-
-  handleTabChange(tab){
-		this.setState({tab: tab});
+   		this.setState(data);
 	}
 
 	render(){
@@ -90,30 +91,29 @@ class CampaignHub extends Component{
 				<div>Loading...</div>
 				)
 		}
-
-		if(this.state.characterCreate){
+		if(this.state.characterCreate === true){
 			return(
 				<CharacterInfoForm 
+					tab={this.state.tab}
 					userID={this.state.userID} 
 					campaignID={this.state.campaignID}
 					onUpdate={this.onUpdate}
 					characterType="Players"/>
 			)
 		}
-
 		else{
 			return(
 				<div>
 					<Tabs>
-						<Tab 
-							style={styles.tab}
-							label="Characters"
-							onActive={this.handleTabChange.bind(this, "Characters")}/>
-						<Tab 
-							style={styles.tab}
-							label="Dies"
-							onActive={this.handleTabChange.bind(this, "Dice")}/>
-					</Tabs>
+			            <Tab 
+			              style={styles.tab}
+			              label="Character"
+			              onActive={this.handleTabChange.bind(this, "Character")}/>
+			            <Tab 
+			              style={styles.tab}
+			              label="Dice"
+			              onActive={this.handleTabChange.bind(this, "Dice")}/>
+			        </Tabs>
 					<CharacterHub 
 						tab={this.state.tab}
 						character={this.state.character} 
