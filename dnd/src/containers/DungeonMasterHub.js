@@ -275,7 +275,7 @@ class DungeonMasterHub extends Component{
 				diceRolls = this.state.diceRolls.map((result)=>{
 					return(
 						<div className="App-Dice-Section">
-							{result.name}<br/> {result.roll}
+							{result.name}<br/> {result.roll} <br/> {result.description}
 						</div>
 						)
 				})
@@ -329,8 +329,9 @@ class DungeonMasterHub extends Component{
 	  	var diceRolls = [];
 	  	results.forEach((player)=>{		
 	  		var diceResult = {
-	  			name: player.key,
-	  			roll: player.val(),
+	  			name: player.val().name,
+	  			roll: player.val().roll,
+	  			description: player.val().description,
 	  		}
 	  		diceRolls.push(diceResult);
 	  		app.setState({

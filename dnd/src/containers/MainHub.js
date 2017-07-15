@@ -23,29 +23,12 @@ class MainHub extends Component{
             userID: firebase.auth().currentUser.uid,
             campaignOpen: false
         };
-
-        this.enterExistingCampaign = this.enterExistingCampaign.bind(this);
-        this.enterExistingCampaignAsDM = this.enterExistingCampaignAsDM.bind(this);
         this.initializeLists = this.initializeLists.bind(this);
         this.onUpdate = this.onUpdate.bind(this);
     }
 
     componentWillMount(){
         this.initializeLists();
-    }
-
-    enterExistingCampaign(campaignID){
-        this.setState({
-            campaignID: campaignID,
-            campaignOpen: true,
-        });
-    }
-
-    enterExistingCampaignAsDM(campaignID){
-      this.setState({
-        campaignID: campaignID,
-        campaignDMOpen: true,
-      });
     }
 
     initializeLists(){
@@ -113,9 +96,7 @@ class MainHub extends Component{
                         onUpdate={this.onUpdate}/>
                     <UserCampaignList 
                         campaigns={this.state.userCampaigns} 
-                        userID={this.state.userID} 
-                        enterExistingCampaign={this.enterExistingCampaign}
-                        enterExistingCampaignAsDM={this.enterExistingCampaignAsDM}
+                        userID={this.state.userID}
                         onUpdate={this.onUpdate}/>
                 </div>
             </div>
@@ -139,11 +120,13 @@ class MainHub extends Component{
                     <Route path='/dungeonmaster/:campaignID' render={({match})=>
                         <DungeonMasterHub
                             campaignID={match.params.campaignID}
-                            userID={this.state.userID}/>}/>
+                            userID={this.state.userID}/>}
+                    />
                     <Route path='/campaign/:campaignID' render={({match})=>
                         <CampaignHub 
                             userID={this.state.userID} 
-                            campaignID={match.params.campaignID}/>}/>
+                            campaignID={match.params.campaignID}/>}
+                    />
                 </Switch>
             )
         }

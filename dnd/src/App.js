@@ -110,7 +110,7 @@ class App extends Component {
         <div>
            <AppBar
               style={styles.bar}
-              title={<Link to='/' ><span style={styles.title}>There Will Be Dragons</span></Link>}
+              title={<Link to='/' style={{textDecoration: 'none'}} ><span style={styles.title}>There Will Be Dragons</span></Link>}
               iconElementLeft={<Logged/>}
             />
         	<MainHub onUpdate={this.onUpdate}/>

@@ -52,6 +52,7 @@ class CampaignHub extends Component{
 			campaignID: this.props.campaignID,
 			characterCreate: false,
 			tab: "Character",
+			campaignTitle: this.props.campaignTitle,
 		};
 		this.onUpdate = this.onUpdate.bind(this);
 	}
@@ -101,6 +102,7 @@ class CampaignHub extends Component{
 					characterType="Players"/>
 			)
 		}
+
 		else{
 			return(
 				<div>

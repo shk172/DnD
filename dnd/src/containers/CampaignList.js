@@ -48,7 +48,7 @@ class CampaignList extends Component{
 					<div key={campaign.campaignID}>
 						<ListItem
 							primaryText={
-								<Link to={'/campaign/'+campaign.campaignID}>
+								<Link to={'/campaign/'+campaign.campaignID} style={{textDecoration: 'none'}}>
 								{campaign.campaignTitle}
 								</Link>}
 						/>

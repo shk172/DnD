@@ -38,14 +38,6 @@ class UserCampaignList extends Component{
     this.onUpdate = this.onUpdate.bind(this);
   }
 
-  chooseCampaign(campaignID){
-    this.props.enterExistingCampaign(campaignID);
-  }
-
-  chooseCampaignAsDM(campaignID){
-    this.props.enterExistingCampaignAsDM(campaignID);
-  }
-
   onUpdate(data){
     this.setState(data);
   }
@@ -67,11 +59,11 @@ class UserCampaignList extends Component{
               nestedItems={[
                 <FlatButton 
                   key={campaign.campaignID + '1'}
-                  label={<Link to={'/campaign/'+campaign.campaignID}>Enter Campaign</Link>} 
+                  label={<Link to={'/campaign/'+campaign.campaignID} style={{textDecoration: 'none'}}>Enter Campaign</Link>} 
                   fullWidth={true}/>,
                 <FlatButton
                   key={campaign.campaignID + '2'} 
-                  label={<Link to={'/dungeonmaster/'+campaign.campaignID} >Enter as  DM</Link> }
+                  label={<Link to={'/dungeonmaster/'+campaign.campaignID} style={{textDecoration: 'none'}}>Enter as  DM</Link> }
                   fullWidth={true}
                 />
               ]}>
@@ -89,7 +81,7 @@ class UserCampaignList extends Component{
               nestedItems={[
                 <FlatButton 
                   key={campaign.campaignID + '1'}
-                  label={<Link to={'/campaign/'+campaign.campaignID} >Enter Campaign</Link>} 
+                  label={<Link to={'/campaign/'+campaign.campaignID} style={{textDecoration: 'none'}}>Enter Campaign</Link>} 
                   fullWidth={true}
                 />]}>
             </ListItem>
