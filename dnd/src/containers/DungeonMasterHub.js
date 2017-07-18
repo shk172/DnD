@@ -2,19 +2,23 @@ import React, { Component } from 'react';
 
 
 import {GridList, GridTile} from 'material-ui/GridList';
-import {Card, CardHeader, CardText} from 'material-ui/Card';
+import Dialog from 'material-ui/Dialog';
+import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
 import Popover from 'material-ui/Popover';
 import RaisedButton from 'material-ui/RaisedButton';
 import Subheader from 'material-ui/Subheader';
 import {Tabs, Tab} from 'material-ui/Tabs';
 
+import Awards from './Awards';
+import CampaignDetailsDM from './CampaignDetailsDM';
 import CharacterInfoForm from './CharacterInfoForm';
 import DungeonMasterDice from './DungeonMasterDice';
 import PlayerSummary from './PlayerSummary';
 import PlayerDetails from './PlayerDetails';
 
 import firebase from 'firebase';
+import getCampaign from '../services/getCampaign';
 import importCampaignPlayers from '../services/importCampaignPlayers';
 import importCampaignNPCs from '../services/importCampaignNPCs';
 
@@ -75,7 +79,7 @@ class DungeonMasterHub extends Component{
 			},
 			diceRolls: [],
 			npcCreate: false,
-			tab: "Characters",
+			tab: "TAB_CAMPAIGN",
 			dungeonMaster: {
 				Name: "Dungeon Master"
 			}
@@ -88,6 +92,7 @@ class DungeonMasterHub extends Component{
 		this.onUpdate = this.onUpdate.bind(this);
 		this.pageRender = this.pageRender.bind(this);
 		this.rollDice = this.rollDice.bind(this);
+    this.sendAwards = this.sendAwards.bind(this);
 	}
 
 	componentWillMount(){
@@ -121,11 +126,15 @@ class DungeonMasterHub extends Component{
 			cPlayers = campaignPlayers;
 		}).then(()=>{
 			importCampaignNPCs(this.state.campaignID).then((npcs)=>{
-				this.setState({
-					npcs: npcs,
-					campaignPlayers: cPlayers,
-					loading: false,
-				})
+        var npcs = npcs;
+        getCampaign(this.state.campaignID).then((campaign)=>{
+            this.setState({
+              campaignPlayers: cPlayers,
+              campaign: campaign,
+              npcs: npcs,
+              loading: false,
+            });
+          })
 			});
 		});
 	}
@@ -135,7 +144,7 @@ class DungeonMasterHub extends Component{
 	}
 
 	pageRender(tab, playerList, npcList, diceRolls){
-		if(tab === "Characters"){
+		if(tab === "TAB_CHARACTERS"){
 			return(
 				<div style={styles.root}>
 					<div>
@@ -160,19 +169,33 @@ class DungeonMasterHub extends Component{
 				</div>
 			)
 		}
-		else if(tab === "Dies"){
+		else if(tab === "TAB_DICE"){
 			return(
-				<div style={styles.dies}>
+				<div className="App-modules">
 					<DungeonMasterDice userID={this.state.userID} 
 							campaignID={this.state.campaignID} 
 							character={this.state.dungeonMaster}/>
-					<div className="App-Dice">
+					<div className="App-stats">
 						<p>Dice Results</p>
 						{diceRolls}
 					</div>
 				</div>
 			)
 		}
+    else if(tab === "TAB_AWARDS"){
+      return(
+        <div className="App-modules">
+          <Awards 
+            players={this.state.campaignPlayers}
+            sendAwards={this.sendAwards}/>
+        </div>
+      )
+    }
+    else{
+      return(
+        <div><CampaignDetailsDM campaign={this.state.campaign}/></div>
+        )
+    }
 	}
 
 	rollDice(value){
@@ -180,6 +203,30 @@ class DungeonMasterHub extends Component{
 		diceResult[value] = Math.floor(Math.random() * value) + 1;
 		this.setState(diceResult);
 	}
+
+  sendAwards(awards){
+    Object.keys(awards).forEach((playerID)=>{
+      var playerRef = firebase.database().ref("Players/" + playerID + "/Campaigns/" + this.state.campaignID); 
+      playerRef.once("value", (data)=>{
+        var player = data.val();
+        switch(awards[playerID].awardType){
+          case "AWARD_EXP":
+            player.Exp += +awards[playerID].awardAmount;
+            playerRef.update(player);
+            break;
+          case "AWARD_GOLD":
+            player.Money += +awards[playerID].awardAmount;
+            playerRef.update(player);
+            break;
+          default:
+            player.Money += +awards[playerID].awardAmount;
+            playerRef.update(player);
+            break;
+        }
+      })
+    })
+  };
+  
 
 	render(){
 		if(this.state.npcCreate){
@@ -203,28 +250,23 @@ class DungeonMasterHub extends Component{
 						<GridTile
 							cols={0.5}
 							title={player.Name}
-							actionIcon={<FlatButton 
-														label="Details" 
-														labelStyle={{fontSize: '10px'}}
-														style={styles.characterDetailButton}
-														onTouchTap={this.handleCardOpen.bind(this, player.Name)}>
-														<Popover
-															anchorEl={this.state.popover["target"]}
-										          open={this.state.popover[player.Name]}
-										          anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-										          targetOrigin={{horizontal: 'right', vertical: 'top'}}
-										          onRequestClose={this.handleCardOpen.bind(this, player.Name)}>
-										        	<Card>
-																<CardHeader
-																	subtitle={<PlayerSummary player={player}/>}
-																	actAsExpander={true}
-																	showExpandableButton={true}/>
-																<CardText expandable={true}>
-																	<PlayerDetails player={player}/>
-																</CardText>
-															</Card>
-										        </Popover>
-													</FlatButton>}> 
+							actionIcon={
+                <FlatButton 
+									label="Details" 
+									labelStyle={{fontSize: '10px'}}
+									style={styles.characterDetailButton}
+									onTouchTap={this.handleCardOpen.bind(this, player.Name)}>
+									<Dialog
+					          open={this.state.popover[player.Name]}
+					          modal={false}
+                    title={player.Name}
+                    autoScrollBodyContent={true}
+					          onRequestClose={this.handleCardOpen.bind(this, player.Name)}>
+                    <PlayerSummary player={player}/><br/>
+                    <Divider/>
+										<PlayerDetails player={player}/><br/>
+					        </Dialog>
+								</FlatButton>}> 
 							<img role="presentation" src="https://firebasestorage.googleapis.com/v0/b/dungeonsanddragons-113a3.appspot.com/o/Images%2Fno_avatar.png?alt=media&token=c9e2956c-1f73-4f2c-9135-e13b2f108a9f"/>
 						</GridTile>
 						)
@@ -242,28 +284,23 @@ class DungeonMasterHub extends Component{
 						<GridTile
 							cols={0.5}
 							title={npc.Name}
-							actionIcon={<FlatButton 
-														label="Details" 
-														labelStyle={{fontSize: '10px'}}
-														style={styles.characterDetailButton}
-														onTouchTap={this.handleCardOpen.bind(this, npc.Name)}>
-														<Popover
-															anchorEl={this.state.popover["target"]}
-										          open={this.state.popover[npc.Name]}
-										          anchorOrigin={{horizontal: 'right', vertical: 'bottom'}}
-										          targetOrigin={{horizontal: 'right', vertical: 'top'}}
-										          onRequestClose={this.handleCardOpen.bind(this, npc.Name)}>
-										        	<Card>
-																<CardHeader
-																	subtitle={<PlayerSummary player={npc}/>}
-																	actAsExpander={true}
-																	showExpandableButton={true}/>
-																<CardText expandable={true}>
-																	<PlayerDetails player={npc}/>
-																</CardText>
-															</Card>
-										        </Popover>
-													</FlatButton>}> 
+							actionIcon={
+                <FlatButton 
+									label="Details" 
+									labelStyle={{fontSize: '10px'}}
+									style={styles.characterDetailButton}
+									onTouchTap={this.handleCardOpen.bind(this, npc.Name)}>
+									<Dialog
+                    open={this.state.popover[npc.Name]}
+                    modal={false}
+                    title={npc.Name}
+                    autoScrollBodyContent={true}
+                    onRequestClose={this.handleCardOpen.bind(this, npc.Name)}>
+                    <PlayerSummary player={npc}/><br/>
+                    <Divider/>
+                    <PlayerDetails player={npc}/><br/>
+                  </Dialog>
+                </FlatButton>}>
 							<img role="presentation" src="https://firebasestorage.googleapis.com/v0/b/dungeonsanddragons-113a3.appspot.com/o/Images%2Fno_avatar.png?alt=media&token=c9e2956c-1f73-4f2c-9135-e13b2f108a9f"/>
 						</GridTile>
 						)
@@ -284,14 +321,22 @@ class DungeonMasterHub extends Component{
 			return(
 				<div>
 					<Tabs>
+            <Tab
+              style={styles.tab}
+              label="Campaign"
+              onActive={this.handleTabChange.bind(this, "TAB_CAMPAIGN")}/>
 						<Tab 
 							style={styles.tab}
 							label="Characters"
-							onActive={this.handleTabChange.bind(this, "Characters")}/>
+							onActive={this.handleTabChange.bind(this, "TAB_CHARACTERS")}/>
 						<Tab 
 							style={styles.tab}
 							label="Dice"
-							onActive={this.handleTabChange.bind(this, "Dies")}/>
+							onActive={this.handleTabChange.bind(this, "TAB_DICE")}/>
+            <Tab
+              style={styles.tab}
+              label="Awards"
+              onActive={this.handleTabChange.bind(this, "TAB_AWARDS")}/>
 					</Tabs>
 					{this.pageRender(this.state.tab, playerList, npcList, diceRolls)}
 				</div>

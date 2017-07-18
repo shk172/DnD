@@ -63,7 +63,7 @@ class DungeonMasterDice extends Component{
 
 	render(){
 		return(
-			<List className="App-Dice">
+			<List className="App-stats">
 				<p>Dies</p>
 				<ListItem 
 					className="App-Dice-Section"

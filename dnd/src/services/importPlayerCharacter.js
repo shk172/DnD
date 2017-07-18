@@ -21,6 +21,7 @@ export default function importPlayerCharacter (userID, campaignID) {
 			      player.Note = data.val().Note;
 			      player.Money = data.val().Money;
 			      player.Health = data.val().Health;
+			      player.Exp = data.val().Exp;
 			      player.armorClass = data.val().armorClass;
 			      player.speed = data.val().speed;
 
@@ -39,6 +40,7 @@ export default function importPlayerCharacter (userID, campaignID) {
 			      player.Skills = Skills;
 			      player.Stats = Stats;
 			      player.SavingThrows = SavingThrows;
+			      player.playerID = data.val().playerID;
 			      resolve(player);
 			    }
 				}, function(error){

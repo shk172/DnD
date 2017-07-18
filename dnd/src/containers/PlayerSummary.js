@@ -21,6 +21,7 @@ class PlayerSummary extends Component{
 		});
 		return(
 			<div>
+				<h3> Info </h3>
 				{playerSummary}
 			</div>
 			);

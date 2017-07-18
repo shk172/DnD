@@ -68,6 +68,7 @@ class CharacterInfoForm extends Component{
     character.Health = 20;
     character.Note = '';
     character.Money = 0;
+    character.Exp = 0;
 
     character.Skills = {};
     character.Stats = {};
@@ -85,6 +86,7 @@ class CharacterInfoForm extends Component{
       character.Skills[skill] = this.state[skill];
     })
 
+    character.playerID = this.state.userID;
     character.campaignID = this.state.campaignID;
 
     if(this.state.characterType === "Players"){

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Divider from 'material-ui/Divider';
 
 class PlayerDetails extends Component{
 	constructor(props){
@@ -30,9 +31,14 @@ class PlayerDetails extends Component{
 
 		return(
 			<div>
-				{playerStatsMap}
-				{playerSTsMap}
-				{playerSkillsMap}
+				<h3> Stats </h3>
+				{playerStatsMap}<br/>
+				<Divider/>
+				<h3> Saving Throws </h3>
+				{playerSTsMap}<br/>
+				<Divider/>
+				<h3> Skills </h3>
+				{playerSkillsMap}<br/>
 			</div>
 			);
 	}

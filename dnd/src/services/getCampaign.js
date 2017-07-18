@@ -5,7 +5,7 @@ export default function getCampaign (campaignID) {
 		firebase.auth().onAuthStateChanged(function(user) {
 			if(user){
 				var campaignRef = firebase.database().ref("Campaigns/" + campaignID);
-				campaignRef.on("value", function(campaign) {
+				campaignRef.once("value", function(campaign) {
 		        	resolve(campaign.val());
 				}, function(error){
 					console.log(error);
