@@ -14,7 +14,8 @@ class PlayerSummary extends Component{
 			if(typeof(this.state.player[key]) !== 'object' && 
 				this.state.player[key] !== null && 
 				typeof(this.state.player[key]) !== 'undefined' &&
-				key !== "note" && key !== "campaignID"){
+				key !== "note" && key !== "campaignID" &&
+				key !== "playerID"){
 				return(
 					<div>{key}: {this.state.player[key]}</div>);
 			}

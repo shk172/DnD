@@ -50,22 +50,26 @@ class UserCampaignList extends Component{
 
     else{
       campaignList = this.props.campaigns.map((campaign) => {
-        if(campaign.Players[this.state.userID] === true){
+        //If this player is a dungeon master
+        if(campaign.isDungeonMaster === true){
           return(
             <ListItem
               key={campaign.campaignID}
               primaryText={campaign.campaignTitle}
               primaryTogglesNestedList={true}
               nestedItems={[
-                <FlatButton 
-                  key={campaign.campaignID + '1'}
-                  label={<Link to={'/campaign/'+campaign.campaignID} style={{textDecoration: 'none'}}>Enter Campaign</Link>} 
-                  fullWidth={true}/>,
-                <FlatButton
-                  key={campaign.campaignID + '2'} 
-                  label={<Link to={'/dungeonmaster/'+campaign.campaignID} style={{textDecoration: 'none'}}>Enter as  DM</Link> }
-                  fullWidth={true}
-                />
+                <Link to={'/campaign/'+campaign.campaignID}>
+                  <FlatButton 
+                    key={campaign.campaignID + '1'}
+                    label="Enter Campaign"
+                    fullWidth={true}/>
+                </Link>,
+                <Link to={'/dungeonmaster/'+campaign.campaignID}>
+                  <FlatButton
+                    key={campaign.campaignID + '2'} 
+                    label="Enter as  DM"
+                    fullWidth={true}/>
+                </Link>
               ]}>
             </ListItem>
           );
@@ -83,8 +87,7 @@ class UserCampaignList extends Component{
                   key={campaign.campaignID + '1'}
                   label={<Link to={'/campaign/'+campaign.campaignID} style={{textDecoration: 'none'}}>Enter Campaign</Link>} 
                   fullWidth={true}
-                />]}>
-            </ListItem>
+                />]}/>
           );
         }
       });
@@ -99,9 +102,9 @@ class UserCampaignList extends Component{
               text="Your Campaigns"
               style={styles.toolbarTitle}/>
             <CreateCampaign 
-                      userID={this.state.userID}
-                      creatingCampaign={this.state.createdCampaign}
-                      onUpdate={this.onUpdate}/>
+              userID={this.state.userID}
+              creatingCampaign={this.state.createdCampaign}
+              onUpdate={this.onUpdate}/>
           </Toolbar>
           <List style={styles.list}>
             {campaignList}

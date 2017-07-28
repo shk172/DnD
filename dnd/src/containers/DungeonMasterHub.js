@@ -151,7 +151,7 @@ class DungeonMasterHub extends Component{
 						<GridList
 							cellHeight={155}
 							style={styles.gridList}>
-							<Subheader>Players</Subheader>
+							<Subheader>Player Characters</Subheader>
 							{playerList}
 						</GridList>
 						<GridList
@@ -193,7 +193,7 @@ class DungeonMasterHub extends Component{
     }
     else{
       return(
-        <div><CampaignDetailsDM campaign={this.state.campaign}/></div>
+        <div><CampaignDetailsDM campaign={this.state.campaign} players={this.state.campaignPlayers}/></div>
         )
     }
 	}
@@ -206,7 +206,7 @@ class DungeonMasterHub extends Component{
 
   sendAwards(awards){
     Object.keys(awards).forEach((playerID)=>{
-      var playerRef = firebase.database().ref("Players/" + playerID + "/Campaigns/" + this.state.campaignID); 
+      var playerRef = firebase.database().ref("Campaigns/" + this.state.campaignID + "/Players/" + playerID); 
       playerRef.once("value", (data)=>{
         var player = data.val();
         switch(awards[playerID].awardType){
@@ -251,26 +251,26 @@ class DungeonMasterHub extends Component{
 							cols={0.5}
 							title={player.Name}
 							actionIcon={
-                <FlatButton 
-									label="Details" 
-									labelStyle={{fontSize: '10px'}}
-									style={styles.characterDetailButton}
-									onTouchTap={this.handleCardOpen.bind(this, player.Name)}>
-									<Dialog
-					          open={this.state.popover[player.Name]}
-					          modal={false}
-                    title={player.Name}
-                    autoScrollBodyContent={true}
-					          onRequestClose={this.handleCardOpen.bind(this, player.Name)}>
-                    <PlayerSummary player={player}/><br/>
-                    <Divider/>
-										<PlayerDetails player={player}/><br/>
-					        </Dialog>
-								</FlatButton>}> 
+              <FlatButton 
+								label="Details" 
+								labelStyle={{fontSize: '10px'}}
+								style={styles.characterDetailButton}
+								onTouchTap={this.handleCardOpen.bind(this, player.Name)}>
+								<Dialog
+						      open={this.state.popover[player.Name]}
+						      modal={false}
+				          title={player.Name}
+				          autoScrollBodyContent={true}
+						      onRequestClose={this.handleCardOpen.bind(this, player.Name)}>
+				          <PlayerSummary player={player}/><br/>
+				          <Divider/>
+									<PlayerDetails player={player}/><br/>
+					      </Dialog>
+							</FlatButton>}> 
 							<img role="presentation" src="https://firebasestorage.googleapis.com/v0/b/dungeonsanddragons-113a3.appspot.com/o/Images%2Fno_avatar.png?alt=media&token=c9e2956c-1f73-4f2c-9135-e13b2f108a9f"/>
 						</GridTile>
-						)
-					});
+					)
+				});
 			}
 
 			var npcList = [];

@@ -4,7 +4,7 @@ export default function importPlayerCharacter (userID, campaignID) {
 	return new Promise(function(resolve, reject) {
 		firebase.auth().onAuthStateChanged(function(user) {
 			if(user){
-				var campaignRef = firebase.database().ref("Players/" + userID + "/Campaigns/" + campaignID);
+				var campaignRef = firebase.database().ref("Campaigns/" + campaignID + "/Players/" + userID);
 			  	var player = {};
 			  	var Stats = {};
 			  	var SavingThrows = {};
@@ -12,6 +12,7 @@ export default function importPlayerCharacter (userID, campaignID) {
 
 			    campaignRef.once("value", (data) => {
 					if(data.val() === null || Object.keys(data.val()).length <= 1){
+						console.log("No character found");
 						resolve(player);
 					}
 					else{

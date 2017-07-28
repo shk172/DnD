@@ -9,8 +9,13 @@ class CampaignDetailsPlayer extends Component{
 	}
 
 	componentWillMount(){
-		var numPlayers = Object.keys(this.state.campaign.Players).length;
-		this.setState({numPlayers: numPlayers});
+		if(this.state.campaign.Players !== null && typeof(this.state.campaign.Players) !== 'undefined'){
+			var numPlayers = Object.keys(this.state.campaign.Players).length;
+			this.setState({numPlayers: numPlayers});
+		}
+		else{
+			this.setState({numPlayers: 0});
+		}
 	}
 
 	render(){

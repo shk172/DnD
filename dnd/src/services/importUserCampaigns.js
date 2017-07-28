@@ -10,6 +10,7 @@ export default function importUserCampaigns () {
 				var counter = 0;
 				Object.keys(data.val()).forEach(function(key, index){
 	      			getCampaign(key).then((campaign)=>{
+	      				campaign.isDungeonMaster = data.val()[key];
 	      				campaigns.push(campaign);
 	      				counter++;
 	      				if(counter >= Object.keys(data.val()).length){

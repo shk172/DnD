@@ -81,7 +81,6 @@ class CampaignHub extends Component{
               characterCreate: true,
               loading: false,
             });
-            console.log(this.state.campaign);
           })
         }
       })

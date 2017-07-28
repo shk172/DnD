@@ -60,66 +60,72 @@ class CharacterInfoForm extends Component{
   }
 
   submitInfo(event){
-    var character = {};
-
-    character.Name = this.state.Name;
-    character.Race = this.state.Race;
-    character.Level= 1;
-    character.Health = 20;
-    character.Note = '';
-    character.Money = 0;
-    character.Exp = 0;
-
-    character.Skills = {};
-    character.Stats = {};
-    character.SavingThrows = {};
-
-    this.state.Stats.forEach((stat)=>{
-      character.Stats[stat] = this.state[stat];
-    })
-
-    this.state.SavingThrows.forEach((savingThrows)=>{
-      character.SavingThrows[savingThrows] = this.state[savingThrows];
-    })
-
-    this.state.Skills.forEach((skill)=>{
-      character.Skills[skill] = this.state[skill];
-    })
-
-    character.playerID = this.state.userID;
-    character.campaignID = this.state.campaignID;
-
-    if(this.state.characterType === "Players"){
-      var playerCampaignRef = firebase.database().ref("Players/" + this.state.userID + "/Campaigns/" + this.state.campaignID);
-      playerCampaignRef.update(character);
-
-      //if the player doesn't already have a DM tag, add one as a non-DM - creating a new character will not change the DM status.
-      var campaignPlayerRef = firebase.database().ref("Campaigns/" + this.state.campaignID  + "/Players/");
-      campaignPlayerRef.on("value", (data)=>{
-        if(data.val()[this.state.userID] === null || data.val()[this.state.userID] === undefined){
-          var player = {};
-          player[this.state.userID] = false;
-          campaignPlayerRef.update(player);
-        }
-      });
-    this.props.onUpdate({
-        characterCreate: false,
-        character: character,
-      })
+    if(this.state.Name.length === 0){
+      console.log("Character needs a name.");
+      event.preventDefault();
     }
-
     else{
-      var campaignNPCRef = firebase.database().ref("Campaigns/" + this.state.campaignID  + "/NPCs/");
-      var player = {};
-      player[character.Name] = character;
-      campaignNPCRef.update(player);
-      this.props.onUpdate({
-        npcCreate: false,
-        character: character,
-      })
-    }
+      var character = {};
 
-    event.preventDefault();
+      character.Name = this.state.Name;
+      character.Race = this.state.Race;
+      character.Level= 1;
+      character.Health = 20;
+      character.Note = '';
+      character.Money = 0;
+      character.Exp = 0;
+
+      character.Skills = {};
+      character.Stats = {};
+      character.SavingThrows = {};
+
+      this.state.Stats.forEach((stat)=>{
+        character.Stats[stat] = this.state[stat];
+      })
+
+      this.state.SavingThrows.forEach((savingThrows)=>{
+        character.SavingThrows[savingThrows] = this.state[savingThrows];
+      })
+
+      this.state.Skills.forEach((skill)=>{
+        character.Skills[skill] = this.state[skill];
+      })
+
+      character.playerID = this.state.userID;
+      character.campaignID = this.state.campaignID;
+
+      if(this.state.characterType === "Players"){
+        var campaignPlayerRef = firebase.database().ref("Campaigns/" + this.state.campaignID  + "/Players/" +this.state.userID);
+        campaignPlayerRef.update(character);
+
+        //if the player doesn't already have a DM tag, add one as a non-DM - creating a new character will not change the DM status.
+        var playerCampaignRef = firebase.database().ref("Players/" + this.state.userID + "/Campaigns/");
+        playerCampaignRef.once("value", (data)=>{
+          if(data.val()[this.state.campaignID] !== true){
+            var player = {};
+            player[this.state.userID] = false;
+            playerCampaignRef.set(player);
+          }
+        });
+      this.props.onUpdate({
+          characterCreate: false,
+          character: character,
+        })
+      }
+
+      else{
+        var campaignNPCRef = firebase.database().ref("Campaigns/" + this.state.campaignID  + "/NPCs/");
+        var player = {};
+        player[character.Name] = character;
+        campaignNPCRef.set(player);
+        this.props.onUpdate({
+          npcCreate: false,
+          character: character,
+        })
+      }
+
+      event.preventDefault();
+    }
   }
 
   raceChange(event){
