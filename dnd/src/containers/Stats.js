@@ -29,9 +29,14 @@ class Stats extends Component{
             <li>Race: {this.state.character.Race}</li>
             <li>Level: {this.state.character.Level}</li>
             <li>Health: {this.state.character.Health}</li>
+            <li>Armor Class: {this.state.character.ArmorClass}</li>
+            <li>Initiative: {this.state.character.Initiative}</li>
+            <li>Speed: {this.state.character.Speed}</li>
             <li>Money: {this.state.character.Money}</li>
+            <li>Exp: {this.state.character.Exp}</li>
           </ul>
-          <br/>
+        </div>
+        <div className="App-stats">
           Stats:
           <ul>
             <li>Strength: {this.state.character.Stats.Strength}</li>
@@ -40,6 +45,15 @@ class Stats extends Component{
             <li>Intelligence: {this.state.character.Stats.Intelligence}</li>
             <li>Wisdom: {this.state.character.Stats.Wisdom}</li>
             <li>Charisma: {this.state.character.Stats.Charisma}</li>
+          </ul>
+          Stats Saving Throws:
+          <ul>
+            <li>Strength ST: {this.state.character.SavingThrows.StrengthST}</li>
+            <li>Dexterity ST: {this.state.character.SavingThrows.DexterityST}</li>
+            <li>Constitution ST: {this.state.character.SavingThrows.ConstitutionST}</li>
+            <li>Intelligence ST: {this.state.character.SavingThrows.IntelligenceST}</li>
+            <li>Wisdom ST: {this.state.character.SavingThrows.WisdomST}</li>
+            <li>Charisma ST: {this.state.character.SavingThrows.CharismaST}</li>
           </ul>
         </div>
       <div className="App-stats">

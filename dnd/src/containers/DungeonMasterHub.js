@@ -182,20 +182,20 @@ class DungeonMasterHub extends Component{
 				</div>
 			)
 		}
-    else if(tab === "TAB_AWARDS"){
-      return(
-        <div className="App-modules">
-          <Awards 
-            players={this.state.campaignPlayers}
-            sendAwards={this.sendAwards}/>
-        </div>
-      )
-    }
-    else{
-      return(
-        <div><CampaignDetailsDM campaign={this.state.campaign} players={this.state.campaignPlayers}/></div>
-        )
-    }
+	    else if(tab === "TAB_AWARDS"){
+	      return(
+	        <div className="App-modules">
+	          <Awards 
+	            players={this.state.campaignPlayers}
+	            sendAwards={this.sendAwards}/>
+	        </div>
+	      )
+	    }
+	    else{
+	      return(
+	        <div><CampaignDetailsDM campaign={this.state.campaign} players={this.state.campaignPlayers}/></div>
+	        )
+	    }
 	}
 
 	rollDice(value){
@@ -251,21 +251,21 @@ class DungeonMasterHub extends Component{
 							cols={0.5}
 							title={player.Name}
 							actionIcon={
-              <FlatButton 
+            				<FlatButton 
 								label="Details" 
 								labelStyle={{fontSize: '10px'}}
 								style={styles.characterDetailButton}
 								onTouchTap={this.handleCardOpen.bind(this, player.Name)}>
 								<Dialog
-						      open={this.state.popover[player.Name]}
-						      modal={false}
-				          title={player.Name}
-				          autoScrollBodyContent={true}
-						      onRequestClose={this.handleCardOpen.bind(this, player.Name)}>
-				          <PlayerSummary player={player}/><br/>
-				          <Divider/>
+							    	open={this.state.popover[player.Name]}
+							    	modal={false}
+						        	title={player.Name}
+						        	autoScrollBodyContent={true}
+						      		onRequestClose={this.handleCardOpen.bind(this, player.Name)}>
+					          		<PlayerSummary player={player}/><br/>
+					          		<Divider/>
 									<PlayerDetails player={player}/><br/>
-					      </Dialog>
+					    		</Dialog>
 							</FlatButton>}> 
 							<img role="presentation" src="https://firebasestorage.googleapis.com/v0/b/dungeonsanddragons-113a3.appspot.com/o/Images%2Fno_avatar.png?alt=media&token=c9e2956c-1f73-4f2c-9135-e13b2f108a9f"/>
 						</GridTile>
@@ -285,22 +285,22 @@ class DungeonMasterHub extends Component{
 							cols={0.5}
 							title={npc.Name}
 							actionIcon={
-                <FlatButton 
+                				<FlatButton 
 									label="Details" 
 									labelStyle={{fontSize: '10px'}}
 									style={styles.characterDetailButton}
 									onTouchTap={this.handleCardOpen.bind(this, npc.Name)}>
 									<Dialog
-                    open={this.state.popover[npc.Name]}
-                    modal={false}
-                    title={npc.Name}
-                    autoScrollBodyContent={true}
-                    onRequestClose={this.handleCardOpen.bind(this, npc.Name)}>
-                    <PlayerSummary player={npc}/><br/>
-                    <Divider/>
-                    <PlayerDetails player={npc}/><br/>
-                  </Dialog>
-                </FlatButton>}>
+					                    open={this.state.popover[npc.Name]}
+					                    modal={false}
+					                    title={npc.Name}
+					                    autoScrollBodyContent={true}
+					                    onRequestClose={this.handleCardOpen.bind(this, npc.Name)}>
+					                    <PlayerSummary player={npc}/><br/>
+					                    <Divider/>
+					                    <PlayerDetails player={npc}/><br/>
+					                </Dialog>
+                				</FlatButton>}>
 							<img role="presentation" src="https://firebasestorage.googleapis.com/v0/b/dungeonsanddragons-113a3.appspot.com/o/Images%2Fno_avatar.png?alt=media&token=c9e2956c-1f73-4f2c-9135-e13b2f108a9f"/>
 						</GridTile>
 						)
@@ -312,19 +312,19 @@ class DungeonMasterHub extends Component{
 				diceRolls = this.state.diceRolls.map((result)=>{
 					return(
 						<div className="App-Dice-Section">
-							{result.name}<br/> {result.roll} <br/> {result.description}
+							{result.name} {result.description}
 						</div>
 						)
 				})
 			}
 
 			return(
-				<div>
+				<div className="App">
 					<Tabs>
-            <Tab
-              style={styles.tab}
-              label="Campaign"
-              onActive={this.handleTabChange.bind(this, "TAB_CAMPAIGN")}/>
+				        <Tab
+				          style={styles.tab}
+				          label="Campaign"
+				          onActive={this.handleTabChange.bind(this, "TAB_CAMPAIGN")}/>
 						<Tab 
 							style={styles.tab}
 							label="Characters"
@@ -333,10 +333,10 @@ class DungeonMasterHub extends Component{
 							style={styles.tab}
 							label="Dice"
 							onActive={this.handleTabChange.bind(this, "TAB_DICE")}/>
-            <Tab
-              style={styles.tab}
-              label="Awards"
-              onActive={this.handleTabChange.bind(this, "TAB_AWARDS")}/>
+			            <Tab
+			              style={styles.tab}
+			              label="Awards"
+			              onActive={this.handleTabChange.bind(this, "TAB_AWARDS")}/>
 					</Tabs>
 					{this.pageRender(this.state.tab, playerList, npcList, diceRolls)}
 				</div>

@@ -141,6 +141,11 @@ class MainHub extends Component{
       campaignRef.on("value", (campaigns)=>{
         this.initializeLists();
       });
+
+      const playerCampaignRef = firebase.database().ref("Players/" + this.state.userID + "/Campaigns/");
+      playerCampaignRef.on("value", (campaigns)=>{
+        this.initializeLists();
+      })
     }       
 }
 export default MainHub;

@@ -83,11 +83,13 @@ class UserCampaignList extends Component{
               primaryText={campaign.campaignTitle}
               primaryTogglesNestedList={true}
               nestedItems={[
-                <FlatButton 
-                  key={campaign.campaignID + '1'}
-                  label={<Link to={'/campaign/'+campaign.campaignID} style={{textDecoration: 'none'}}>Enter Campaign</Link>} 
-                  fullWidth={true}
-                />]}/>
+                <Link to={'/campaign/'+campaign.campaignID} style={{textDecoration: 'none'}}>
+                  <FlatButton 
+                    key={campaign.campaignID + '1'}
+                    label={"Enter Campaign"} 
+                    fullWidth={true} />
+                </Link>
+            ]}/>
           );
         }
       });

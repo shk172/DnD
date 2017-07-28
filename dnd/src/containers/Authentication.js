@@ -3,6 +3,24 @@ import '../services/firebaseConfig';
 import firebaseSignIn from '../services/firebaseSignIn';
 import firebaseSignUp from '../services/firebaseSignUp';
 
+import FlatButton from 'material-ui/FlatButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import Paper from 'material-ui/Paper';
+import TextField from 'material-ui/TextField';
+
+const style = {
+  height: '35vh',
+  width: '75vw',
+  marginTop: '6vh',
+  padding: 30,
+  textAlign: 'center',
+  display: 'inline-block',
+  backgroundColor: '#FFBB66',
+  justifyContent: 'center',
+  alignItems: 'center',
+  verticalAlign: 'center',
+};
+
 class Authentication extends Component{
   constructor(props){
     super(props);
@@ -13,15 +31,11 @@ class Authentication extends Component{
       errorCode: '',
       email: '',
       password: '',
-      selectSignUp: true,
     }
     this.handleEmail = this.handleEmail.bind(this);
     this.handlePassword = this.handlePassword.bind(this);
     this.firebaseSignUp = this.firebaseSignUp.bind(this);
     this.firebaseSignIn = this.firebaseSignIn.bind(this);
-    this.setSignUp = this.setSignUp.bind(this);
-    this.setSignIn = this.setSignIn.bind(this);
-    this.showSignUp = this.showSignUp.bind(this);
   }
 
   firebaseSignIn(event){
@@ -71,65 +85,32 @@ class Authentication extends Component{
     this.setState({password: event.target.value});
   }
 
-  setSignUp(){
-    this.setState({selectSignUp: true});
-  }
-
-  setSignIn(){
-    this.setState({selectSignUp: false});
-  }
-
-  showSignUp(boolean){
-    if(boolean){
-      return(
-        <form className="App-auth-signup" onSubmit={this.firebaseSignUp}>
-          <label>
-            <p>Sign Up</p>
-            <p>Email: <input type="email" onChange={this.handleEmail}/> </p>
-            <p>Password: <input type="password" onChange={this.handlePassword}/> </p>
-          </label>
-          <input type="submit" value="Submit"/>
-        </form>
-      )
-    }
-    else{
-      return(
-        <form className="App-auth-signin" onSubmit={this.firebaseSignIn}>
-          <label>
-            <p>Sign In</p>
-            <p>Email: <input type="email" onChange={this.handleEmail}/></p>
-            <p>Password: <input type="password" onChange={this.handlePassword}/></p>
-          </label>
-          <input type="submit" value="Submit"/>
-        </form>  
-        )
-    }
-  }
-
   render(){
-    if(this.state.error){
-      return(
-          <div className="App-auth">
-            <div className="App-auth-buttons">
-              <button onClick={this.setSignUp} className="App-auth-signupbutton">Sign Up</button>
-              <button onClick={this.setSignIn} className="App-auth-signinbutton">Sign In</button>
+    return(
+        <div className="App-auth">
+          <div className="App-Welcome">
+            <div className="App-Welcome-overlay">
+              <h2>There Will Be Dragons.</h2>
+              <h4>Dungeons and Dragons Campaign Management</h4>
             </div>
-            {this.showSignUp(this.state.selectSignUp)}
-            <p className="error">{this.state.errorMessage}</p>
           </div>
-        )
-    }
-    else{
-      return(
-          <div className="App-auth">
-            <div className="App-auth-buttons">
-              <button onClick={this.setSignUp} className="App-auth-signupbutton">Sign Up</button>
-              <button onClick={this.setSignIn} className="App-auth-signinbutton">Sign In</button>
+          <Paper style={style} zDepth={3}>
+            <div className="App-auth-signup">
+              <p>{"Email: "}<TextField type="email" onChange={this.handleEmail}/> </p>
+              <p>{"Password: "}<TextField type="password" onChange={this.handlePassword}/> </p>
+              <RaisedButton 
+                onTouchTap={this.firebaseSignIn} 
+                style={{margin: '5px'}}
+                label="Sign In" />
+              <RaisedButton 
+                onTouchTap={this.firebaseSignUp} 
+                style={{margin: '5px'}} 
+                label="Sign Up" />
             </div>
-            {this.showSignUp(this.state.selectSignUp)}
-          </div>
-      )      
-    }
+            <p>{this.state.errorMessage}</p>
+          </Paper>
+        </div>
+    )      
   }
 }
 

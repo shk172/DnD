@@ -9,50 +9,53 @@ class CharacterInfoForm extends Component{
     super(props);
     this.state = {
       Name: "",
-        Race: "Dragonborn",
+      Race: "Dragonborn",
+      ArmorClass: 0,
+      Initiative: 0,
+      Speed: 0,
 
-        Stats: ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"],
+      Stats: ["ArmorClass", "Initiative", "Speed", "Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"],
       Strength: 0,
-        Dexterity: 0,
-        Constitution: 0,
-        Intelligence: 0,
-        Wisdom: 0,
-        Charisma: 0,
+      Dexterity: 0,
+      Constitution: 0,
+      Intelligence: 0,
+      Wisdom: 0,
+      Charisma: 0,
 
-        SavingThrows: ["StrengthST", "DexterityST", "ConstitutionST", "IntelligenceST", "WisdomST", "CharismaST"],
-        StrengthST: 0,
-        DexterityST: 0,
-        ConstitutionST: 0,
-        IntelligenceST: 0,
-        WisdomST: 0,
-        CharismaST: 0,
+      SavingThrows: ["StrengthST", "DexterityST", "ConstitutionST", "IntelligenceST", "WisdomST", "CharismaST"],
+      StrengthST: 0,
+      DexterityST: 0,
+      ConstitutionST: 0,
+      IntelligenceST: 0,
+      WisdomST: 0,
+      CharismaST: 0,
 
-        Skills: ["Acrobatics", "AnimalHandling", "Arcana", "Athletics", "Deception", "History", "Insight", 
-        "Intimidation", "Investigation", "Medicine", "Nature", "Perception", "Performance", "Persuasion", "Religion",
-        "SleightOfHand", "Stealth", "Survival"],
-        Acrobatics: 0,
-        AnimalHandling: 0,
-        Arcana: 0,
-        Athletics: 0,
-        Deception: 0,
-        History: 0,
-        Insight: 0,
-        Intimidation: 0,
-        Investigation: 0,
-        Medicine: 0,
-        Nature: 0,
-        Perception: 0,
-        Performance: 0,
-        Persuasion: 0,
-        Religion: 0,
-        SleightOfHand: 0,
-        Stealth: 0,
-        Survival: 0,
+      Skills: ["Acrobatics", "AnimalHandling", "Arcana", "Athletics", "Deception", "History", "Insight", 
+      "Intimidation", "Investigation", "Medicine", "Nature", "Perception", "Performance", "Persuasion", "Religion",
+      "SleightOfHand", "Stealth", "Survival"],
+      Acrobatics: 0,
+      AnimalHandling: 0,
+      Arcana: 0,
+      Athletics: 0,
+      Deception: 0,
+      History: 0,
+      Insight: 0,
+      Intimidation: 0,
+      Investigation: 0,
+      Medicine: 0,
+      Nature: 0,
+      Perception: 0,
+      Performance: 0,
+      Persuasion: 0,
+      Religion: 0,
+      SleightOfHand: 0,
+      Stealth: 0,
+      Survival: 0,
 
-        userID: this.props.userID,
-        campaignID: this.props.campaignID,
-        characterType: this.props.characterType,
-      };
+      userID: this.props.userID,
+      campaignID: this.props.campaignID,
+      characterType: this.props.characterType,
+    };  
     this.nameChange = this.nameChange.bind(this);
     this.raceChange = this.raceChange.bind(this);
     this.statChange = this.statChange.bind(this);
@@ -74,6 +77,9 @@ class CharacterInfoForm extends Component{
       character.Note = '';
       character.Money = 0;
       character.Exp = 0;
+      character.ArmorClass = this.state.ArmorClass;
+      character.Initiative = this.state.Initiative;
+      character.Speed = this.state.Speed;
 
       character.Skills = {};
       character.Stats = {};
@@ -101,10 +107,10 @@ class CharacterInfoForm extends Component{
         //if the player doesn't already have a DM tag, add one as a non-DM - creating a new character will not change the DM status.
         var playerCampaignRef = firebase.database().ref("Players/" + this.state.userID + "/Campaigns/");
         playerCampaignRef.once("value", (data)=>{
-          if(data.val()[this.state.campaignID] !== true){
-            var player = {};
-            player[this.state.userID] = false;
-            playerCampaignRef.set(player);
+          if(data.val() === null || data.val()[this.state.campaignID] !== true){
+            var campaignObject = {};
+            campaignObject[this.state.campaignID] = false;
+            playerCampaignRef.set(campaignObject);
           }
         });
       this.props.onUpdate({
@@ -166,6 +172,10 @@ class CharacterInfoForm extends Component{
                   <option value="Tiefling">Tiefling</option>
                 </select>
               </p>
+              <p>Armor Class: <input type="number" name="ArmorClass" value={this.state.ArmorClass} onChange={this.statChange}/></p>
+              <p>Initiative: <input type="number" name="Initiative" value={this.state.Initiative} onChange={this.statChange}/></p>
+              <p>Speed: <input type="number" name="Speed" value={this.state.Speed} onChange={this.statChange}/></p>
+              
               </div>
               <div className="App-stats">
                 <p>Stats</p>

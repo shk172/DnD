@@ -52,7 +52,8 @@ class CampaignDetailsDM extends Component{
         				targetOrigin={{horizontal: 'left', vertical: 'top'}}
         				onRequestClose={this.handleListClick.bind(this, player.Name)}>
 						<Menu>
-							<MenuItem>Message</MenuItem>
+							<MenuItem>Whisper
+							</MenuItem>
 						</Menu>
 					</Popover>
 				</ListItem>

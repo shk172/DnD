@@ -23,8 +23,9 @@ export default function importPlayerCharacter (userID, campaignID) {
 			      player.Money = data.val().Money;
 			      player.Health = data.val().Health;
 			      player.Exp = data.val().Exp;
-			      player.armorClass = data.val().armorClass;
-			      player.speed = data.val().speed;
+			      player.ArmorClass = data.val().ArmorClass;
+			      player.Initiative = data.val().Initiative;
+			      player.Speed = data.val().Speed;
 
 			      Object.keys(data.val().Stats).forEach(function(key, index){
 			      	Stats[key]= data.val().Stats[key];
