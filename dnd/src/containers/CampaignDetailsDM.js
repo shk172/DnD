@@ -26,8 +26,8 @@ class CampaignDetailsDM extends Component{
 	}
 
 	handleListClick(name, target){
-		if(this.state.open[name] === undefined || this.state.open[name] === false){
-			var open = this.state.open;
+		var open = this.state.open;
+		if(open[name] === undefined || open[name] === false){
 			open[name] = true;
 			
 			var position = this.state.position;
@@ -36,7 +36,6 @@ class CampaignDetailsDM extends Component{
 			this.setState({open: open, position: position});
 		}
 		else{
-			var open = this.state.open;
 			open[name] = false;
 			this.setState(open);
 		}

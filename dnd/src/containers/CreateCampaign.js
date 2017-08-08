@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import firebase from 'firebase';
-import getCampaign from '../services/getCampaign';
-import hashCode from '../services/hashCode';
 
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';

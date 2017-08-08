@@ -1,5 +1,4 @@
 import firebase from 'firebase';
-import importPlayerCharacter from './importPlayerCharacter';
 
 export default function importCampaignPlayers(campaignID){
 	return new Promise(function(resolve, reject) {

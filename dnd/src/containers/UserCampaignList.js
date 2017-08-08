@@ -58,15 +58,19 @@ class UserCampaignList extends Component{
               primaryText={campaign.campaignTitle}
               primaryTogglesNestedList={true}
               nestedItems={[
-                <Link to={'/campaign/'+campaign.campaignID}>
+                <Link 
+                  key={campaign.campaignID + '1L'}
+                  to={'/campaign/'+campaign.campaignID}>
                   <FlatButton 
-                    key={campaign.campaignID + '1'}
+                    key={campaign.campaignID + '1FB'}
                     label="Enter Campaign"
                     fullWidth={true}/>
                 </Link>,
-                <Link to={'/dungeonmaster/'+campaign.campaignID}>
+                <Link 
+                  key={campaign.campaignID + '2L'}
+                  to={'/dungeonmaster/'+campaign.campaignID}>
                   <FlatButton
-                    key={campaign.campaignID + '2'} 
+                    key={campaign.campaignID + '2FB'} 
                     label="Enter as  DM"
                     fullWidth={true}/>
                 </Link>
@@ -83,9 +87,11 @@ class UserCampaignList extends Component{
               primaryText={campaign.campaignTitle}
               primaryTogglesNestedList={true}
               nestedItems={[
-                <Link to={'/campaign/'+campaign.campaignID} style={{textDecoration: 'none'}}>
+                <Link 
+                  key={campaign.campaignID + '1L'}
+                  to={'/campaign/'+campaign.campaignID} style={{textDecoration: 'none'}}>
                   <FlatButton 
-                    key={campaign.campaignID + '1'}
+                    key={campaign.campaignID + '1FB'}
                     label={"Enter Campaign"} 
                     fullWidth={true} />
                 </Link>

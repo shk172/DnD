@@ -48,13 +48,14 @@ class CampaignList extends Component{
 				return(
 					<ListItem
 						key={campaign.campaignID}
-						fullWidth={true}
         				primaryText={campaign.campaignTitle}
         				primaryTogglesNestedList={true}
         				nestedItems={[
-							<Link to={'/campaign/'+campaign.campaignID}>
+							<Link 
+								to={'/campaign/'+campaign.campaignID}
+								key={campaign.campaignID + '1L'}>
 								<FlatButton 
-				                    key={campaign.campaignID + '1'}
+				                    key={campaign.campaignID + '1FB'}
 				                    label="Enter Campaign"
 				                    fullWidth={true}/>
 			                </Link>]}/>);

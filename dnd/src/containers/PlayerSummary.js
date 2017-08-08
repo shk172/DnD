@@ -19,6 +19,9 @@ class PlayerSummary extends Component{
 				return(
 					<div>{key}: {this.state.player[key]}</div>);
 			}
+			else{
+				return null;
+			}
 		});
 		return(
 			<div>

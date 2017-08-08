@@ -3,7 +3,6 @@ import '../services/firebaseConfig';
 import firebaseSignIn from '../services/firebaseSignIn';
 import firebaseSignUp from '../services/firebaseSignUp';
 
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';

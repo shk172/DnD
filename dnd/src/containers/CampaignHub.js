@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux'
+import playerInfo from '../reducers/playerInfo';
 import {Tabs, Tab} from 'material-ui/Tabs';
 
 import CharacterHub from './CharacterHub';
@@ -8,6 +9,7 @@ import CharacterInfoForm from './CharacterInfoForm';
 import getCampaign from '../services/getCampaign';
 import importPlayerCharacter from '../services/importPlayerCharacter';
 
+import determinePlayerCharacterImport from '../actions/determinePlayerCharacterImport';
 const styles = {
   root: {
     display: 'flex',
@@ -44,10 +46,11 @@ const styles = {
   }
 };
 
-class CampaignHub extends Component{
+class Campaign extends Component{
   constructor(props){
     super(props);
     this.state={
+      added: "",
       loading: true,
       userID: this.props.userID,
       campaignID: this.props.campaignID,
@@ -55,35 +58,12 @@ class CampaignHub extends Component{
       tab: "TAB_DETAILS",
       campaignTitle: this.props.campaignTitle,
     };
+    this.initialize = this.props.initialize.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
   }
 
   componentWillMount(){
-    importPlayerCharacter(this.state.userID, this.state.campaignID).then(
-      (character)=>{
-        if(Object.keys(character).length > 1){
-          console.log("character exists");
-          var character = character;
-          getCampaign(this.state.campaignID).then((campaign)=>{
-            this.setState({
-              campaign: campaign,
-              character: character,
-              loading: false,
-            });
-          })
-        }
-        
-        else{
-          console.log("character does not exist");
-          getCampaign(this.state.campaignID).then((campaign)=>{
-            this.setState({
-              campaign: campaign,
-              characterCreate: true,
-              loading: false,
-            });
-          })
-        }
-      })
+    this.initialize(this.state.userID, this.state.campaignID);
   }
   
   handleTabChange(tab){
@@ -95,12 +75,13 @@ class CampaignHub extends Component{
   }
 
   render(){
-    if(this.state.loading){
+    if(!this.props.campaignInfo.loaded || 
+      !this.props.playerInfo.loaded){
       return(
         <div>Loading...</div>
         )
     }
-    if(this.state.characterCreate === true){
+    if(this.props.playerInfo.characterCreate === true){
       return(
         <CharacterInfoForm 
           tab={this.state.tab}
@@ -130,12 +111,43 @@ class CampaignHub extends Component{
           </Tabs>
           <CharacterHub 
             tab={this.state.tab}
-            character={this.state.character} 
-            campaign={this.state.campaign}/>
+            character={this.props.playerInfo.character} 
+            campaign={this.props.campaignInfo.campaign}/>
         </div>
       )
     }
     
   }
 }
+
+//mapDispatchToProps puts any function that can be called 
+//by the component to its props. Whenever the function is called
+//the dispatch function sends the result of the variable provided
+//to the reducers, which will then change the state in mapStateToProps.
+const mapDispatchToProps = dispatch => {
+  return{
+    initialize: (userID, campaignID) => {
+      dispatch(determinePlayerCharacterImport(userID, campaignID));
+      //console.log(importOrCreatePlayer(userID, campaignID));
+      //dispatch(importOrCreatePlayer(userID, campaignID))
+    }
+  }
+}
+
+//mapStateToProps puts everything under its 
+//return to this component's props
+//State is processed in the reducers
+const mapStateToProps = state => {
+  console.log(state)
+  return{
+    campaignInfo: state.campaignInfo,
+    playerInfo: state.playerInfo,
+  }
+}
+
+const CampaignHub = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Campaign)
+
 export default CampaignHub;

@@ -5,7 +5,6 @@ import {GridList, GridTile} from 'material-ui/GridList';
 import Dialog from 'material-ui/Dialog';
 import Divider from 'material-ui/Divider';
 import FlatButton from 'material-ui/FlatButton';
-import Popover from 'material-ui/Popover';
 import RaisedButton from 'material-ui/RaisedButton';
 import Subheader from 'material-ui/Subheader';
 import {Tabs, Tab} from 'material-ui/Tabs';
@@ -126,12 +125,12 @@ class DungeonMasterHub extends Component{
 			cPlayers = campaignPlayers;
 		}).then(()=>{
 			importCampaignNPCs(this.state.campaignID).then((npcs)=>{
-        var npcs = npcs;
+        var npcsObject = npcs;
         getCampaign(this.state.campaignID).then((campaign)=>{
             this.setState({
               campaignPlayers: cPlayers,
               campaign: campaign,
-              npcs: npcs,
+              npcs: npcsObject,
               loading: false,
             });
           })
