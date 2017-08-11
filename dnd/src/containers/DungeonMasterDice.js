@@ -13,37 +13,37 @@ class DungeonMasterDice extends Component{
 	      diceResult: {
 	        4: {
 	        	name: '',
-	        	description: '',
+	        	dice: '',
 	        	roll: '',
 	        },
 	        6: {
 	        	name: '',
-	        	description: '',
+	        	dice: '',
 	        	roll: '',
 	        },
 	        8: {
 	        	name: '',
-	        	description: '',
+	        	dice: '',
 	        	roll: '',
 	        },
 	        10: {
 	        	name: '',
-	        	description: '',
+	        	dice: '',
 	        	roll: '',
 	        },
 	        12: {
 	        	name: '',
-	        	description: '',
+	        	dice: '',
 	        	roll: '',
 	        },
 	        20: {
 	        	name: '',
-	        	description: '',
+	        	dice: '',
 	        	roll: '',
 	        },
 	        100: {
 	        	name: '',
-	        	description: '',
+	        	dice: '',
 	        	roll: '',
 	        },
 	      },
@@ -55,7 +55,11 @@ class DungeonMasterDice extends Component{
 		var diceResult = this.state.diceResult;
 		diceResult[value].name = this.state.character.Name;
 		diceResult[value].roll = Math.floor(Math.random() * value) + 1;
-		diceResult[value].description = " rolled a d" + value + " and got " + diceResult[value].roll;
+		diceResult[value].dice = value;
+		var time = new Date();
+		time = time.getTime() - (time.getTimezoneOffset()*60000);
+		diceResult[value].time = new Date(time).toUTCString();
+		console.log(diceResult[value].time);
 		var playerDiceRef = firebase.database().ref("/Campaigns/" + this.state.campaignID + "/DiceResults/" + this.state.character.Name);
 		playerDiceRef.set(diceResult[value]);
 		this.setState(diceResult);

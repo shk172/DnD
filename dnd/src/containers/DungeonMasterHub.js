@@ -125,15 +125,15 @@ class DungeonMasterHub extends Component{
 			cPlayers = campaignPlayers;
 		}).then(()=>{
 			importCampaignNPCs(this.state.campaignID).then((npcs)=>{
-        var npcsObject = npcs;
-        getCampaign(this.state.campaignID).then((campaign)=>{
-            this.setState({
-              campaignPlayers: cPlayers,
-              campaign: campaign,
-              npcs: npcsObject,
-              loading: false,
-            });
-          })
+		        var npcsObject = npcs;
+		        getCampaign(this.state.campaignID).then((campaign)=>{
+		            this.setState({
+		              campaignPlayers: cPlayers,
+		              campaign: campaign,
+		              npcs: npcsObject,
+		              loading: false,
+		            });
+		        })
 			});
 		});
 	}
@@ -305,13 +305,13 @@ class DungeonMasterHub extends Component{
 						)
 				});
 			}
-			
-			var diceRolls = [];
+
+			var diceRolls;
 			if(this.state.diceRolls.length !== 0){
 				diceRolls = this.state.diceRolls.map((result)=>{
 					return(
 						<div className="App-Dice-Section">
-							{result.name} {result.description}
+							{result.name} rolled a {result.dice} and got {result.roll} on {result.time}.
 						</div>
 						)
 				})
@@ -353,8 +353,8 @@ class DungeonMasterHub extends Component{
 	}
 
 	listenForPlayerUpdates(){
-		const npcRef = firebase.database().ref("Campaigns/" + this.state.campaignID + "/NPCs");
-		npcRef.on("value", (npcs)=>{
+		const playersRef = firebase.database().ref("Campaigns/" + this.state.campaignID + "/Players");
+		playersRef.on("value", (players)=>{
 			this.importCharacters();
 		})
 	}
@@ -368,21 +368,41 @@ class DungeonMasterHub extends Component{
 
 	listenForDiceUpdates() {
 		var app = this;
-	  const diceResultRef = firebase.database().ref("Campaigns/" + this.state.campaignID + "/DiceResults");
-	  diceResultRef.on("value", (results)=>{
-	  	var diceRolls = [];
-	  	results.forEach((player)=>{		
-	  		var diceResult = {
-	  			name: player.val().name,
-	  			roll: player.val().roll,
-	  			description: player.val().description,
+		var newRoll = false;
+		const diceResultRef = firebase.database().ref("Campaigns/" + this.state.campaignID + "/DiceResults");
+		diceResultRef.on("child_added", (results)=>{
+			if(newRoll === false) return;
+		  	var diceRolls = this.state.diceRolls;
+			var diceResult = {
+	  			name: results.val().name,
+	  			roll: results.val().roll,
+	  			dice: "d" + results.val().dice,
+	  			time: results.val().time,
 	  		}
 	  		diceRolls.push(diceResult);
 	  		app.setState({
 	  			diceRolls: diceRolls
 	  		})
-			});
-	  });
+		});
+
+		diceResultRef.on("child_changed", (results)=>{
+			if(newRoll === false) return;
+		  	var diceRolls = this.state.diceRolls;
+			var diceResult = {
+	  			name: results.val().name,
+	  			roll: results.val().roll,
+	  			dice: "d" + results.val().dice,
+	  			time: results.val().time,
+	  		}
+	  		diceRolls.push(diceResult);
+	  		app.setState({
+	  			diceRolls: diceRolls
+	  		})
+		});
+
+		diceResultRef.once("value", (results)=>{
+			newRoll = true;
+		})
 	}		
 }
 
