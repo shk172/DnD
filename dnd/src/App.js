@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
 import firebase from 'firebase';
+import { connect } from 'react-redux'
 import injectTapEventPlugin from 'react-tap-event-plugin';
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 
 import AppBar from 'material-ui/AppBar';
+import FlatButton from 'material-ui/FlatButton';
 import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
@@ -18,23 +20,24 @@ const styles = {
     backgroundColor: '#D17400',
   },
   title: {
-    cursor: 'pointer',
     color: 'white',
   },
 };
 
-class App extends Component {
+class AppClass extends Component {
    constructor(props){
     super(props);
     this.state={
       loading: true,
     }
     injectTapEventPlugin();
+    this.reset = this.props.reset.bind(this);
     this.onUpdate = this.onUpdate.bind(this);
     this.signOut = this.signOut.bind(this);
   } 
 
   componentWillMount(){
+    this.reset();
     var app = this;
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
@@ -45,7 +48,7 @@ class App extends Component {
           password: "",
           loading: false,
         });
-        console.log("You are logged in");
+        //console.log("You are logged in");
       }
       else{
         app.setState({
@@ -54,7 +57,7 @@ class App extends Component {
           password: "",
           loading: true,
         });
-        console.log("You are logged out.");
+        //console.log("You are logged out.");
       }
     });
   }
@@ -75,20 +78,27 @@ class App extends Component {
 
   render() {
     const Logged = (props) => (
-      <IconMenu
-        {...props}
-        iconButtonElement={
-          <IconButton><MoreVertIcon /></IconButton>
-        }
-        targetOrigin={{horizontal: 'left', vertical: 'top'}}
-        anchorOrigin={{vertical: 'bottom'}}
-      >
-        <MenuItem
-          primaryText={this.state.user.email}/>
-        <MenuItem 
-          primaryText="Sign out" 
-          onTouchTap={this.signOut}/>
-      </IconMenu>
+      <div>
+        <IconMenu
+          {...props}
+          iconButtonElement={
+            <IconButton><MoreVertIcon /></IconButton>
+          }
+          targetOrigin={{horizontal: 'left', vertical: 'top'}}
+          anchorOrigin={{vertical: 'bottom'}}
+        >
+          <MenuItem
+            primaryText={this.state.user.email}/>
+          <MenuItem 
+            primaryText="Sign out" 
+            onTouchTap={this.signOut}/>
+        </IconMenu>
+        <Link to='/' 
+          onClick={this.reset}
+          style={{textDecoration: 'none'}}>
+          <IconButton iconClassName="material-icons">home</IconButton>
+        </Link>
+      </div>
     );
 
     if(!this.state.loggedIn && this.state.loggedIn !== undefined){
@@ -110,8 +120,9 @@ class App extends Component {
         <div>
            <AppBar
               style={styles.bar}
-              title={<Link to='/' style={{textDecoration: 'none'}} ><span style={styles.title}>There Will Be Dragons</span></Link>}
+              title={<a style={styles.title}>{this.props.title.title}</a>}
               iconElementLeft={<Logged/>}
+              iconElementRight={<div style={{marginTop: 5}}></div>}
             />
         	<MainHub onUpdate={this.onUpdate}/>
         </div> 
@@ -125,5 +136,38 @@ class App extends Component {
     }
   }
 }
+
+
+const resetTitle = () => {
+  return{
+    type: "RESET"
+  }
+}
+//mapDispatchToProps puts any function that can be called 
+//by the component to its props. Whenever the function is called
+//the dispatch function sends the result of the variable provided
+//to the reducers, which will then change the state in mapStateToProps.
+const mapDispatchToProps = dispatch => {
+  return{
+    reset: () => {
+      dispatch(resetTitle())
+    }
+  }
+}
+
+
+//mapStateToProps puts everything under its 
+//return to this component's props
+//State is processed in the reducers
+const mapStateToProps = state => {
+  return{
+    title: state.pageTitle
+  }
+}
+
+const App = withRouter(connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AppClass));
 
 export default App;

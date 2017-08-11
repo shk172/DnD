@@ -5,12 +5,30 @@ import { combineReducers } from 'redux'
 dispatch functions, and the reducers' workload can be split
 through each actions' types defined in the dispatch function.
 */
+const pageTitle = (state = {}, action) => {
+	switch(action.type){
+		case "CAMPAIGN":
+			var title = action.campaign.campaignTitle;
+			return{
+				title: title
+			}
+		case "RESET":
+			return {
+				title: "There Will Be Dragons"
+			}
+		default:
+			return{
+				...state,
+			}
+	}
+}
 const playerInfo = (state = {}, action) => {
+	var loaded;
 	switch(action.type){
 		case "PLAYER_EXIST":
 			//console.log("Following action has been passed: ", action);
 			var character = action.character;
-			var loaded = action.loaded;
+			loaded = action.loaded;
 			return{
 				...state,
 				character,
@@ -18,7 +36,7 @@ const playerInfo = (state = {}, action) => {
 				characterCreate: false,
 			}
 		case "PLAYER_NOT_EXIST":
-			var loaded = action.loaded;
+			loaded = action.loaded;
 			return{
 				...state,
 				characterCreate: true,
@@ -52,6 +70,7 @@ const campaignInfo = (state={}, action) => {
 }
 
 const reducerIndex = combineReducers({
+	pageTitle,
 	playerInfo,
 	campaignInfo
 })

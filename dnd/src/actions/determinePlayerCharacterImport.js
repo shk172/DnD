@@ -13,7 +13,7 @@ export default function determinePlayerCharacterImport(userID, campaignID) {
     importPlayerCharacter(userID, campaignID).then(
     (character)=>{
       if(Object.keys(character).length > 1){
-        console.log("character exists");
+        //console.log("character exists");
         var characterObject = character;
         getCampaign(campaignID).then((campaign)=>{
           dispatch({
@@ -30,7 +30,7 @@ export default function determinePlayerCharacterImport(userID, campaignID) {
       }
       
       else{
-        console.log("character does not exist");
+        //console.log("character does not exist");
         getCampaign(campaignID).then((campaign)=>{
           dispatch({
             type: "CAMPAIGN",

@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import playerInfo from '../reducers/playerInfo';
 import {Tabs, Tab} from 'material-ui/Tabs';
 
 import CharacterHub from './CharacterHub';
 import CharacterInfoForm from './CharacterInfoForm';
-
-import getCampaign from '../services/getCampaign';
-import importPlayerCharacter from '../services/importPlayerCharacter';
 
 import determinePlayerCharacterImport from '../actions/determinePlayerCharacterImport';
 const styles = {
@@ -128,8 +124,6 @@ const mapDispatchToProps = dispatch => {
   return{
     initialize: (userID, campaignID) => {
       dispatch(determinePlayerCharacterImport(userID, campaignID));
-      //console.log(importOrCreatePlayer(userID, campaignID));
-      //dispatch(importOrCreatePlayer(userID, campaignID))
     }
   }
 }
@@ -138,7 +132,6 @@ const mapDispatchToProps = dispatch => {
 //return to this component's props
 //State is processed in the reducers
 const mapStateToProps = state => {
-  console.log(state)
   return{
     campaignInfo: state.campaignInfo,
     playerInfo: state.playerInfo,

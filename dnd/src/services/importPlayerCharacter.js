@@ -12,7 +12,7 @@ export default function importPlayerCharacter (userID, campaignID) {
 
 			    campaignRef.once("value", (data) => {
 					if(data.val() === null || Object.keys(data.val()).length <= 1){
-						console.log("No character found");
+						//console.log("No character found");
 						resolve(player);
 					}
 					else{
