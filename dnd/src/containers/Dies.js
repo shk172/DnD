@@ -54,8 +54,8 @@ class Dies extends Component{
 	rollDice(value){
 		var diceResult = this.state.diceResult;
 		diceResult[value].name = this.state.character.Name;
-		diceResult[value].description = "This player rolled a d" + value + ".";
 		diceResult[value].roll = Math.floor(Math.random() * value) + 1;
+		diceResult[value].description = " rolled a d" + value + " and got " + diceResult[value].roll;
 		var playerDiceRef = firebase.database().ref("/Campaigns/" + this.state.campaignID + "/DiceResults/" + this.state.character.Name);
 		playerDiceRef.set(diceResult[value]);
 		this.setState(diceResult);
@@ -64,7 +64,7 @@ class Dies extends Component{
 	render(){
 		return(
 			<List className="App-Dice">
-				<p>Dies</p>
+				<p>Roll Dice</p>
 				<ListItem 
 					className="App-Dice-Section"
 					onTouchTap={this.rollDice.bind(this, 4)} 

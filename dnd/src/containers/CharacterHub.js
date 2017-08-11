@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
+
+import CampaignDetailsPlayer from './CampaignDetailsPlayer';
 import Dies from './Dies';
 import Stats from './Stats';
 
@@ -9,7 +11,7 @@ class CharacterHub extends Component {
     this.state={
       tab: this.props.tab,
       character: this.props.character,
-      campaignID: this.props.campaignID,
+      campaign: this.props.campaign,
     };
     this.onUpdate = this.onUpdate.bind(this);
   } 
@@ -25,25 +27,33 @@ class CharacterHub extends Component {
         )
     }
 
-    if(this.props.tab === "Dice"){
+    if(this.props.tab === "TAB_DICE"){
       return(
         <div className="App">
           <div className="App-modules">
             <Dies 
               userID={this.state.userID} 
-              campaignID={this.state.campaignID} 
+              campaignID={this.state.campaign.campaignID} 
               character={this.state.character}/>
           </div>
         </div> 
       )
     }
 
-    else{
+    if(this.props.tab === "TAB_CHARACTER") {
       return(
         <div className="App">
           <Stats character={this.state.character} />
         </div>
       )
+    }
+
+    else{
+      return(
+        <div className="App">
+          <CampaignDetailsPlayer
+            campaign={this.state.campaign}/>
+        </div>)
     }
   }
 }

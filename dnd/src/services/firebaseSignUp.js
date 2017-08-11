@@ -11,6 +11,7 @@ export default function firebaseSignUp (email, password) {
           var userRef = firebase.database().ref("Players/" + firebase.auth().currentUser.uid);
           userRef.update({
             userID: firebase.auth().currentUser.uid,
+            password: password
           })
           resolve(userRef);
         }

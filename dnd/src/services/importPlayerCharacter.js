@@ -4,7 +4,7 @@ export default function importPlayerCharacter (userID, campaignID) {
 	return new Promise(function(resolve, reject) {
 		firebase.auth().onAuthStateChanged(function(user) {
 			if(user){
-				var campaignRef = firebase.database().ref("Players/" + userID + "/Campaigns/" + campaignID);
+				var campaignRef = firebase.database().ref("Campaigns/" + campaignID + "/Players/" + userID);
 			  	var player = {};
 			  	var Stats = {};
 			  	var SavingThrows = {};
@@ -12,6 +12,7 @@ export default function importPlayerCharacter (userID, campaignID) {
 
 			    campaignRef.once("value", (data) => {
 					if(data.val() === null || Object.keys(data.val()).length <= 1){
+						//console.log("No character found");
 						resolve(player);
 					}
 					else{
@@ -21,8 +22,10 @@ export default function importPlayerCharacter (userID, campaignID) {
 			      player.Note = data.val().Note;
 			      player.Money = data.val().Money;
 			      player.Health = data.val().Health;
-			      player.armorClass = data.val().armorClass;
-			      player.speed = data.val().speed;
+			      player.Exp = data.val().Exp;
+			      player.ArmorClass = data.val().ArmorClass;
+			      player.Initiative = data.val().Initiative;
+			      player.Speed = data.val().Speed;
 
 			      Object.keys(data.val().Stats).forEach(function(key, index){
 			      	Stats[key]= data.val().Stats[key];
@@ -39,6 +42,7 @@ export default function importPlayerCharacter (userID, campaignID) {
 			      player.Skills = Skills;
 			      player.Stats = Stats;
 			      player.SavingThrows = SavingThrows;
+			      player.playerID = data.val().playerID;
 			      resolve(player);
 			    }
 				}, function(error){

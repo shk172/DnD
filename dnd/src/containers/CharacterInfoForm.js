@@ -9,50 +9,53 @@ class CharacterInfoForm extends Component{
     super(props);
     this.state = {
       Name: "",
-        Race: "Dragonborn",
+      Race: "Dragonborn",
+      ArmorClass: 0,
+      Initiative: 0,
+      Speed: 0,
 
-        Stats: ["Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"],
+      Stats: ["ArmorClass", "Initiative", "Speed", "Strength", "Dexterity", "Constitution", "Intelligence", "Wisdom", "Charisma"],
       Strength: 0,
-        Dexterity: 0,
-        Constitution: 0,
-        Intelligence: 0,
-        Wisdom: 0,
-        Charisma: 0,
+      Dexterity: 0,
+      Constitution: 0,
+      Intelligence: 0,
+      Wisdom: 0,
+      Charisma: 0,
 
-        SavingThrows: ["StrengthST", "DexterityST", "ConstitutionST", "IntelligenceST", "WisdomST", "CharismaST"],
-        StrengthST: 0,
-        DexterityST: 0,
-        ConstitutionST: 0,
-        IntelligenceST: 0,
-        WisdomST: 0,
-        CharismaST: 0,
+      SavingThrows: ["StrengthST", "DexterityST", "ConstitutionST", "IntelligenceST", "WisdomST", "CharismaST"],
+      StrengthST: 0,
+      DexterityST: 0,
+      ConstitutionST: 0,
+      IntelligenceST: 0,
+      WisdomST: 0,
+      CharismaST: 0,
 
-        Skills: ["Acrobatics", "AnimalHandling", "Arcana", "Athletics", "Deception", "History", "Insight", 
-        "Intimidation", "Investigation", "Medicine", "Nature", "Perception", "Performance", "Persuasion", "Religion",
-        "SleightOfHand", "Stealth", "Survival"],
-        Acrobatics: 0,
-        AnimalHandling: 0,
-        Arcana: 0,
-        Athletics: 0,
-        Deception: 0,
-        History: 0,
-        Insight: 0,
-        Intimidation: 0,
-        Investigation: 0,
-        Medicine: 0,
-        Nature: 0,
-        Perception: 0,
-        Performance: 0,
-        Persuasion: 0,
-        Religion: 0,
-        SleightOfHand: 0,
-        Stealth: 0,
-        Survival: 0,
+      Skills: ["Acrobatics", "AnimalHandling", "Arcana", "Athletics", "Deception", "History", "Insight", 
+      "Intimidation", "Investigation", "Medicine", "Nature", "Perception", "Performance", "Persuasion", "Religion",
+      "SleightOfHand", "Stealth", "Survival"],
+      Acrobatics: 0,
+      AnimalHandling: 0,
+      Arcana: 0,
+      Athletics: 0,
+      Deception: 0,
+      History: 0,
+      Insight: 0,
+      Intimidation: 0,
+      Investigation: 0,
+      Medicine: 0,
+      Nature: 0,
+      Perception: 0,
+      Performance: 0,
+      Persuasion: 0,
+      Religion: 0,
+      SleightOfHand: 0,
+      Stealth: 0,
+      Survival: 0,
 
-        userID: this.props.userID,
-        campaignID: this.props.campaignID,
-        characterType: this.props.characterType,
-      };
+      userID: this.props.userID,
+      campaignID: this.props.campaignID,
+      characterType: this.props.characterType,
+    };  
     this.nameChange = this.nameChange.bind(this);
     this.raceChange = this.raceChange.bind(this);
     this.statChange = this.statChange.bind(this);
@@ -60,64 +63,75 @@ class CharacterInfoForm extends Component{
   }
 
   submitInfo(event){
-    var character = {};
-
-    character.Name = this.state.Name;
-    character.Race = this.state.Race;
-    character.Level= 1;
-    character.Health = 20;
-    character.Note = '';
-    character.Money = 0;
-
-    character.Skills = {};
-    character.Stats = {};
-    character.SavingThrows = {};
-
-    this.state.Stats.forEach((stat)=>{
-      character.Stats[stat] = this.state[stat];
-    })
-
-    this.state.SavingThrows.forEach((savingThrows)=>{
-      character.SavingThrows[savingThrows] = this.state[savingThrows];
-    })
-
-    this.state.Skills.forEach((skill)=>{
-      character.Skills[skill] = this.state[skill];
-    })
-
-    character.campaignID = this.state.campaignID;
-
-    if(this.state.characterType === "Players"){
-      var playerCampaignRef = firebase.database().ref("Players/" + this.state.userID + "/Campaigns/" + this.state.campaignID);
-      playerCampaignRef.update(character);
-
-      //if the player doesn't already have a DM tag, add one as a non-DM - creating a new character will not change the DM status.
-      var campaignPlayerRef = firebase.database().ref("Campaigns/" + this.state.campaignID  + "/Players/");
-      campaignPlayerRef.on("value", (data)=>{
-        if(data.val()[this.state.userID] === null || data.val()[this.state.userID] === undefined){
-          var player = {};
-          player[this.state.userID] = false;
-          campaignPlayerRef.update(player);
-        }
-      });
-    this.props.onUpdate({
-        characterCreate: false,
-        character: character,
-      })
+    if(this.state.Name.length === 0){
+      console.log("Character needs a name.");
+      event.preventDefault();
     }
-
     else{
-      var campaignNPCRef = firebase.database().ref("Campaigns/" + this.state.campaignID  + "/NPCs/");
-      var player = {};
-      player[character.Name] = character;
-      campaignNPCRef.update(player);
-      this.props.onUpdate({
-        npcCreate: false,
-        character: character,
-      })
-    }
+      var character = {};
 
-    event.preventDefault();
+      character.Name = this.state.Name;
+      character.Race = this.state.Race;
+      character.Level= 1;
+      character.Health = 20;
+      character.Note = '';
+      character.Money = 0;
+      character.Exp = 0;
+      character.ArmorClass = this.state.ArmorClass;
+      character.Initiative = this.state.Initiative;
+      character.Speed = this.state.Speed;
+
+      character.Skills = {};
+      character.Stats = {};
+      character.SavingThrows = {};
+
+      this.state.Stats.forEach((stat)=>{
+        character.Stats[stat] = this.state[stat];
+      })
+
+      this.state.SavingThrows.forEach((savingThrows)=>{
+        character.SavingThrows[savingThrows] = this.state[savingThrows];
+      })
+
+      this.state.Skills.forEach((skill)=>{
+        character.Skills[skill] = this.state[skill];
+      })
+
+      character.playerID = this.state.userID;
+      character.campaignID = this.state.campaignID;
+
+      if(this.state.characterType === "Players"){
+        var campaignPlayerRef = firebase.database().ref("Campaigns/" + this.state.campaignID  + "/Players/" +this.state.userID);
+        campaignPlayerRef.update(character);
+
+        //if the player doesn't already have a DM tag, add one as a non-DM - creating a new character will not change the DM status.
+        var playerCampaignRef = firebase.database().ref("Players/" + this.state.userID + "/Campaigns/");
+        playerCampaignRef.once("value", (data)=>{
+          if(data.val() === null || data.val()[this.state.campaignID] !== true){
+            var campaignObject = {};
+            campaignObject[this.state.campaignID] = false;
+            playerCampaignRef.set(campaignObject);
+          }
+        });
+      this.props.onUpdate({
+          characterCreate: false,
+          character: character,
+        })
+      }
+
+      else{
+        var campaignNPCRef = firebase.database().ref("Campaigns/" + this.state.campaignID  + "/NPCs/");
+        var player = {};
+        player[character.Name] = character;
+        campaignNPCRef.set(player);
+        this.props.onUpdate({
+          npcCreate: false,
+          character: character,
+        })
+      }
+
+      event.preventDefault();
+    }
   }
 
   raceChange(event){
@@ -158,6 +172,10 @@ class CharacterInfoForm extends Component{
                   <option value="Tiefling">Tiefling</option>
                 </select>
               </p>
+              <p>Armor Class: <input type="number" name="ArmorClass" value={this.state.ArmorClass} onChange={this.statChange}/></p>
+              <p>Initiative: <input type="number" name="Initiative" value={this.state.Initiative} onChange={this.statChange}/></p>
+              <p>Speed: <input type="number" name="Speed" value={this.state.Speed} onChange={this.statChange}/></p>
+              
               </div>
               <div className="App-stats">
                 <p>Stats</p>

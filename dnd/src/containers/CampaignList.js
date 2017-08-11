@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import {List, ListItem} from 'material-ui/List';
 import { Link } from 'react-router-dom';
+import FlatButton from 'material-ui/FlatButton';
 import {Toolbar, ToolbarTitle} from 'material-ui/Toolbar';
 
 const styles = {
@@ -45,14 +46,19 @@ class CampaignList extends Component{
 		else{
 			campaignList = this.state.campaigns.map((campaign) => {
 				return(
-					<div key={campaign.campaignID}>
-						<ListItem
-							primaryText={
-								<Link to={'/campaign/'+campaign.campaignID} style={{textDecoration: 'none'}}>
-								{campaign.campaignTitle}
-								</Link>}
-						/>
-					</div>);
+					<ListItem
+						key={campaign.campaignID}
+        				primaryText={campaign.campaignTitle}
+        				primaryTogglesNestedList={true}
+        				nestedItems={[
+							<Link 
+								to={'/campaign/'+campaign.campaignID}
+								key={campaign.campaignID + '1L'}>
+								<FlatButton 
+				                    key={campaign.campaignID + '1FB'}
+				                    label="Enter Campaign"
+				                    fullWidth={true}/>
+			                </Link>]}/>);
 			});
 		}
 
