@@ -13,6 +13,7 @@ class CharacterHub extends Component {
       character: this.props.character,
       campaign: this.props.campaign,
     };
+    console.log(this.state);
     this.onUpdate = this.onUpdate.bind(this);
   } 
 

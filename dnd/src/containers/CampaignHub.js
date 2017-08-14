@@ -47,19 +47,14 @@ class Campaign extends Component{
     super(props);
     this.state={
       added: "",
-      loading: true,
       userID: this.props.userID,
       campaignID: this.props.campaignID,
       characterCreate: false,
       tab: "TAB_DETAILS",
       campaignTitle: this.props.campaignTitle,
     };
-    this.initialize = this.props.initialize.bind(this);
+    this.props.initialize(this.state.userID, this.state.campaignID);
     this.onUpdate = this.onUpdate.bind(this);
-  }
-
-  componentWillMount(){
-    this.initialize(this.state.userID, this.state.campaignID);
   }
   
   handleTabChange(tab){
@@ -132,6 +127,7 @@ const mapDispatchToProps = dispatch => {
 //return to this component's props
 //State is processed in the reducers
 const mapStateToProps = state => {
+  console.log(state.campaignInfo);
   return{
     campaignInfo: state.campaignInfo,
     playerInfo: state.playerInfo,

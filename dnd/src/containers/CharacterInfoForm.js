@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import firebase from 'firebase';
-/*
-Consult React docs' forms section again before working on this
-*/
+import { connect } from 'react-redux';
+import submitCharacter from '../actions/submitCharacter';
 
-class CharacterInfoForm extends Component{
+class CharacterInfoFormClass extends Component{
   constructor(props){
     super(props);
     this.state = {
@@ -59,77 +57,17 @@ class CharacterInfoForm extends Component{
     this.nameChange = this.nameChange.bind(this);
     this.raceChange = this.raceChange.bind(this);
     this.statChange = this.statChange.bind(this);
-    this.submitInfo = this.submitInfo.bind(this);
+    this.submit = this.submit.bind(this);
+    this.submitInfo = this.props.submitInfo.bind(this);
   }
 
-  submitInfo(event){
+  submit(event){
     if(this.state.Name.length === 0){
       console.log("Character needs a name.");
       event.preventDefault();
     }
     else{
-      var character = {};
-
-      character.Name = this.state.Name;
-      character.Race = this.state.Race;
-      character.Level= 1;
-      character.Health = 20;
-      character.Note = '';
-      character.Money = 0;
-      character.Exp = 0;
-      character.ArmorClass = this.state.ArmorClass;
-      character.Initiative = this.state.Initiative;
-      character.Speed = this.state.Speed;
-
-      character.Skills = {};
-      character.Stats = {};
-      character.SavingThrows = {};
-
-      this.state.Stats.forEach((stat)=>{
-        character.Stats[stat] = this.state[stat];
-      })
-
-      this.state.SavingThrows.forEach((savingThrows)=>{
-        character.SavingThrows[savingThrows] = this.state[savingThrows];
-      })
-
-      this.state.Skills.forEach((skill)=>{
-        character.Skills[skill] = this.state[skill];
-      })
-
-      character.playerID = this.state.userID;
-      character.campaignID = this.state.campaignID;
-
-      if(this.state.characterType === "Players"){
-        var campaignPlayerRef = firebase.database().ref("Campaigns/" + this.state.campaignID  + "/Players/" +this.state.userID);
-        campaignPlayerRef.update(character);
-
-        //if the player doesn't already have a DM tag, add one as a non-DM - creating a new character will not change the DM status.
-        var playerCampaignRef = firebase.database().ref("Players/" + this.state.userID + "/Campaigns/");
-        playerCampaignRef.once("value", (data)=>{
-          if(data.val() === null || data.val()[this.state.campaignID] !== true){
-            var campaignObject = {};
-            campaignObject[this.state.campaignID] = false;
-            playerCampaignRef.set(campaignObject);
-          }
-        });
-      this.props.onUpdate({
-          characterCreate: false,
-          character: character,
-        })
-      }
-
-      else{
-        var campaignNPCRef = firebase.database().ref("Campaigns/" + this.state.campaignID  + "/NPCs/");
-        var player = {};
-        player[character.Name] = character;
-        campaignNPCRef.set(player);
-        this.props.onUpdate({
-          npcCreate: false,
-          character: character,
-        })
-      }
-
+      this.submitInfo();
       event.preventDefault();
     }
   }
@@ -153,7 +91,7 @@ class CharacterInfoForm extends Component{
   render(){
     return(
       <div className="App">
-        <form onSubmit={this.submitInfo}>
+        <form onSubmit={this.submit}>
           <label>
             <div className="App-modules">
               <div className="App-stats">
@@ -226,4 +164,32 @@ class CharacterInfoForm extends Component{
     )
   }
 }
+
+//mapDispatchToProps puts any function that can be called 
+//by the component to its props. Whenever the function is called
+//the dispatch function sends the result of the variable provided
+//to the reducers, which will then change the state in mapStateToProps.
+const mapDispatchToProps = dispatch => {
+  return{
+    submitInfo: (character, state) => {
+      dispatch(submitCharacter(character, state));
+    }
+  }
+}
+
+//mapStateToProps puts everything under its 
+//return to this component's props
+//State is processed in the reducers
+const mapStateToProps = state => {
+  return{
+    campaignInfo: state.campaignInfo,
+    playerInfo: state.playerInfo,
+  }
+}
+
+const CharacterInfoForm = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CharacterInfoFormClass)
+
 export default CharacterInfoForm;

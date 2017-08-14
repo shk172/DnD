@@ -56,7 +56,10 @@ class Dies extends Component{
 		diceResult[value].name = this.state.character.Name;
 		diceResult[value].roll = Math.floor(Math.random() * value) + 1;
 		diceResult[value].dice = value;
-		diceResult[value].time = new Date();
+		var time = new Date();
+		time = time.getTime() - (time.getTimezoneOffset()*60000);
+		diceResult[value].time = new Date(time).toUTCString();
+		console.log(diceResult[value].time);
 		var playerDiceRef = firebase.database().ref("/Campaigns/" + this.state.campaignID + "/DiceResults/" + this.state.character.Name);
 		playerDiceRef.set(diceResult[value]);
 		this.setState(diceResult);

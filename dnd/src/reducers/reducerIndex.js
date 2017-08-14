@@ -25,6 +25,15 @@ const pageTitle = (state = {}, action) => {
 const playerInfo = (state = {}, action) => {
 	var loaded;
 	switch(action.type){
+		case "NPC_CREATED":
+			loaded = action.loaded;
+			var character = action.character;
+			return{
+				...state,
+				character,
+				loaded,
+				characterCreate: false,
+			}
 		case "PLAYER_EXIST":
 			//console.log("Following action has been passed: ", action);
 			var character = action.character;
@@ -42,6 +51,10 @@ const playerInfo = (state = {}, action) => {
 				characterCreate: true,
 				loaded,
 			}
+		case "RESET":
+			return{
+				loaded: false,
+			}
 		default:
 			return {
 				...state
@@ -49,7 +62,7 @@ const playerInfo = (state = {}, action) => {
 	}
 }
 
-const campaignInfo = (state={}, action) => {
+const campaignInfo = (state={loaded: false}, action) => {
 	//console.log("Following action has been passed: ", action);
 	switch(action.type){
 		case "CAMPAIGN":
@@ -61,6 +74,10 @@ const campaignInfo = (state={}, action) => {
 				campaign,
 				character,
 				loaded
+			}
+		case "RESET":
+			return{
+				loaded: false
 			}
 		default:
 			return{
