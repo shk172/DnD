@@ -26,7 +26,7 @@ const styles = {
     display: 'flex',
     flexWrap: 'wrap',
     justifyContent: 'space-around',
-    flexDirection: 'column',
+    flexDirection: 'row',
   },
   tab:{
   	backgroundColor: '#D17400',
@@ -35,9 +35,9 @@ const styles = {
   gridList: {
   	display: 'flex',
   	backgroundColor: '#D17400',
-  	flex: 1,
-  	margin: 20,
-    height: 240,
+  	margin: 10,
+  	width: '60vw',
+    height: 220,
     overflowY: 'auto',
   },
 
@@ -77,6 +77,7 @@ class DungeonMasterHub extends Component{
 				100: 1,
 			},
 			diceRolls: [],
+			latestRolls: [],
 			npcCreate: false,
 			tab: "TAB_CAMPAIGN",
 			dungeonMaster: {
@@ -91,7 +92,7 @@ class DungeonMasterHub extends Component{
 		this.onUpdate = this.onUpdate.bind(this);
 		this.pageRender = this.pageRender.bind(this);
 		this.rollDice = this.rollDice.bind(this);
-    this.sendAwards = this.sendAwards.bind(this);
+    	this.sendAwards = this.sendAwards.bind(this);
 	}
 
 	componentWillMount(){
@@ -142,59 +143,64 @@ class DungeonMasterHub extends Component{
 		this.setState(data);
 	}
 
-	pageRender(tab, playerList, npcList, diceRolls){
-		if(tab === "TAB_CHARACTERS"){
-			return(
-				<div style={styles.root}>
+	pageRender(tab, playerList, npcList, diceRolls, latestRolls){
+		switch(tab){
+			case "TAB_CHARACTERS":
+				return(
+					<div style={styles.root}>
+						<div>
+							<GridList
+								cellHeight={155}
+								style={styles.gridList}>
+								<Subheader>Player Characters</Subheader>
+								{playerList}
+							</GridList>
+							<GridList
+								cellHeight={155}
+								style={styles.gridList}>
+								<Subheader>NPCs</Subheader>
+								{npcList}
+							</GridList>
+							<RaisedButton 
+								style={styles.createNPC}
+								onTouchTap={this.createNewNPC}>
+								Create a new NPC
+							</RaisedButton>
+						</div>
+						<div className="App-modules">
+				          <Awards 
+				            players={this.state.campaignPlayers}
+				            sendAwards={this.sendAwards}/>
+				        </div>
+					</div>
+				)
+			case "TAB_DICE":
+				return(
+					<div className="App-modules">
+						<DungeonMasterDice userID={this.state.userID} 
+								campaignID={this.state.campaignID} 
+								character={this.state.dungeonMaster}/>
+						<div className="App-stats">
+							<p>Dice Rolls</p>
+							{latestRolls}
+						</div>
+						<div className="App-stats">
+							<p>Roll Log</p>
+							{diceRolls}
+						</div>
+					</div>
+				)
+			case "TAB_COMBAT":
+				return(
 					<div>
-						<GridList
-							cellHeight={155}
-							style={styles.gridList}>
-							<Subheader>Player Characters</Subheader>
-							{playerList}
-						</GridList>
-						<GridList
-							cellHeight={155}
-							style={styles.gridList}>
-							<Subheader>NPCs</Subheader>
-							{npcList}
-						</GridList>
 					</div>
-					<RaisedButton 
-						style={styles.createNPC}
-						onTouchTap={this.createNewNPC}>
-						Create a new NPC
-					</RaisedButton>
-				</div>
-			)
+				)
+
+			default:
+				return(
+	        		<div><CampaignDetailsDM campaign={this.state.campaign} players={this.state.campaignPlayers}/></div>
+	        	)
 		}
-		else if(tab === "TAB_DICE"){
-			return(
-				<div className="App-modules">
-					<DungeonMasterDice userID={this.state.userID} 
-							campaignID={this.state.campaignID} 
-							character={this.state.dungeonMaster}/>
-					<div className="App-stats">
-						<p>Dice Results</p>
-						{diceRolls}
-					</div>
-				</div>
-			)
-		}
-	    else if(tab === "TAB_AWARDS"){
-	      return(
-	        <div className="App-modules">
-	          <Awards 
-	            players={this.state.campaignPlayers}
-	            sendAwards={this.sendAwards}/>
-	        </div>
-	      )
-	    }
-	    else{
-	      return(
-	        <div><CampaignDetailsDM campaign={this.state.campaign} players={this.state.campaignPlayers}/></div>
-	        )
-	    }
 	}
 
 	rollDice(value){
@@ -311,14 +317,27 @@ class DungeonMasterHub extends Component{
 				diceRolls = this.state.diceRolls.map((result)=>{
 					return(
 						<div className="App-Dice-Section">
-							{result.name} rolled a {result.dice} and got {result.roll} on {result.time}.
+							{result.name} rolled a {result.dice} and got {result.roll} on {result.time} for {result.type}.
 						</div>
 						)
 				})
 			}
 
+			var latestRolls;
+			if(this.state.latestRolls.length !== 0){
+				latestRolls = this.state.latestRolls.map((result)=>{
+					console.log(result);
+					return(
+						<div className="App-Dice-Section">
+							{result.name}: {result.dice}, {result.roll}, {result.type}
+						</div>
+					)
+				})
+			}
+
+
 			return(
-				<div className="App">
+				<div className="App-Main-Hub">
 					<Tabs>
 				        <Tab
 				          style={styles.tab}
@@ -334,10 +353,10 @@ class DungeonMasterHub extends Component{
 							onActive={this.handleTabChange.bind(this, "TAB_DICE")}/>
 			            <Tab
 			              style={styles.tab}
-			              label="Awards"
-			              onActive={this.handleTabChange.bind(this, "TAB_AWARDS")}/>
+			              label="Combat"
+			              onActive={this.handleTabChange.bind(this, "TAB_COMBAT")}/>
 					</Tabs>
-					{this.pageRender(this.state.tab, playerList, npcList, diceRolls)}
+					{this.pageRender(this.state.tab, playerList, npcList, diceRolls, latestRolls)}
 				</div>
 				);
 		}
@@ -370,6 +389,24 @@ class DungeonMasterHub extends Component{
 		var app = this;
 		var newRoll = false;
 		const diceResultRef = firebase.database().ref("Campaigns/" + this.state.campaignID + "/DiceResults");
+		diceResultRef.on("value", (results)=>{
+			if(newRoll === false) return;
+		  	var latestRolls = [];
+		  	results.forEach((player)=>{
+		  		var diceResult = {
+		  			name: player.val().name,
+		  			roll: player.val().roll,
+		  			dice: "d" + player.val().dice,
+		  			time: player.val().time,
+		  			type: player.val().type,
+		  		}
+		  		latestRolls.push(diceResult);
+		  	})
+	  		app.setState({
+	  			latestRolls: latestRolls,
+	  		})
+		});
+
 		diceResultRef.on("child_added", (results)=>{
 			if(newRoll === false) return;
 		  	var diceRolls = this.state.diceRolls;
@@ -378,6 +415,7 @@ class DungeonMasterHub extends Component{
 	  			roll: results.val().roll,
 	  			dice: "d" + results.val().dice,
 	  			time: results.val().time,
+	  			type: results.val().type,
 	  		}
 	  		diceRolls.push(diceResult);
 	  		app.setState({
@@ -393,6 +431,7 @@ class DungeonMasterHub extends Component{
 	  			roll: results.val().roll,
 	  			dice: "d" + results.val().dice,
 	  			time: results.val().time,
+	  			type: results.val().type,
 	  		}
 	  		diceRolls.push(diceResult);
 	  		app.setState({
@@ -401,6 +440,20 @@ class DungeonMasterHub extends Component{
 		});
 
 		diceResultRef.once("value", (results)=>{
+			var latestRolls = [];
+		  	results.forEach((player)=>{
+		  		var diceResult = {
+		  			name: player.val().name,
+		  			roll: player.val().roll,
+		  			dice: "d" + player.val().dice,
+		  			time: player.val().time,
+		  			type: player.val().type,
+		  		}
+		  		latestRolls.push(diceResult);
+		  	})
+	  		app.setState({
+	  			latestRolls: latestRolls,
+	  		})
 			newRoll = true;
 		})
 	}		

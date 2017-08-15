@@ -14,10 +14,13 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import Authentication from './containers/Authentication';
 import MainHub from './containers/MainHub';
+import MessageList from './containers/MessageList';
 
 const styles = {
   bar: {
     backgroundColor: '#D17400',
+    position: 'absolute',
+    zIndex: 999
   },
   title: {
     color: 'white',
@@ -125,6 +128,7 @@ class AppClass extends Component {
               iconElementRight={<div style={{marginTop: 5}}></div>}
             />
         	<MainHub onUpdate={this.onUpdate}/>
+          <MessageList/>
         </div> 
       );      
     }

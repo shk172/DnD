@@ -13,7 +13,6 @@ class CharacterHub extends Component {
       character: this.props.character,
       campaign: this.props.campaign,
     };
-    console.log(this.state);
     this.onUpdate = this.onUpdate.bind(this);
   } 
 
@@ -53,7 +52,8 @@ class CharacterHub extends Component {
       return(
         <div className="App">
           <CampaignDetailsPlayer
-            campaign={this.state.campaign}/>
+            campaign={this.state.campaign}
+            players={this.props.players}/>
         </div>)
     }
   }

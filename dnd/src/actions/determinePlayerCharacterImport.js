@@ -16,7 +16,6 @@ export default function determinePlayerCharacterImport(userID, campaignID) {
         //console.log("character exists");
         var characterObject = character;
         getCampaign(campaignID).then((campaign)=>{
-          console.log(campaign);
           dispatch({
             type: "CAMPAIGN",
             campaign: campaign,

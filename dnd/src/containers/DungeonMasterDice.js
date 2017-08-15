@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 
 import {List, ListItem} from 'material-ui/List';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
 
 import firebase from 'firebase';
 
@@ -48,7 +50,13 @@ class DungeonMasterDice extends Component{
 	        },
 	      },
 	      userID: this.props.userID,
+	      rollType: "General"
 	    };
+	    this.handleChange = this.handleChange.bind(this);
+	}
+
+	handleChange(event, target, value){
+		this.setState({rollType: value});
 	}
 
 	rollDice(value){
@@ -56,6 +64,7 @@ class DungeonMasterDice extends Component{
 		diceResult[value].name = this.state.character.Name;
 		diceResult[value].roll = Math.floor(Math.random() * value) + 1;
 		diceResult[value].dice = value;
+		diceResult[value].type = this.state.rollType;
 		var time = new Date();
 		time = time.getTime() - (time.getTimezoneOffset()*60000);
 		diceResult[value].time = new Date(time).toUTCString();
@@ -68,7 +77,16 @@ class DungeonMasterDice extends Component{
 	render(){
 		return(
 			<List className="App-Dice">
-				<p>Roll Dice</p>
+				<h3>Roll Dice</h3>
+				<p>Rolling for:</p>
+				<DropDownMenu
+					value={this.state.rollType}
+					onChange={this.handleChange}>
+					<MenuItem value="General" primaryText="General" />
+					<MenuItem value="Initiative" primaryText="Initiative" />
+					<MenuItem value="Attack" primaryText="Attack" />
+					<MenuItem value="Defend" primaryText="Defend" />
+				</DropDownMenu>
 				<ListItem 
 					className="App-Dice-Section"
 					onTouchTap={this.rollDice.bind(this, 4)} 

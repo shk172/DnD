@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
+import { connect } from 'react-redux';
 import {Tabs, Tab} from 'material-ui/Tabs';
 
 import CharacterHub from './CharacterHub';
 import CharacterInfoForm from './CharacterInfoForm';
 
 import determinePlayerCharacterImport from '../actions/determinePlayerCharacterImport';
+
+import importCampaignPlayers from '../services/importCampaignPlayers';
+
 const styles = {
   root: {
     display: 'flex',
@@ -56,7 +59,13 @@ class Campaign extends Component{
     this.props.initialize(this.state.userID, this.state.campaignID);
     this.onUpdate = this.onUpdate.bind(this);
   }
-  
+
+  componentWillMount(){
+    importCampaignPlayers(this.state.campaignID).then((players)=>{
+      console.log(players);
+      this.setState({players: players});
+    })
+  }
   handleTabChange(tab){
     this.setState({tab: tab});
   }
@@ -85,7 +94,7 @@ class Campaign extends Component{
 
     else{
       return(
-        <div>
+        <div className="App-Main-Hub">
           <Tabs>
             <Tab
               style={styles.tab}
@@ -103,7 +112,8 @@ class Campaign extends Component{
           <CharacterHub 
             tab={this.state.tab}
             character={this.props.playerInfo.character} 
-            campaign={this.props.campaignInfo.campaign}/>
+            campaign={this.props.campaignInfo.campaign}
+            players={this.state.players}/>
         </div>
       )
     }
@@ -127,7 +137,6 @@ const mapDispatchToProps = dispatch => {
 //return to this component's props
 //State is processed in the reducers
 const mapStateToProps = state => {
-  console.log(state.campaignInfo);
   return{
     campaignInfo: state.campaignInfo,
     playerInfo: state.playerInfo,

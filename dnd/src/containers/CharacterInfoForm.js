@@ -90,7 +90,7 @@ class CharacterInfoFormClass extends Component{
 
   render(){
     return(
-      <div className="App">
+      <div className="App-Main-Hub">
         <form onSubmit={this.submit}>
           <label>
             <div className="App-modules">
