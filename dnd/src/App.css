@@ -57,6 +57,7 @@
 }
 
 .App-Dice{
+  text-align: center;
   width: 300px;
   background-color: #FFCA81;
   border-style: solid;
@@ -228,7 +229,10 @@
 }
 
 
-
+/*Icons*/
+.muidocs-icon-custom-github:before {
+    content: "\e625";
+}
 
 /*Misc*/
 

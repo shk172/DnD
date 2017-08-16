@@ -13,6 +13,7 @@ import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 
 import Authentication from './containers/Authentication';
+import Footer from './containers/Footer';
 import MainHub from './containers/MainHub';
 import MessageList from './containers/MessageList';
 
@@ -85,7 +86,7 @@ class AppClass extends Component {
         <IconMenu
           {...props}
           iconButtonElement={
-            <IconButton><MoreVertIcon /></IconButton>
+            <IconButton tooltip="Menu"><MoreVertIcon /></IconButton>
           }
           targetOrigin={{horizontal: 'left', vertical: 'top'}}
           anchorOrigin={{vertical: 'bottom'}}
@@ -99,7 +100,7 @@ class AppClass extends Component {
         <Link to='/' 
           onClick={this.reset}
           style={{textDecoration: 'none'}}>
-          <IconButton iconClassName="material-icons">home</IconButton>
+          <IconButton iconClassName="material-icons" tooltip="Home">home</IconButton>
         </Link>
       </div>
     );
@@ -125,10 +126,13 @@ class AppClass extends Component {
               style={styles.bar}
               title={<a style={styles.title}>{this.props.title.title}</a>}
               iconElementLeft={<Logged/>}
-              iconElementRight={<div style={{marginTop: 5}}></div>}
+              iconElementRight={<a href="https://github.com/shk172/ThereWillBeDragons"> 
+                <IconButton iconClassName="material-icons" tooltip="Github">code</IconButton>
+                </a>}
             />
         	<MainHub onUpdate={this.onUpdate}/>
           <MessageList/>
+          <Footer/>
         </div> 
       );      
     }
@@ -164,8 +168,9 @@ const mapDispatchToProps = dispatch => {
 //return to this component's props
 //State is processed in the reducers
 const mapStateToProps = state => {
+  console.log(state);
   return{
-    title: state.pageTitle
+    title: state.pageTitle,
   }
 }
 

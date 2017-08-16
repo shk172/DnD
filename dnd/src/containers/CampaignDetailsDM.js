@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
 import {List, ListItem} from 'material-ui/List';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 
-class CampaignDetailsDM extends Component{
+import addMessage from '../actions/addMessage';
+
+class DetailsClass extends Component{
 	constructor(props){
 		super(props);
 		this.state={
@@ -41,6 +45,7 @@ class CampaignDetailsDM extends Component{
 		}
 	}
 	render(){
+		console.log(this.props);
 		var list = this.state.players.map((player)=>{
 			return(
 				<ListItem key={player.Name} primaryText={player.Name} onTouchTap={this.handleListClick.bind(this, player.Name)}>
@@ -51,7 +56,7 @@ class CampaignDetailsDM extends Component{
         				targetOrigin={{horizontal: 'left', vertical: 'top'}}
         				onRequestClose={this.handleListClick.bind(this, player.Name)}>
 						<Menu>
-							<MenuItem>Whisper
+							<MenuItem onTouchTap={this.props.newMessage.bind(this, this.props.messages, player)}>Whisper
 							</MenuItem>
 						</Menu>
 					</Popover>
@@ -75,4 +80,31 @@ class CampaignDetailsDM extends Component{
 		)
 	}
 }
+
+//mapDispatchToProps puts any function that can be called 
+//by the component to its props. Whenever the function is called
+//the dispatch function sends the result of the variable provided
+//to the reducers, which will then change the state in mapStateToProps.
+const mapDispatchToProps = dispatch => {
+  return{
+    newMessage: (array, player) => {
+      dispatch(addMessage(array, player));
+    }
+  }
+}
+
+//mapStateToProps puts everything under its 
+//return to this component's props
+//State is processed in the reducers
+const mapStateToProps = state => {
+	return{
+		messages: state.messages,
+	}
+}
+
+const CampaignDetailsDM = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DetailsClass)
+
 export default CampaignDetailsDM;

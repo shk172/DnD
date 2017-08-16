@@ -7,14 +7,23 @@ class MessageListClass extends Component{
 		super(props);
 	}
 	render(){
+		var messages;
+    	messages = this.props.messages.content.map((message)=>{
+	      return(<Message message={message}/>)
+	    })
+
 		return(
-			<div style={{position: "fixed", 
+			<div style={{
+				position: "fixed", 
 				bottom: 0, 
-				backgroundColor: '#D17400', 
-				height: 65, 
-				width: '100vw',
+				width: '50vw',
+				display: 'flex',
+				alignItems: 'center',
+				justifyContent: 'center',
 				zIndex: 999}}>
-				Messages
+				<div style={{display: 'flex', flexDirection: 'row',}}>
+					{messages}
+				</div>
 			</div>
 		)
 	}
@@ -27,9 +36,10 @@ const mapDispatchToProps = dispatch => {
 }
 
 const mapStateToProps = state => {
-  return{
-
-  }
+	console.log(state);
+	return{
+		messages: state.messages,
+	}
 }
 
 const MessageList = connect(

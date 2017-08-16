@@ -5,6 +5,25 @@ import { combineReducers } from 'redux'
 dispatch functions, and the reducers' workload can be split
 through each actions' types defined in the dispatch function.
 */
+const messages = (state = {content: []}, action) => {
+	switch(action.type){
+		case "NEW_MESSAGE":
+			console.log(action);
+			var content = action.content;
+			content.push(action.message);
+			var player = action.player;
+			return{
+				...state,
+				player,
+				content,
+			}
+		default:
+			return{
+				...state,
+			}
+	}
+}
+
 const pageTitle = (state = {}, action) => {
 	switch(action.type){
 		case "CAMPAIGN":
@@ -87,6 +106,7 @@ const campaignInfo = (state={loaded: false}, action) => {
 }
 
 const reducerIndex = combineReducers({
+	messages,
 	pageTitle,
 	playerInfo,
 	campaignInfo

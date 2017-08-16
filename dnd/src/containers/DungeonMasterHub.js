@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux';
+import firebase from 'firebase';
 
 import {GridList, GridTile} from 'material-ui/GridList';
 import Dialog from 'material-ui/Dialog';
@@ -16,7 +17,7 @@ import DungeonMasterDice from './DungeonMasterDice';
 import PlayerSummary from './PlayerSummary';
 import PlayerDetails from './PlayerDetails';
 
-import firebase from 'firebase';
+import determinePlayerCharacterImport from '../actions/determinePlayerCharacterImport';
 import getCampaign from '../services/getCampaign';
 import importCampaignPlayers from '../services/importCampaignPlayers';
 import importCampaignNPCs from '../services/importCampaignNPCs';
@@ -57,7 +58,7 @@ const styles = {
   }
 };
 
-class DungeonMasterHub extends Component{
+class DMClass extends Component{
 	constructor(props){
 		super(props);
 		this.state={
@@ -326,7 +327,6 @@ class DungeonMasterHub extends Component{
 			var latestRolls;
 			if(this.state.latestRolls.length !== 0){
 				latestRolls = this.state.latestRolls.map((result)=>{
-					console.log(result);
 					return(
 						<div className="App-Dice-Section">
 							{result.name}: {result.dice}, {result.roll}, {result.type}
@@ -458,5 +458,32 @@ class DungeonMasterHub extends Component{
 		})
 	}		
 }
+
+//mapDispatchToProps puts any function that can be called 
+//by the component to its props. Whenever the function is called
+//the dispatch function sends the result of the variable provided
+//to the reducers, which will then change the state in mapStateToProps.
+const mapDispatchToProps = dispatch => {
+  return{
+    initialize: (userID, campaignID) => {
+      dispatch(determinePlayerCharacterImport(userID, campaignID));
+    }
+  }
+}
+
+//mapStateToProps puts everything under its 
+//return to this component's props
+//State is processed in the reducers
+const mapStateToProps = state => {
+  return{
+    campaignInfo: state.campaignInfo,
+    playerInfo: state.playerInfo,
+  }
+}
+
+const DungeonMasterHub = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(DMClass)
 
 export default DungeonMasterHub;
