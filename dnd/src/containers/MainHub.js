@@ -8,6 +8,7 @@ import firebase from 'firebase';
 import CampaignHub from './CampaignHub';
 import CampaignList from './CampaignList';
 import DungeonMasterHub from './DungeonMasterHub';
+import Reference from './Reference';
 import UserCampaignList from './UserCampaignList';
 
 import './styles/MainHub.css';
@@ -136,6 +137,7 @@ class MainHub extends Component{
 							userID={this.state.userID} 
 							enterExistingCampaign={this.enterExistingCampaign}
 							enterExistingCampaignAsDM={this.enterExistingCampaignAsDM}/>
+						<Reference/>
 					</div>
 				</div>
 			)
